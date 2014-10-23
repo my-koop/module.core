@@ -4,6 +4,4 @@
 module.exports = {
   // To be merged with the "general" (default) namespace, not mandatory.
   general: require("./general"),
-
-  mynamespace: require("./mynamespace")
 }

@@ -1,5 +1,5 @@
 
-class Module implements mkmodule.Module {
+class Module implements mkcore.Module {
   moduleManager: mykoop.ModuleManager;
 
   init(moduleManager: mykoop.ModuleManager){

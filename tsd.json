@@ -6,11 +6,13 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "mykoop/mykoop.d.ts": {
-      "commit": "752be10a0060330c01ff0ffc9b84abec3f289e3f"
+      "commit": "70c72771ee81502e36ce3138c287944e1be32173"
     }
   },
   "dependencies": {
-    "mykoop": {},
+    "mykoop": {}
+  },
+  "owned": {
     "mykoop-core": {}
   }
 }
