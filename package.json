@@ -1,0 +1,22 @@
+{
+  "name": "mykoop-core",
+  "version": "0.0.1",
+  "description": "Core module for My Koop",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/my-koop/module.core.git"
+  },
+  "author": "",
+  "license": "GNU GPL v2",
+  "bugs": {
+    "url": "https://github.com/my-koop/module.core/issues"
+  },
+  "homepage": "https://github.com/my-koop/module.core",
+  "dependencies": {
+    "mykoop-utils": "git://github.com/my-koop/module.utils"
+  }
+}
