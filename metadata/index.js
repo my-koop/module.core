@@ -7,4 +7,4 @@ routes.addRoutes(metaData);
 
 metaData.addData("translations", translations);
 
-module.exports = metaData;
+module.exports = metaData.get();
