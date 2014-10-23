@@ -43,7 +43,7 @@ declare module mykoop {
   }
 
   export interface ModuleMetaDataCallback {
-    (err: Error, result: IModuleMetaData) : void;
+    (err: Error, result: any) : void;
   }
 
   export interface IRouteMetaDataLeaf {
