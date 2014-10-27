@@ -1,0 +1,43 @@
+// Allow to have centered Bootstrap columns.
+.col-center-block {
+  float: none;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// Some vertical spacing helpers, since we have nothing better...
+.row.top-margin-5 { margin-top: 5px; }
+.row.top-margin-7 { margin-top: 7px; }
+.row.top-margin-10 { margin-top: 10px; }
+.row.top-margin-15 { margin-top: 15px; }
+.row.top-margin-17 { margin-top: 17px; }
+.row.top-margin-20 { margin-top: 20px; }
+.row.top-margin-25 { margin-top: 25px; }
+.row.top-margin-30 { margin-top: 30px; }
+
+// React-bootstrap generically "overwraps" form elements, this causes problems
+// when they're used in a table cell.
+.tight-form-group {
+  div.form-group {
+    margin: 0;
+  }
+}
+
+.tr-tight-form-group {
+  td {
+    .tight-form-group;
+  }
+}
+
+.table-tight-form-group {
+  tr {
+    .tr-tight-form-group;
+  }
+}
+
+/* Example: if you wanted to apply it to a whole table.
+.table-classname {
+  .table-tight-form-group;
+}
+*/
