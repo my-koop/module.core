@@ -13,12 +13,6 @@ function addRoutes(metaData) {
         path: "/aboutus"
     });
     metaData.addRoute({
-        idPath: ["public", "myAccount"],
-        component: "MyAccountPage",
-        name: "My Account",
-        path: "/myaccount"
-    });
-    metaData.addRoute({
         idPath: ["public", "shop"],
         component: "ParentPlaceHolder",
         name: "Shop",

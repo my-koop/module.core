@@ -3,6 +3,5 @@
 // desire.
 exports.PublicWrapper = require("./PublicWrapper");
 exports.Homepage = require("./Homepage");
-exports.MyAccountPage = require("./MyAccountPage");
 exports.ParentPlaceHolder = require("./ParentPlaceHolder");
 exports.PlaceHolder = require("./PlaceHolder");
