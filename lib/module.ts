@@ -1,15 +1,7 @@
+import utils = require("mykoop-utils");
 
-class Module implements mkcore.Module {
-  moduleManager: mykoop.ModuleManager;
-
-  init(moduleManager: mykoop.ModuleManager){
-    this.moduleManager = moduleManager;
-    //moduleManager.get("")
-  }
-
-  method1(par1: string): string{
-    return "";
-  }
+class Module extends utils.BaseModule implements mkcore.Module {
+  init() { }
 }
 
 export = Module;

@@ -3,10 +3,7 @@
 // Definitions by: Michael Ferris <https://github.com/Cellule/>
 // Definitions: https://github.com/my-koop/type.definitions
 
-declare module mykoop {
-  export interface IModule {}
-}
-
+/// <reference path="../mykoop/mykoop.d.ts" />
 declare module mkcore {
 
   export interface Module extends mykoop.IModule {
