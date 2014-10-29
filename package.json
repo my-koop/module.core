@@ -1,5 +1,9 @@
 {
   "name": "mykoop-core",
+  "role": "core",
+  "mykoop": {
+    "dependencies": {}
+  },
   "version": "0.0.1",
   "description": "Core module for My Koop",
   "main": "index.js",
