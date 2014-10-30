@@ -3,8 +3,8 @@ var React = require("react");
 var BSGrid = require("react-bootstrap/Grid");
 var BSRow = require("react-bootstrap/Row");
 
-var MKFooter = require("./Footer");
-var MKNavBar = require("./NavBar");
+var MKFooter = require("../layout/Footer");
+var MKNavBar = require("../layout/NavBar");
 
 var PageWrapper = React.createClass({
   propTypes: {

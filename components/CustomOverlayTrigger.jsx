@@ -1,13 +1,13 @@
 ////////////////////////////////////////////////////////////////////////////////////
 /// Rewritting of react-bootstrap/OverlayTrigger to fix the transfer of event to the overlay children
 
-var React = require('react/addons');
-var OverlayMixin = require('react-bootstrap/OverlayMixin');
+var React = require("react/addons");
+var OverlayMixin = require("react-bootstrap/OverlayMixin");
 var cloneWithProps = React.addons.cloneWithProps
 
-var domUtils = require('react-bootstrap/utils/domUtils');
-var createChainedFunction = require('react-bootstrap/utils/createChainedFunction');
-var merge = require('react-bootstrap/utils/merge');
+var domUtils = require("react-bootstrap/utils/domUtils");
+var createChainedFunction = require("react-bootstrap/utils/createChainedFunction");
+var merge = require("react-bootstrap/utils/merge");
 
 /**
  * Check if value one is inside or equal to the of value

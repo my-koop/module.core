@@ -2,10 +2,10 @@ import utils = require("mykoop-utils");
 export function addRoutes(metaData: utils.MetaData) {
   metaData.addRoute({
     idPath: ["public"],
-    component: "PublicWrapper",
+    component: "wrappers/PublicWrapper",
     name: "Homepage",
     path: "/",
-    default: "Homepage"
+    default: "layout/Homepage"
   });
   metaData.addRoute({
     idPath: ["public", "aboutus"],
@@ -15,7 +15,7 @@ export function addRoutes(metaData: utils.MetaData) {
   });
   metaData.addRoute({
     idPath: ["public", "shop"],
-    component: "ParentPlaceHolder",
+    component: "wrappers/PlaceHolderWrapper",
     name: "Shop",
     path: "/shop",
     default: "PlaceHolder"

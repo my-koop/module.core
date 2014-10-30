@@ -5,13 +5,12 @@ var RouteInfo = require("routeInformation");
 var BSCol = require("react-bootstrap/Col");
 var BSRow = require("react-bootstrap/Row");
 
-var MKLogo = require("./Logo");
-var MKFooter = require("./Footer");
+var MKLogo = require("../Logo");
+var MKFooter = require("../layout/Footer");
 
 var RRLink = Router.Link;
 
-//FIXME: Explicit until this is moved to the core module.
-var style = require("../styles/grayBg.useable.less");
+var style = require("../../styles/grayBg.useable.less");
 
 var SimplePage = React.createClass({
   componentDidMount: function(){

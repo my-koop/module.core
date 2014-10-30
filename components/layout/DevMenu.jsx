@@ -4,7 +4,7 @@ var BSDropdownButton = require("react-bootstrap/DropdownButton");
 var BSMenuItem = require("react-bootstrap/MenuItem");
 var BSNav = require("react-bootstrap/Nav");
 
-var MKIcon = require("./Icon");
+var MKIcon = require("../Icon");
 
 var PropTypes = React.PropTypes;
 

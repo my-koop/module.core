@@ -11,9 +11,9 @@ var BSNavbar = require("react-bootstrap/Navbar");
 var BSNav = require("react-bootstrap/Nav");
 var BSNavItem = require("react-bootstrap/NavItem");
 
-var MKIcon = require("./Icon");
+var MKIcon = require("../Icon");
 var MKLoginModal = require("components/LoginModal");
-var MKNavItemLink = require("./NavItemLink");
+var MKNavItemLink = require("../NavItemLink");
 
 //To be removed after development.
 //var MKDevMenu = require("components/DevMenu");

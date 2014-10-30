@@ -4,7 +4,7 @@ var Router = require("react-router");
 var BSNavbar = require("react-bootstrap/Navbar");
 var BSNav = require("react-bootstrap/Nav");
 
-var MKNavItemLink = require("./NavItemLink");
+var MKNavItemLink = require("../NavItemLink");
 
 var ajax = require("ajax");
 

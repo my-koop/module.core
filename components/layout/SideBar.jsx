@@ -6,7 +6,7 @@ var BSCol = require("react-bootstrap/Col");
 var BSListGroup = require("react-bootstrap/ListGroup");
 var BSListGroupItem = require("react-bootstrap/ListGroupItem");
 
-var MKIcon = require("./Icon");
+var MKIcon = require("../Icon");
 
 var PropTypes = React.PropTypes;
 

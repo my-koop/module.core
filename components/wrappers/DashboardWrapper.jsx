@@ -3,7 +3,7 @@ var React = require("react");
 var BSCol = require("react-bootstrap/Col");
 
 var MKPageWrapper = require("./PageWrapper");
-var MKSideBar = require("./SideBar");
+var MKSideBar = require("../layout/SideBar");
 
 var DashboardWrapper = React.createClass({
   render: function() {
