@@ -21,6 +21,6 @@
   },
   "homepage": "https://github.com/my-koop/module.core",
   "dependencies": {
-    "mykoop-utils": "git://github.com/my-koop/module.utils"
+    "mykoop-utils": "git://github.com/my-koop/module.utils#beta"
   }
 }
