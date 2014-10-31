@@ -4,7 +4,7 @@
   "mykoop": {
     "dependencies": {}
   },
-  "version": "0.0.1",
+  "version": "1.0.0-alpha",
   "description": "Core module for My Koop",
   "main": "index.js",
   "scripts": {
