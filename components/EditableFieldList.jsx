@@ -2,7 +2,7 @@ var React = require("react");
 var PropTypes = React.PropTypes;
 var BSInput = require("react-bootstrap/Input");
 var MKListModButtons = require("./ListModButtons");
-var MKFilterableItemList = require("./FilterableItemList");
+var MKFormTable = require("./FormTable");
 var MKCollapsablePanel = require("./CollapsablePanel");
 
 var OptionsPage = React.createClass({
@@ -64,7 +64,7 @@ var OptionsPage = React.createClass({
     return (
       <div>
         <BSInput type="text" value={field.label} onChange={labelChanged} label="label" />
-        <MKFilterableItemList headers={["Actions","Option Name"]} data={options}/>
+        <MKFormTable headers={["Actions","Option Name"]} data={options}/>
       </div>
     );
   },
