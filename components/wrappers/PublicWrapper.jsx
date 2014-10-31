@@ -1,6 +1,6 @@
 var React = require("react");
 
-var MKPageWrapper = require("components/PageWrapper");
+var MKPageWrapper = require("./PageWrapper");
 
 var PublicWrapper = React.createClass({
   render: function() {

@@ -9,8 +9,6 @@ var MKLoginModal          = require("components/LoginModal");
 var MKUserPrivilegesModal = require("components/UserPrivilegesModal");
 var MKMailingSendModal    = require("components/MailingListSendModal");
 
-var MKItemList = require("mykoop-inventory/components").ItemList;
-
 var __ = require("language").__;
 
 var Homepage = React.createClass({
@@ -30,7 +28,6 @@ var Homepage = React.createClass({
         <div>
           <strong>{__("testString")}</strong>
           Coop Bécik est une coopérative de réparation qui a pour mission de rendre accessible l’utilisation du vélo comme mode de transport aux citoyen-ne-s et étudiant-e-s de Montréal.
-          <MKItemList />
         </div>
         <div>
           Ouvert les mardis et mercredis de 17h à 20h Formations 17, 24 septembre et 1er octobre: <a href="http://doodle.com/3z4y37skqyxhtn86">s'inscrire ICI</a>

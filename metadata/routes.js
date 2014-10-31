@@ -1,10 +1,10 @@
 function addRoutes(metaData) {
     metaData.addRoute({
         idPath: ["public"],
-        component: "PublicWrapper",
+        component: "wrappers/PublicWrapper",
         name: "Homepage",
         path: "/",
-        default: "Homepage"
+        default: "layout/Homepage"
     });
     metaData.addRoute({
         idPath: ["public", "aboutus"],
@@ -14,7 +14,7 @@ function addRoutes(metaData) {
     });
     metaData.addRoute({
         idPath: ["public", "shop"],
-        component: "ParentPlaceHolder",
+        component: "wrappers/PlaceHolderWrapper",
         name: "Shop",
         path: "/shop",
         default: "PlaceHolder"
