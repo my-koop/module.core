@@ -5,7 +5,7 @@ var BSButton = require("react-bootstrap/Button");
 var BSModal = require("react-bootstrap/Modal");
 var BSModalTrigger = require("react-bootstrap/ModalTrigger");
 
-var MKLoginModal          = require("components/LoginModal");
+var MKLoginModal          = require("mykoop-user/components/LoginModal");
 var MKUserPrivilegesModal = require("components/UserPrivilegesModal");
 var MKMailingSendModal    = require("components/MailingListSendModal");
 

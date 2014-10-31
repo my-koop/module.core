@@ -12,7 +12,7 @@ var BSNav = require("react-bootstrap/Nav");
 var BSNavItem = require("react-bootstrap/NavItem");
 
 var MKIcon = require("../Icon");
-var MKLoginModal = require("components/LoginModal");
+var MKLoginModal = require("mykoop-user/components/LoginModal");
 var MKNavItemLink = require("../NavItemLink");
 
 //To be removed after development.
