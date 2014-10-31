@@ -30,14 +30,14 @@ var NavigationBar = React.createClass({
 
     ajax.request(
       {endpoint: this.props.contentUrl},
-      function (err, res) {
+      function (err, body) {
         if (err) {
           console.error(this.props.contentUrl, status, err.toString());
           return;
         }
 
-        if (res.body.links) {
-          self.setState(res.body);
+        if (body.links) {
+          self.setState(body);
         }
       }
     );
