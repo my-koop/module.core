@@ -1,6 +1,6 @@
 ﻿var React = require("react");
 var Router = require("react-router");
-var RouteInfo = require("routeInformation");
+var routeData = require("dynamic-metadata").routes;
 
 var BSButton = require("react-bootstrap/Button");
 var BSDropdownButton = require("react-bootstrap/DropdownButton");
@@ -53,7 +53,7 @@ var NavBar = React.createClass({
   onSearch: function(e) {
     e.preventDefault();
     Router.transitionTo(
-      RouteInfo.shop.name,
+      routeData.public.children.shop.name,
       {},
       {filter: this.refs.searchtext.getInputDOMNode().value}
     );
@@ -90,19 +90,22 @@ var NavBar = React.createClass({
         >
           <BSNav key={1} className="navbar-left">
             {isInDashboard ? [
-              <MKNavItemLink key={10} to={RouteInfo.members.name}>
+              <MKNavItemLink key={10} to={routeData.public.name}>
                 <MKIcon glyph="users" fixedWidth /> Members
               </MKNavItemLink>,
-              <MKNavItemLink key={20} to={RouteInfo.items.name}>
+              <MKNavItemLink
+                key={20}
+                to={routeData.dashboard.children.inventory.children.items.name}
+              >
                 <MKIcon glyph="bicycle" fixedWidth /> Items
               </MKNavItemLink>,
-              <MKNavItemLink key={30} to={RouteInfo.homepage.name}>
+              <MKNavItemLink key={30} to={routeData.public.name}>
                 <MKIcon glyph="book" fixedWidth /> Invoices
               </MKNavItemLink>,
-              <MKNavItemLink key={40} to={RouteInfo.events.name}>
+              <MKNavItemLink key={40} to={routeData.dashboard.children.events.name}>
                 <MKIcon glyph="calendar" fixedWidth /> Events
               </MKNavItemLink>,
-              <MKNavItemLink key={50} to={RouteInfo.stats.name}>
+              <MKNavItemLink key={50} to={routeData.dashboard.children.stats.name}>
                 <MKIcon glyph="files-o" fixedWidth /> Reports
               </MKNavItemLink>,
               <BSDropdownButton
@@ -117,7 +120,7 @@ var NavBar = React.createClass({
                   key={10}
                   onSelect={Router.transitionTo.bind(
                     null,
-                    RouteInfo.homepage.name
+                    routeData.public.name
                   )}
                 >
                   <MKIcon glyph="plus" fixedWidth /> Add Member
@@ -126,20 +129,20 @@ var NavBar = React.createClass({
                   key={20}
                   onSelect={Router.transitionTo.bind(
                     null,
-                    RouteInfo.mailingSend.name
+                    routeData.dashboard.children.mailing.children.send.name
                   )}
                 >
                   <MKIcon glyph="envelope" fixedWidth /> Send Mass Message
                 </BSMenuItem>
               </BSDropdownButton>
             ] : [
-              <MKNavItemLink key={10} to={RouteInfo.homepage.name}>
+              <MKNavItemLink key={10} to={routeData.public.name}>
                 <MKIcon glyph="home" /> Homepage
               </MKNavItemLink>,
-              <MKNavItemLink key={20} to={RouteInfo.shop.name}>
+              <MKNavItemLink key={20} to={routeData.public.children.shop.name}>
                 <MKIcon glyph="shopping-cart" /> Shop
               </MKNavItemLink>,
-              <MKNavItemLink key={30} to={RouteInfo.aboutUs.name}>
+              <MKNavItemLink key={30} to={routeData.public.children.aboutus.name}>
                 <MKIcon glyph="question" /> About Us
               </MKNavItemLink>,
               <form
@@ -168,7 +171,10 @@ var NavBar = React.createClass({
               >
                 <BSMenuItem
                   key={10}
-                  onSelect={Router.transitionTo.bind(null, RouteInfo.myaccount.name)}
+                  onSelect={Router.transitionTo.bind(
+                    null,
+                    routeData.public.children.myaccount.name
+                  )}
                 >
                   <MKIcon glyph="cog" fixedWidth /> My account
                 </BSMenuItem>
@@ -183,15 +189,15 @@ var NavBar = React.createClass({
               </BSNavItem>
             }
             {!isLoggedIn ?
-              <MKNavItemLink to={RouteInfo.register.name}>
+              <MKNavItemLink to={routeData.simple.children.register.name}>
                 <MKIcon glyph="check" /> Register
               </MKNavItemLink>
             : null}
             {!isInDashboard ? [
-              <MKNavItemLink to={RouteInfo.homepage.name}>
+              <MKNavItemLink to={routeData.public.name}>
                 <MKIcon glyph="globe" /> French
               </MKNavItemLink>,
-              <MKNavItemLink to={RouteInfo.homepage.name}>
+              <MKNavItemLink to={routeData.public.name}>
                 <MKIcon glyph="question-circle" /> Help
               </MKNavItemLink>
             ] : null}

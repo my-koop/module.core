@@ -1,6 +1,6 @@
 var React = require("react");
 var Router = require("react-router");
-var RouteInfo = require("routeInformation");
+var routeData = require("dynamic-metadata").routes;
 
 var BSCol = require("react-bootstrap/Col");
 var BSListGroup = require("react-bootstrap/ListGroup");
@@ -24,7 +24,7 @@ var SideBar = React.createClass({
             href="#"
             onClick={this.goToPage.bind(
               null,
-              RouteInfo.members.name
+              routeData.dashboard.children.members.name
             )}
           >
             <MKIcon glyph="users" fixedWidth /> Members
@@ -35,7 +35,7 @@ var SideBar = React.createClass({
             href="#"
             onClick={this.goToPage.bind(
               null,
-              RouteInfo.members.name
+              routeData.dashboard.children.members.name
             )}
           >
             <MKIcon glyph="list-ul" fixedWidth /> Manage
@@ -46,7 +46,7 @@ var SideBar = React.createClass({
             href="#"
             onClick={this.goToPage.bind(
               null,
-              RouteInfo.members.name
+              routeData.dashboard.children.members.name
             )}
           >
             <MKIcon glyph="check" fixedWidth /> Permission Sets
@@ -56,7 +56,7 @@ var SideBar = React.createClass({
             href="#"
             onClick={this.goToPage.bind(
               null,
-              RouteInfo.items.name
+              routeData.dashboard.children.inventory.children.items.name
             )}
           >
             <MKIcon glyph="table" fixedWidth /> Inventory
@@ -66,7 +66,7 @@ var SideBar = React.createClass({
             href="#"
             onClick={this.goToPage.bind(
               null,
-              RouteInfo.transaction.name
+              routeData.public.name
             )}
           >
             <MKIcon glyph="exchange" fixedWidth /> Transactions
@@ -76,7 +76,7 @@ var SideBar = React.createClass({
             href="#"
             onClick={this.goToPage.bind(
               null,
-              RouteInfo.mailing.name
+              routeData.dashboard.children.mailing.children.send.name
             )}
           >
             <MKIcon glyph="envelope" fixedWidth /> Mailing Lists
@@ -86,7 +86,7 @@ var SideBar = React.createClass({
             href="#"
             onClick={this.goToPage.bind(
               null,
-              RouteInfo.mailing.name
+              routeData.dashboard.children.mailing.children.send.name
             )}
           >
             <MKIcon glyph="clock-o" fixedWidth /> Volunteers
@@ -96,7 +96,7 @@ var SideBar = React.createClass({
             href="#"
             onClick={this.goToPage.bind(
               null,
-              RouteInfo.stats.name
+              routeData.dashboard.children.stats.name
             )}
           >
             <MKIcon glyph="bar-chart" fixedWidth /> {"Reports & Statistics"}
@@ -106,7 +106,7 @@ var SideBar = React.createClass({
             href="#"
             onClick={this.goToPage.bind(
               null,
-              RouteInfo.options.name
+              routeData.public.name
             )}
           >
             <MKIcon glyph="cogs" fixedWidth /> Advanced Settings

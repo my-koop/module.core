@@ -2,9 +2,9 @@ var utils = require("mykoop-utils");
 var routes = require("./routes");
 var translations = require("../locales/index");
 
-var metaData = new utils.MetaData();
-routes.addRoutes(metaData);
+var metaDataBuilder = new utils.MetaDataBuilder();
+routes.addRoutes(metaDataBuilder);
 
-metaData.addData("translations", translations);
+metaDataBuilder.addData("translations", translations);
 
-module.exports = metaData.get();
+module.exports = metaDataBuilder.get();
