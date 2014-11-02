@@ -7,7 +7,7 @@ var BSModalTrigger = require("react-bootstrap/ModalTrigger");
 
 var MKLoginModal          = require("mykoop-user/components/LoginModal");
 var MKUserPrivilegesModal = require("components/UserPrivilegesModal");
-var MKMailingSendModal    = require("components/MailingListSendModal");
+var MKMailingSendModal = require("components/MailingListSendModal");
 
 var __ = require("language").__;
 
