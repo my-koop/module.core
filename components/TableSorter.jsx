@@ -61,17 +61,37 @@ var TableSorter = React.createClass({
     disableDragging: PropTypes.bool,
   },
 
+  getDefaultProps: function() {
+    return {
+      config: {
+        columns: []
+      }
+    }
+  },
+
   getInitialState: function() {
-    var columnsOrder = this.props.config.defaultOrdering || Object.keys(this.props.config.columns);
     var columns = this.props.config.columns;
+
+    if(this.props.config.defaultOrdering) {
+      var columnsOrder = _.filter(this.props.config.defaultOrdering, function(col) {
+        if(!columns[col]) {
+          console.warn("TableSorter::Column [%s] from defaultOrdering is not defined in config.columns", col);
+          return false;
+        }
+        return true;
+      });
+    } else {
+      var columnsOrder = Object.keys(columns);
+    }
+
     var self = this;
     return {
       sort: this.props.config.sort || { column: "", order: "" },
       columns: columns,
       columnsOrder: columnsOrder,
-      fixedPositionColumns: columnsOrder.reduce(function(fixedPositionColumns, colName, i){
+      fixedPositionColumns: columnsOrder.reduce(function(fixedPositionColumns, colName, i) {
         var col = columns[colName];
-        if(!self.canDrag(col)){
+        if(!self.canDrag(col)) {
           fixedPositionColumns[colName] = i;
         }
         return fixedPositionColumns;
@@ -79,15 +99,15 @@ var TableSorter = React.createClass({
     };
   },
 
-  canSort: function(col){
+  canSort: function(col) {
     return !(this.props.disableSorting || col.isStatic || col.disableSorting);
   },
 
-  canDrag: function(col){
+  canDrag: function(col) {
     return !(this.props.disableDragging || col.isStatic || col.disableDragging);
   },
 
-  canFilter: function(col){
+  canFilter: function(col) {
     return !(this.props.disableFiltering || col.isStatic || col.disableFiltering);
   },
 
@@ -120,7 +140,7 @@ var TableSorter = React.createClass({
 
   columnChangeEventID: "column change",
 
-  dragStart: function(i, e){
+  dragStart: function(i, e) {
     var data = {
       index : i,
       event: this.columnChangeEventID
@@ -128,25 +148,25 @@ var TableSorter = React.createClass({
     e.dataTransfer.setData("text", JSON.stringify(data));
   },
 
-  onDrop: function(i, e){
+  onDrop: function(i, e) {
     var data = JSON.parse(e.dataTransfer.getData("text"));
     if(
       data.event === this.columnChangeEventID &&
       _.isNumber(data.index) &&
       (data.index >>> 0) < this.state.columnsOrder.length &&
       data.index !== i
-    ){
+    ) {
       var columnsOrder = this.state.columnsOrder;
       var draggedColumn = columnsOrder.splice(data.index, 1);
       columnsOrder.splice(i, 0, draggedColumn[0]);
       // makes sure static columns haven't moved
-      if(!_.isEmpty(this.state.fixedPositionColumns)){
+      if(!_.isEmpty(this.state.fixedPositionColumns)) {
         var l = columnsOrder.length;
         var self = this;
-        var checkStaticColumn = function(i){
+        var checkStaticColumn = function(i) {
           // check if static column is misplaced
           var colStaticIndex = self.state.fixedPositionColumns[columnsOrder[i]];
-          if(colStaticIndex !== undefined && colStaticIndex !== i){
+          if(colStaticIndex !== undefined && colStaticIndex !== i) {
             // put it back in its place
             var col = columnsOrder.splice(i, 1);
             columnsOrder.splice(colStaticIndex, 0, col[0]);
@@ -154,7 +174,7 @@ var TableSorter = React.createClass({
         };
 
         // the traversing order is important depending on how the change was made
-        if(i > data.index){
+        if(i > data.index) {
           for (var i = l - 1; i >= 0; i--) {
             checkStaticColumn(i);
           };
@@ -208,7 +228,7 @@ var TableSorter = React.createClass({
 
     /////////////////////////////////////////////////////////////////////////
     // Sort data
-    if(!self.props.disableSorting){
+    if(!self.props.disableSorting) {
       var sortedItems = _.sortBy(filteredItems, self.state.sort.column);
       if (self.state.sort.order === "desc")
         sortedItems.reverse();
@@ -224,11 +244,11 @@ var TableSorter = React.createClass({
 
       var headerRender;
       var enableSorting = self.canSort(columnConfig);
-      if(enableSorting){
-        headerRender = function(extraIcon){
+      if(enableSorting) {
+        headerRender = function(extraIcon) {
           var sortIcon = "sort";
           var isSortingThisColumn = self.state.sort.column === col;
-          if(isSortingThisColumn){
+          if(isSortingThisColumn) {
             sortIcon += "-" + self.state.sort.order;
           }
           var icon = (<MKIcon glyph={sortIcon} />);
@@ -239,7 +259,7 @@ var TableSorter = React.createClass({
           );
         }
       } else {
-        headerRender = function(extraIcon){
+        headerRender = function(extraIcon) {
           // FIXME:: Style is a quick fix for prototype, change when real style decided
           return (
             <div
@@ -255,7 +275,7 @@ var TableSorter = React.createClass({
       var enableDragging = self.canDrag(columnConfig);
       var dragProps = {};
       var extraIcon = null;
-      if(enableDragging){
+      if(enableDragging) {
         extraIcon = <MKIcon
           glyph="bars"
           onDragStart={self.dragStart.bind(null,i)}
@@ -264,7 +284,7 @@ var TableSorter = React.createClass({
         />;
         dragProps = {
           onDrop: self.onDrop.bind(null,i),
-          onDragOver: function(e){e.preventDefault();},
+          onDragOver: function(e) {e.preventDefault();},
         };
       }
 
@@ -279,7 +299,7 @@ var TableSorter = React.createClass({
     });
 
     // Create filter fields
-    if(!self.props.disableFiltering){
+    if(!self.props.disableFiltering) {
       var filterLink = function(column) {
         return {
           value: self.state.columns[column].filterText,
@@ -288,7 +308,7 @@ var TableSorter = React.createClass({
       };
 
       var filterInputs = columnNames.map(function(c, i) {
-        if(self.canFilter(self.state.columns[c])){
+        if(self.canFilter(self.state.columns[c])) {
           return (
             <td key={i}>
               <BSInput
@@ -315,7 +335,7 @@ var TableSorter = React.createClass({
       return columnNames.map(function(colName, i) {
         var cellGenerator = self.state.columns[colName].cellGenerator;
 
-        if(cellGenerator){
+        if(cellGenerator) {
           return (
             <td key={i}>
               {cellGenerator.call(self,item)}
