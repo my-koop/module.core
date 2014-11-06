@@ -1,6 +1,7 @@
 var React  = require("react");
 var BSPanel= require("react-bootstrap/Panel");
 var MKIcon = require("./Icon");
+var _ = require("lodash");
 
 var CollapsablePanel = React.createClass({
 
@@ -26,6 +27,7 @@ var CollapsablePanel = React.createClass({
   render: function() {
     // correct way to do, but not yet supported
     //var {defaultExpanded, hideIcon, ...others} = this.props;
+    var others = _.omit(this.props, "defaultExpanded", "hideIcon");
     var glyph = this.state.expanded ? "minus" : "plus";
     var header = !this.props.hideIcon ?
       (
@@ -36,7 +38,7 @@ var CollapsablePanel = React.createClass({
       )
       : this.props.header;
     return (
-      <BSPanel {...this.props} header={header} collapsable expanded={this.state.expanded} onSelect={this.toggle}>
+      <BSPanel {...others} header={header} collapsable expanded={this.state.expanded} onSelect={this.toggle}>
         {this.props.children}
       </BSPanel>
     );

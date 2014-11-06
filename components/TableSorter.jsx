@@ -353,15 +353,20 @@ var TableSorter = React.createClass({
     });
 
 
+    var others = _.omit(this.props,
+      "config",
+      "items",
+      "headerRepeat",
+      "disableSorting",
+      "disableFiltering",
+      "disableDragging"
+    );
 
     return (
       <BSTable
         className="table-sorter"
         cellSpacing="0"
-        striped  ={this.props.striped}
-        bordered ={this.props.bordered}
-        condensed={this.props.condensed}
-        hover    ={this.props.hover}
+        {...others}
       >
         <thead>
           <tr>
