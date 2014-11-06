@@ -197,33 +197,41 @@ var TableSorter = React.createClass({
     var columnNames = self.getColumnNames();
     var filters = {};
 
+    var items = _.map(this.props.items, function(item, i) {
+      return _.merge(item, {__indexFromOriginalArray: i});
+    })
+
     /////////////////////////////////////////////////////////////////////////
     // Apply filters
-    columnNames.forEach(function(column) {
-      var filterText = self.state.columns[column].filterText;
-      filters[column] = null;
+    if(!self.props.disableFiltering) {
+      columnNames.forEach(function(column) {
+        var filterText = self.state.columns[column].filterText;
+        filters[column] = null;
 
-      if (filterText && filterText.length > 0) {
-        operandMatch = operandRegex.exec(filterText);
-        if (operandMatch && (operandMatch.length === 3) ) {
-          filters[column] = function(match) {
-            return function(x) {
-              return operators[match[1]](x, match[2]);
+        if (filterText && filterText.length > 0) {
+          operandMatch = operandRegex.exec(filterText);
+          if (operandMatch && (operandMatch.length === 3) ) {
+            filters[column] = function(match) {
+              return function(x) {
+                return operators[match[1]](x, match[2]);
+              };
+            }(operandMatch);
+          } else {
+            filters[column] = function(x) {
+              return ~(_(x).toString().toLowerCase().indexOf(filterText.toLowerCase()));
             };
-          }(operandMatch);
-        } else {
-          filters[column] = function(x) {
-            return ~(x.toString().toLowerCase().indexOf(filterText.toLowerCase()));
-          };
+          }
         }
-      }
-    });
-
-    var filteredItems = _.filter(self.props.items, function(item) {
-      return _.every(columnNames, function(c) {
-        return (!filters[c] || filters[c](item[c]));
       });
-    });
+
+      var filteredItems = _.filter(items, function(item) {
+        return _.every(columnNames, function(c) {
+          return (!filters[c] || filters[c](item[c]));
+        });
+      });
+    } else {
+      var filteredItems = items;
+    }
     /////////////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////////////////
@@ -331,14 +339,14 @@ var TableSorter = React.createClass({
     };
 
     // Row generator
-    var rowGenerator = function(item) {
+    var rowGenerator = function(item, iItem) {
       return columnNames.map(function(colName, i) {
         var cellGenerator = self.state.columns[colName].cellGenerator;
 
         if(cellGenerator) {
           return (
             <td key={i}>
-              {cellGenerator.call(self,item)}
+              {cellGenerator.call(self, item, item.__indexFromOriginalArray)}
             </td>
           );
         } else {
@@ -367,7 +375,7 @@ var TableSorter = React.createClass({
 
       allRows.push(
         <tr key={i}>
-          {rowGenerator(item)}
+          {rowGenerator(item, i)}
         </tr>
       );
     });
