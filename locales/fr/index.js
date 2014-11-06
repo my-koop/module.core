@@ -3,5 +3,6 @@
 
 module.exports = {
   // To be merged with the "general" (default) namespace, not mandatory.
+  errors: require("./errors"),
   general: require("./general"),
 }
