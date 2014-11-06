@@ -387,12 +387,13 @@ var TableSorter = React.createClass({
       "headerRepeat",
       "disableSorting",
       "disableFiltering",
-      "disableDragging"
+      "disableDragging",
+      "className"
     );
-
+    var className = _(this.props.className).toString() + " table-sorter";
     return (
       <BSTable
-        className="table-sorter"
+        className={className}
         cellSpacing="0"
         {...others}
       >
