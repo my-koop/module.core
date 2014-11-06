@@ -44,7 +44,10 @@ var Spinner = React.createClass({
     }
 
     return (
-      <ReactSpinner className="mk-spinner"/>
+      <div>
+        <ReactSpinner className="mk-spinner"/>
+        <div className="modal-backdrop fade in" />
+      </div>
     );
   },
 
