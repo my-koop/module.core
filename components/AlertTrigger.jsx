@@ -6,6 +6,8 @@ var cloneWithProps = React.addons.cloneWithProps;
 var BSButton = require("react-bootstrap/Button");
 var BSModal = require("react-bootstrap/Modal");
 
+var _ = require("lodash");
+
 // taken from react-bootstrap utils
 var createChainedFunction = function createChainedFunction(one, two) {
   var hasOne = typeof one === 'function';
@@ -39,33 +41,32 @@ var AlertTrigger = React.createClass({
   getInitialState: function () {
     return {
       message: this.props.message,
+      actionButtons: this.props.actionButtons || [],
       isOverlayShown: false
     };
   },
 
   componentWillReceiveProps: function (nextProps) {
     this.setState({
-      message: nextProps.message
-    });
+      message: nextProps.message,
+      actionButtons: nextProps.actionButtons || [],
+    })
   },
 
-  show: function (message) {
+  show: function () {
     this.setState({
-      message: message || this.state.message,
       isOverlayShown: true
     });
   },
 
-  hide: function (message) {
+  hide: function () {
     this.setState({
-      message: message || this.state.message,
       isOverlayShown: false
     });
   },
 
-  toggle: function (message) {
+  toggle: function () {
     this.setState({
-      message: message || this.state.message,
       isOverlayShown: !this.state.isOverlayShown
     });
   },
@@ -84,9 +85,10 @@ var AlertTrigger = React.createClass({
     }
 
     var self = this;
-    var buttons = this.props.actionButtons.map(function(buttonDefinition) {
+    var buttons = this.state.actionButtons.map(function(buttonDefinition, i) {
       return (
         <BSButton
+          key={i}
           onClick={self.onButtonClick.bind(self, buttonDefinition.onClick)}
           {...buttonDefinition.props}
         >
@@ -129,21 +131,37 @@ var AlertTrigger = React.createClass({
 
 });
 
+var __ = require("language").__;
 
+var globalDefaultProps = {
+  actionButtons: [
+    {
+      content: __("ok"),
+      props: {
+        bsStyle: "success"
+      }
+    }
+  ]
+}
 AlertTrigger.globalInstance = null;
-AlertTrigger.latentAlert = null;
+AlertTrigger.latentAlertProps = null;
+
 AlertTrigger.registerGlobalInstance = function(alertInstance) {
   AlertTrigger.globalInstance = alertInstance;
-  if(alertInstance && AlertTrigger.latentAlert) {
-    alertInstance.show(AlertTrigger.latentAlert);
-    AlertTrigger.latentAlert = null;
+  if(alertInstance && AlertTrigger.latentAlertProps) {
+    AlertTrigger.showAlert(AlertTrigger.latentAlertProps);
+    AlertTrigger.latentAlertProps = null;
   }
 }
-AlertTrigger.showAlert = function(message) {
+AlertTrigger.showAlert = function(props) {
   if(AlertTrigger.globalInstance) {
-    AlertTrigger.globalInstance.show(message);
+    if(_.isString(props)) {
+      props = {message: props};
+    }
+    AlertTrigger.globalInstance.setState(_.assign(globalDefaultProps, props));
+    AlertTrigger.globalInstance.show();
   } else {
-    AlertTrigger.latentAlert = message;
+    AlertTrigger.latentAlertProps = props;
   }
 }
 

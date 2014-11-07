@@ -6,8 +6,6 @@ var MKDevNavBar = require("../layout/DevNavBar");
 var MKGlobalSpinner = require("../Spinner");
 var MKAlertTrigger = require("../AlertTrigger");
 
-var __ = require("language").__;
-
 var App = React.createClass({
   componentDidMount: function () {
     MKGlobalSpinner.registerGlobalInstance(this.refs.globalSpinner);
@@ -15,18 +13,10 @@ var App = React.createClass({
   },
 
   render: function() {
-    var alertButton = [
-      {
-        content: __("ok"),
-        props: {
-          bsStyle: "success"
-        }
-      }
-    ];
     return (
       <div>
         <MKGlobalSpinner ref="globalSpinner" />
-        <MKAlertTrigger ref="globalAlert" actionButtons={alertButton}/>
+        <MKAlertTrigger ref="globalAlert" actionButtons={[]}/>
         {this.props.activeRouteHandler()}
 
         {/* To be removed after development. */}
