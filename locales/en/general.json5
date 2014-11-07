@@ -1,2 +1,4 @@
 {
+  alert: "Alert",
+  ok: "Ok",
 }
