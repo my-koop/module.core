@@ -30,7 +30,8 @@ function addRoutes(metaDataBuilder) {
     /* Simple wrapper. */
     metaDataBuilder.addFrontendRoute({
         idPath: ["simple"],
-        component: "wrappers/SimplePageWrapper"
+        component: "wrappers/SimplePageWrapper",
+        path: "/"
     });
 
     /*FIXME: Cannot use it as long as it is in website.
