@@ -4,19 +4,19 @@ var BSRow = require("react-bootstrap/Row");
 
 var MKDevNavBar = require("../layout/DevNavBar");
 var MKGlobalSpinner = require("../Spinner");
-var MKAlertTrigger = require("../AlertTrigger");
+var MKGlobalAlert  = require("../AlertTrigger");
 
 var App = React.createClass({
   componentDidMount: function () {
     MKGlobalSpinner.registerGlobalInstance(this.refs.globalSpinner);
-    MKAlertTrigger.registerGlobalInstance(this.refs.globalAlert);
+    MKGlobalAlert.registerGlobalInstance(this.refs.globalAlert);
   },
 
   render: function() {
     return (
       <div>
         <MKGlobalSpinner ref="globalSpinner" />
-        <MKAlertTrigger ref="globalAlert" actionButtons={[]}/>
+        <MKGlobalAlert ref="globalAlert" />
         {this.props.activeRouteHandler()}
 
         {/* To be removed after development. */}

@@ -7,6 +7,7 @@ var BSButton = require("react-bootstrap/Button");
 var BSModal = require("react-bootstrap/Modal");
 
 var _ = require("lodash");
+var __ = require("language").__;
 
 // taken from react-bootstrap utils
 var createChainedFunction = function createChainedFunction(one, two) {
@@ -29,6 +30,7 @@ var AlertTrigger = React.createClass({
   mixins: [OverlayMixin],
 
   propTypes: {
+    title: React.PropTypes.string,
     // custom message to display in the confirmation box
     message: PropTypes.string,
     actionButtons: React.PropTypes.arrayOf(React.PropTypes.shape({
@@ -36,21 +38,33 @@ var AlertTrigger = React.createClass({
       onClick: React.PropTypes.func,
       props: React.PropTypes.object
     })),
+    //Generic callback when the alert hides
+    onHide: React.PropTypes.func
   },
 
-  getInitialState: function () {
+  getStateFromProps: function(props) {
+    var others = _.omit(props,
+      "title",
+      "message",
+      "actionButtons",
+      "onHide"
+    );
     return {
-      message: this.props.message,
-      actionButtons: this.props.actionButtons || [],
+      others: others,
+      title: props.title,
+      message: props.message,
+      actionButtons: props.actionButtons || [],
+      onHide: props.onHide,
       isOverlayShown: false
     };
   },
 
+  getInitialState: function () {
+    return this.getStateFromProps(this.props);
+  },
+
   componentWillReceiveProps: function (nextProps) {
-    this.setState({
-      message: nextProps.message,
-      actionButtons: nextProps.actionButtons || [],
-    })
+    return this.getStateFromProps(nextProps);
   },
 
   show: function () {
@@ -60,8 +74,13 @@ var AlertTrigger = React.createClass({
   },
 
   hide: function () {
+    var self = this;
     this.setState({
       isOverlayShown: false
+    }, function() {
+      if(self.state.onHide) {
+        self.state.onHide();
+      }
     });
   },
 
@@ -71,8 +90,8 @@ var AlertTrigger = React.createClass({
     });
   },
 
-  onButtonClick: function(callback){
-    if(callback){
+  onButtonClick: function(callback) {
+    if(callback) {
       callback();
     }
     this.hide();
@@ -81,7 +100,7 @@ var AlertTrigger = React.createClass({
   renderOverlay: function () {
     if (!this.state.isOverlayShown) {
       // a component must be returned , an error occurs if return null;
-      return (<span />);
+      return (<noscript />);
     }
 
     var self = this;
@@ -98,7 +117,12 @@ var AlertTrigger = React.createClass({
     });
 
     return (
-      <BSModal title="Confirm" bsSize="small" onRequestHide={this.hide}>
+      <BSModal
+        {...this.state.others}
+        title={this.state.title}
+        bsSize="small"
+        onRequestHide={this.hide}
+      >
         <div className="modal-body">
           {this.state.message}
         </div>
@@ -110,7 +134,7 @@ var AlertTrigger = React.createClass({
   },
 
   render: function () {
-    if(this.props.children){
+    if(this.props.children) {
       var child = React.Children.only(this.props.children);
 
       var props = {};
@@ -131,9 +155,8 @@ var AlertTrigger = React.createClass({
 
 });
 
-var __ = require("language").__;
-
 var globalDefaultProps = {
+  title: __("alert"),
   actionButtons: [
     {
       content: __("ok"),
@@ -158,8 +181,15 @@ AlertTrigger.showAlert = function(props) {
     if(_.isString(props)) {
       props = {message: props};
     }
-    AlertTrigger.globalInstance.setState(_.assign(globalDefaultProps, props));
-    AlertTrigger.globalInstance.show();
+    var newState = AlertTrigger.globalInstance.getStateFromProps(
+      _.assign(globalDefaultProps, props)
+    );
+    AlertTrigger.globalInstance.replaceState(
+      newState,
+      function() {
+        AlertTrigger.globalInstance.show();
+      }
+    );
   } else {
     AlertTrigger.latentAlertProps = props;
   }
