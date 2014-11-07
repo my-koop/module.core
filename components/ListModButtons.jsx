@@ -27,6 +27,7 @@ var ListModButtons = React.createClass({
         icon: PropTypes.string,
         content: PropTypes.renderable,
 
+        props: React.PropTypes.object,
         // Callback when the button is clicked or confirmation on warning
         // function(e: onClickEvent) : void
         callback: PropTypes.func,
@@ -88,7 +89,7 @@ var ListModButtons = React.createClass({
 
       // Actual button
       var button = (
-        <BSButton bsSize="small" onClick={buttonOnClick} key={i}>
+        <BSButton {...btn.props} bsSize="small" onClick={buttonOnClick} key={i}>
           {content}
         </BSButton>
       );

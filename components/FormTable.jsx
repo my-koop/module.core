@@ -11,7 +11,7 @@ var PropTypes = React.PropTypes;
 var InputFactoryMethod = require("./FormInputFactory");
 var BSTable = require("react-bootstrap/Table");
 
-
+var _ = require("lodash");
 
 
 var ItemRow = React.createClass({
@@ -19,8 +19,8 @@ var ItemRow = React.createClass({
     rowData : PropTypes.array.isRequired
   },
 
-  render: function(){
-    rowElements = this.props.rowData.map(function(rowElementData,key){
+  render: function() {
+    rowElements = this.props.rowData.map(function(rowElementData,key) {
       return (
          <td key={key}>{rowElementData} </td>
       );
@@ -39,10 +39,17 @@ var ItemListHeader = React.createClass({
     headerList: PropTypes.array.isRequired
   },
 
-  render: function(){
-    headers = this.props.headerList.map(function(header,key){
+  render: function() {
+    headers = this.props.headerList.map(function(header, key) {
+      if(_.isString(header)) {
+        header = {
+          title: header,
+          props: {}
+        };
+      }
+
       return (
-        <th key={key}> {header} </th>
+        <th key={key} {...header.props}> {header.title} </th>
       );
     });
 
@@ -62,15 +69,15 @@ var ItemList = React.createClass({
     tableHeader : PropTypes.array.isRequired,
     tableData : PropTypes.array.isRequired
   },
-  render: function(){
-    rows = this.props.tableData.map(function(data,key){
+  render: function() {
+    rows = this.props.tableData.map(function(data,key) {
       return (
           <ItemRow key={key} rowData={data} />
       );
     });
     return (
       <div>
-        <BSTable  responsive>
+        <BSTable responsive>
           <ItemListHeader headerList={this.props.tableHeader}/>
             <tbody>
               {rows}
@@ -81,37 +88,15 @@ var ItemList = React.createClass({
   }
 });
 
-var FilterOptions = React.createClass({
-  propTypes: {
-    options : PropTypes.array.isRequired
-  },
-  render: function() {
-    optionsArray = this.props.options.map(function(option,key) {
-      return (
-           InputFactoryMethod(option.type,option.properties,key)
-        );
-    });
-    return (
-      <div>
-        {optionsArray}
-      </div>
-    );
-  }
-
-});
-
 var FilterableItemList = React.createClass({
   propTypes: {
-    filterOptions : PropTypes.array,
     data          : PropTypes.array.isRequired,
     headers       : PropTypes.array.isRequired
   },
 
   render: function() {
-    var Filtering = this.props.filterOptions ? <FilterOptions options={this.props.filterOptions} /> : null ;
     return (
       <div>
-        {Filtering}
         <ItemList tableHeader={this.props.headers} tableData={this.props.data} />
       </div>
     );
