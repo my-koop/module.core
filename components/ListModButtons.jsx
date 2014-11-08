@@ -10,6 +10,8 @@ var BSModalTrigger       = require("react-bootstrap/ModalTrigger");
 var MKConfirmationTrigger= require("./ConfirmationTrigger");
 var MKIcon               = require("./Icon");
 
+var _ = require("lodash");
+
 //
 // btn.onClick workflow
 //    callback only : trigger the callback
@@ -39,10 +41,13 @@ var ListModButtons = React.createClass({
         // use this to hide the button (useful if used with a condition)
         hide: PropTypes.bool,
         // Shows a tooltip for the button
-        tooltip: PropTypes.shape({
-          text: PropTypes.renderable.isRequired,
-          overlayProps: PropTypes.object
-        }),
+        tooltip: PropTypes.oneOfType([
+          PropTypes.shape({
+            text: PropTypes.renderable.isRequired,
+            overlayProps: PropTypes.object
+          }),
+          PropTypes.renderable
+        ]),
         // Callback to wrap the button (and optionnal wrapper) with something else
         // careful the end result will be placed in a ButtonGroup
         // function(component: ReactComponent, iBtn: number) : ReactComponent
@@ -55,11 +60,11 @@ var ListModButtons = React.createClass({
     defaultTooltipDelay: PropTypes.number
   },
 
-  getOnClickCallback: function(callback){
-    if(this.props.stopPropagation){
-      return function(e){
+  getOnClickCallback: function(callback) {
+    if(this.props.stopPropagation) {
+      return function(e) {
         e.stopPropagation();
-        if(callback){
+        if(callback) {
           callback.call(null,e);
         }
       }
@@ -68,14 +73,14 @@ var ListModButtons = React.createClass({
     return callback;
   },
 
-  showModal: function(ref){
+  showModal: function(ref) {
     this.refs[ref].show();
   },
 
   render: function() {
 
     var self = this;
-    var buttons = this.props.buttons.map(function(btn, i){
+    var buttons = this.props.buttons.map(function(btn, i) {
       if(btn.hide || (!btn.icon && !btn.content)) return null;
 
       // Show content if available, otherwise fallback to the icon
@@ -95,7 +100,7 @@ var ListModButtons = React.createClass({
       );
 
       var result = button;
-      if(btn.warningMessage){
+      if(btn.warningMessage) {
         var onYesHandler = btn.modalTrigger ?
             self.showModal.bind(self,"modal" + i)
             : btn.callback;
@@ -110,7 +115,8 @@ var ListModButtons = React.createClass({
         );
       }
 
-      if(btn.tooltip){
+      if(btn.tooltip) {
+        var text = _.isPlainObject(btn.tooltip) ? btn.tooltip.text : btn.tooltip;
         var props = btn.tooltip.overlayProps || {};
         props.delay = props.delay || self.props.defaultTooltipDelay || 0;
         result = (
@@ -119,7 +125,7 @@ var ListModButtons = React.createClass({
             {...props}
             overlay={(
               <BSTooltip>
-                {btn.tooltip.text}
+                {text}
               </BSTooltip>
             )
           }>
@@ -128,7 +134,7 @@ var ListModButtons = React.createClass({
         );
       }
 
-      if(btn.modalTrigger){
+      if(btn.modalTrigger) {
         result = (
           <BSModalTrigger
             key={i}
@@ -140,7 +146,7 @@ var ListModButtons = React.createClass({
         );
       }
 
-      if(btn.customWrapper){
+      if(btn.customWrapper) {
         result = btn.customWrapper(result, i);
       }
 

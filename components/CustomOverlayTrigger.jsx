@@ -9,6 +9,7 @@ var domUtils = require("react-bootstrap/utils/domUtils");
 var createChainedFunction = require("react-bootstrap/utils/createChainedFunction");
 var merge = require("react-bootstrap/utils/merge");
 
+var _ = require("lodash");
 /**
  * Check if value one is inside or equal to the of value
  *
@@ -95,13 +96,14 @@ var OverlayTrigger = React.createClass({displayName: 'OverlayTrigger',
       return React.Children.only(this.props.children);
     }
 
-    var props = {};
     // Pass down handler if we don't redefine them
-    props.onClick = this.props.onClick;
-    props.onMouseOver = this.props.onMouseOver;
-    props.onMouseOut = this.props.onMouseOut;
-    props.onFocus = this.props.onFocus;
-    props.onBlur = this.props.onBlur;
+    var props = _.pick(this.props,
+      "onClick",
+      "onMouseOver",
+      "onMouseOut",
+      "onFocus",
+      "onBlur"
+    );
 
     if (isOneOf('click', this.props.trigger)) {
       props.onClick = createChainedFunction(this.toggle, this.props.onClick);
