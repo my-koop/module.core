@@ -44,9 +44,8 @@ var TableSorter = React.createClass({
         // Disable Dragging for this column only
         disableDragging: PropTypes.bool,
       })).isRequired,
-      // Default column ordering, if not specified
-      // use Object.keys()
-      defaultOrdering: PropTypes.array,
+      // Default column ordering
+      defaultOrdering: PropTypes.array.isRequired,
     }).isRequired,
 
     // Initial data in the table
@@ -67,6 +66,11 @@ var TableSorter = React.createClass({
         columns: []
       }
     }
+  },
+
+  componentWillReceiveProps: function (nextProps) {
+    this.props = nextProps;
+    this.setState(this.getInitialState());
   },
 
   getInitialState: function() {
