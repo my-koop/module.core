@@ -8,4 +8,8 @@
   moveDown: "Move Down",
   moveLeft: "Move Left",
   moveRight: "Move Right",
+  name: "Name",
+  price: "Price",
+  quantity: "Quantity",
+  code: "Code",
 }
