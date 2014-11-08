@@ -1,4 +1,11 @@
 {
   alert: "Alert",
   ok: "Ok",
+  actions: "Actions",
+  remove: "Delete",
+  areYouSure: "Are you Sure ?",
+  moveUp: "Move Up",
+  moveDown: "Move Down",
+  moveLeft: "Move Left",
+  moveRight: "Move Right",
 }

@@ -1,4 +1,10 @@
 {
   alert: "Avertissement",
   ok: "Ok",
+  actions: "Actions",
+  areYouSure: "Êtes-vous certain ?",
+  moveUp: "Déplacer vers le haut",
+  moveDown: "Déplacer vers le bas",
+  moveLeft: "Déplacer vers la gauche",
+  moveRight: "Déplacer vers la droite",
 }
