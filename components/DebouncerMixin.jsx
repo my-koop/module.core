@@ -26,7 +26,7 @@ module.exports = {
   //  delay: Optionnal, delay(ms) after the last call to execute the treatment
   //          default = 500ms
   //  newValue: value to assign/parse to the target
-  // Usage::
+  // Usage:
   //     to assign a value to this.state.key1.key2[5].key3 = parseFunc(newValue)
   //     use debounce(["key1", "key2", 5], "key3", parseFunc, optionnalDelay, newValue)
   //   To use with React valueLink
