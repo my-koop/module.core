@@ -1,3 +1,4 @@
 {
-  error: "An error occured."
+  error: "An error occured",
+  error_database: "Internal server error occured",
 }

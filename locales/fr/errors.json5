@@ -1,3 +1,4 @@
 {
-  error: "Une erreur est survenue."
+  error: "Une erreur est survenue",
+  error_database: "Une erreur interne est survenue",
 }
