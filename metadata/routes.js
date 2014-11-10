@@ -58,35 +58,6 @@ function addRoutes(metaDataBuilder) {
     });
 
     metaDataBuilder.addFrontendRoute({
-        idPath: ["dashboard", "events"],
-        component: "wrappers/PlaceHolderWrapper",
-        name: "events",
-        path: "events",
-        default: "PlaceHolder"
-    });
-
-    metaDataBuilder.addFrontendRoute({
-        idPath: ["dashboard", "events", "new"],
-        component: "PlaceHolder",
-        path: "new"
-    });
-
-    /*TODO: Experiment with this.
-    metaDataBuilder.addFrontendRoute({
-    idPath: ["dashboard", "events", ":id"],
-    component: "PlaceHolder",
-    path: ""
-    });
-    */
-    //FIXME: Remove when done in module.inventory.
-    metaDataBuilder.addFrontendRoute({
-        idPath: ["dashboard", "inventory"],
-        component: "wrappers/PlaceHolderWrapper",
-        path: "inventory",
-        default: "PlaceHolder"
-    });
-
-    metaDataBuilder.addFrontendRoute({
         idPath: ["dashboard", "inventory", "supplier"],
         component: "PlaceHolder",
         name: "supplier",
