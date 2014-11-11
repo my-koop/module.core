@@ -1,4 +1,5 @@
 {
+  confirm: "Confirm",
   alert: "Alert",
   ok: "Ok",
   actions: "Actions",

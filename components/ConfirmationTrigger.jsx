@@ -80,7 +80,7 @@ var ConfirmationTrigger = React.createClass({
     }
 
     return (
-      <BSModal title="Confirm" bsSize="small" onRequestHide={this.refuse}>
+      <BSModal title={__("confirm")} bsSize="small" onRequestHide={this.refuse}>
         <div className="modal-body">
           {this.props.message}
         </div>

@@ -43,7 +43,7 @@ module.exports = {
     if(_.isString(stateList)) {
       stateList = [stateList];
     }
-    if(!_.isArray(stateList) || stateList.length < 1) {
+    if(!_.isArray(stateList)) {
       return console.warn("Debouncer stateList must be an array of keys");
     }
     if(newValue === undefined) {
