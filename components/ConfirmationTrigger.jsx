@@ -6,6 +6,8 @@ var cloneWithProps = React.addons.cloneWithProps;
 var BSButton = require("react-bootstrap/Button");
 var BSModal = require("react-bootstrap/Modal");
 
+var __ = require("language").__;
+
 // taken from react-bootstrap utils
 var createChainedFunction = function createChainedFunction(one, two) {
   var hasOne = typeof one === 'function';
