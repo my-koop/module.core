@@ -8,13 +8,13 @@
   display: none;
 }
 
-@media (min-width: 768px) {
+@media (min-width: @screen-sm-min) {
   .sidebar {
     position: fixed;
     top: (@navbar-height + 1);
     bottom: 0;
     left: 0;
-    z-index: 1000;
+    z-index: @zindex-navbar;
     display: block;
     padding: 0;
     overflow-x: hidden;
