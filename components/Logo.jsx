@@ -1,4 +1,5 @@
 var React = require("react");
+var configs = require("mykoop-config.json5");
 
 var Logo = React.createClass({
   propTypes: {
@@ -15,7 +16,7 @@ var Logo = React.createClass({
     return (
       <img
         className={this.props.responsive ? "img-responsive" : ""}
-        src="/coopbeciklogo.png"
+        src={configs.assetsUrl + "/coopbeciklogo.png"}
         title="Coop Bécik"
         alt="Coop Bécik logo"
       />

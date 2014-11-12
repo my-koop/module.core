@@ -1,8 +1,12 @@
 {
+  welcome: "Bienvenue",
+  homeMessage: "Bienvenue à CoopBécik, propulsé par MyKoop",
+
   confirm: "Confirmer",
   alert: "Avertissement",
   ok: "Ok",
   actions: "Actions",
+  remove: "Supprimer",
   areYouSure: "Êtes-vous certain ?",
   moveUp: "Déplacer vers le haut",
   moveDown: "Déplacer vers le bas",
@@ -11,5 +15,6 @@
   name: "Nom",
   price: "Prix",
   quantity: "Quantité",
+  user: "Utilisateur",
   code: "Code",
 }

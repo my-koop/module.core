@@ -1,6 +1,7 @@
 ﻿var React = require("react");
 var Router = require("react-router");
 var routeData = require("dynamic-metadata").routes;
+var configs = require("mykoop-config.json5");
 
 var BSButton = require("react-bootstrap/Button");
 var BSDropdownButton = require("react-bootstrap/DropdownButton");
@@ -99,7 +100,7 @@ var NavBar = React.createClass({
           // errors, will try again later. The point is to click on the logo and
           // get to the homepage as well.
           brand={<img
-            src="/coopbeciklogo.png"
+            src={configs.assetsUrl + "/coopbeciklogo.png"}
             title="Coop Bécik"
             alt="Coop Bécik logo"
 

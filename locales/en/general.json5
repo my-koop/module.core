@@ -1,4 +1,7 @@
 {
+  welcome: "Welcome",
+  homeMessage: "Welcome to CoopBécik, powered by MyKoop",
+
   confirm: "Confirm",
   alert: "Alert",
   ok: "Ok",
@@ -12,5 +15,6 @@
   name: "Name",
   price: "Price",
   quantity: "Quantity",
+  user: "User",
   code: "Code",
 }
