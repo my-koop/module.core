@@ -15,6 +15,9 @@ var MKIcon = require("../Icon");
 var MKLoginModal = require("mykoop-user/components/LoginModal");
 var MKNavItemLink = require("../NavItemLink");
 
+var localSession = require("session").local;
+var website = require("website");
+
 //To be removed after development.
 //var MKDevMenu = require("components/DevMenu");
 
@@ -37,17 +40,27 @@ var NavBar = React.createClass({
 
   getInitialState: function() {
     return {
-      isLoggedIn: this.props.dashboard
+      isLoggedIn: false
     };
   },
 
   onFakeLogin: function(nowLoggedIn) {
-    var nowLoggedIn = typeof nowLoggedIn === "boolean" ? nowLoggedIn : !this.state.isLoggedIn;
-    this.setState({isLoggedIn: nowLoggedIn});
+    //var nowLoggedIn = typeof nowLoggedIn === "boolean" ? nowLoggedIn : !this.state.isLoggedIn;
+    //this.setState({isLoggedIn: nowLoggedIn});
 
     //FIXME: Temporaily switch current language here...
     var currentLanguage = language.getLanguage();
     language.setLanguage(currentLanguage === "en" ? "fr" : "en");
+  },
+
+  onLogout: function() {
+    //TODO: Request in the backend to logout.
+    //localSession.user = undefined;
+    delete localSession.user;
+    website.render();
+
+    //FIXME: Do instead.
+    this.setState({loggedIn: true});
   },
 
   onSearch: function(e) {
@@ -64,7 +77,15 @@ var NavBar = React.createClass({
   },
 
   render : function() {
-    var isLoggedIn = this.state.isLoggedIn;
+    //FIXME: var isLoggedIn = this.state.isLoggedIn;
+    var isLoggedIn = false;
+    var userEmail = "";
+
+    if (localSession.user) {
+      isLoggedIn = true;
+      userEmail = localSession.user.email;
+    }
+
     var isInDashboard = this.props.dashboard;
 
     return (
@@ -167,7 +188,7 @@ var NavBar = React.createClass({
             {isLoggedIn ?
               <BSDropdownButton
                 //FIXME: Hardcoded, temporary "username".
-                title={<span><MKIcon glyph="user" /> sexytricycle</span>}
+                title={<span><MKIcon glyph="user" /> {userEmail}</span>}
               >
                 <BSMenuItem
                   key={10}
@@ -179,7 +200,7 @@ var NavBar = React.createClass({
                   <MKIcon glyph="cog" fixedWidth /> My account
                 </BSMenuItem>
                 <BSMenuItem key={20} divider />
-                <BSMenuItem key={30} onSelect={this.onFakeLogin.bind(null, false)}>
+                <BSMenuItem key={30} onSelect={this.onLogout}>
                   <MKIcon glyph="sign-out" fixedWidth /> Logout
                 </BSMenuItem>
               </BSDropdownButton>
