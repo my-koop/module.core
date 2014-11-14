@@ -15,7 +15,9 @@ function assignStateDeep(self, callback, stateList, target, parseFunc, newValue)
 
 module.exports = {
   // private debouncer map
-  ___debouncers___: {},
+  componentWillMount: function() {
+    this.___debouncers___ = {};
+  },
 
   // Assigns the newValue raw immediately then parse and reassign [delay]ms after
   // the last call
