@@ -48,6 +48,8 @@ var NavigationBar = React.createClass({
         <MKNavItemLink
           key={index}
           to={link.url}
+          params={link.params}
+          query={link.query}
         >
           {link.name}
         </MKNavItemLink>
