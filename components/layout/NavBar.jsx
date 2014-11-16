@@ -16,6 +16,7 @@ var MKIcon = require("../Icon");
 var MKLoginModal = require("mykoop-user/components/LoginModal");
 var MKNavItemLink = require("../NavItemLink");
 
+var actions = require("actions");
 var localSession = require("session").local;
 var website = require("website");
 
@@ -54,14 +55,26 @@ var NavBar = React.createClass({
     language.setLanguage(currentLanguage === "en" ? "fr" : "en");
   },
 
+  //FIXME: Once it's possible, the user module alone should take care of this
+  // logic. See https://github.com/my-koop/service.website/issues/185
   onLogout: function() {
-    //TODO: Request in the backend to logout.
-    //localSession.user = undefined;
     delete localSession.user;
     website.render();
 
+    if (!actions.user.current.logout) {
+      return;
+    }
+
+    // This is a fire and forget call to try to keep the backend in sync. No
+    // error management is going to help us in production.
+    actions.user.current.logout(function (err) {
+      if (err) {
+        console.error(err);
+      }
+    });
+
     //FIXME: Do instead.
-    this.setState({loggedIn: true});
+    //this.setState({loggedIn: false});
   },
 
   onSearch: function(e) {
