@@ -40,16 +40,7 @@ var NavBar = React.createClass({
     };
   },
 
-  getInitialState: function() {
-    return {
-      isLoggedIn: false
-    };
-  },
-
   onFakeLogin: function(nowLoggedIn) {
-    //var nowLoggedIn = typeof nowLoggedIn === "boolean" ? nowLoggedIn : !this.state.isLoggedIn;
-    //this.setState({isLoggedIn: nowLoggedIn});
-
     //FIXME: Temporaily switch current language here...
     var currentLanguage = language.getLanguage();
     language.setLanguage(currentLanguage === "en" ? "fr" : "en");
@@ -61,7 +52,7 @@ var NavBar = React.createClass({
     delete localSession.user;
     website.render();
 
-    if (!actions.user.current.logout) {
+    if (!actions.user) {
       return;
     }
 
@@ -72,9 +63,6 @@ var NavBar = React.createClass({
         console.error(err);
       }
     });
-
-    //FIXME: Do instead.
-    //this.setState({loggedIn: false});
   },
 
   onSearch: function(e) {

@@ -20,7 +20,7 @@ var App = React.createClass({
   retrieveBackendUserSession: function() {
     //FIXME: Once we allow modules to run bootstrap operations, the user module
     // should be the one doing this. At least make sure we have it here...
-    if (!actions.user.current.getSession) {
+    if (!actions.user) {
       return;
     }
 
