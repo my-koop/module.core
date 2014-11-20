@@ -152,9 +152,13 @@ var ListModButtons = React.createClass({
 
       return result;
     });
-
+    var props = _.omit(this.props,
+      "buttons",
+      "stopPropagation",
+      "defaultTooltipDela"
+    );
     return (
-      <BSButtonGroup>
+      <BSButtonGroup {...props}>
         {buttons}
       </BSButtonGroup>
     );
