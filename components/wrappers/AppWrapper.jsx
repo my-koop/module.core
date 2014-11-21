@@ -11,6 +11,13 @@ var localSession = require("session").local;
 var website = require("website");
 
 var App = React.createClass({
+
+  getInitialState: function() {
+    return {
+      receivedSessionResponse: false
+    };
+  },
+
   componentDidMount: function () {
     MKGlobalSpinner.registerGlobalInstance(this.refs.globalSpinner);
     MKGlobalAlert.registerGlobalInstance(this.refs.globalAlert);
@@ -23,17 +30,18 @@ var App = React.createClass({
     if (!actions.user) {
       return;
     }
-
+    var self = this;
     actions.user.current.getSession(function(err, session) {
       if (err) {
         // Fail silently in production...
         return console.error(err);
       }
-
       if (session.id) {
         localSession.user = session;
-        website.render();
       }
+      self.setState({
+        receivedSessionResponse: true
+      });
     });
   },
 
@@ -42,7 +50,7 @@ var App = React.createClass({
       <div>
         <MKGlobalSpinner ref="globalSpinner" />
         <MKGlobalAlert ref="globalAlert" />
-        {this.props.activeRouteHandler()}
+        {this.state.receivedSessionResponse && this.props.activeRouteHandler()}
 
         {/* To be removed after development. */}
         <BSRow>
