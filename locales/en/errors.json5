@@ -4,6 +4,6 @@
   error_database: "Internal server error occured",
   error_validation: "Data provided is invalid",
   error_application: "Data provided is invalid",
-  error_denied: "Access Denied",
+  error_denied: "Access denied",
   error_notFound: "Resource not found",
 }

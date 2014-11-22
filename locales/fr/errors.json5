@@ -4,6 +4,6 @@
   error_database: "Une erreur interne est survenue",
   error_validation: "Les informations fournies sont invalides",
   error_application: "Les informations fournies sont invalides",
-  error_denied: "Accès Refusé",
+  error_denied: "Accès refusé",
   error_notFound: "Ressource introuvable",
 }
