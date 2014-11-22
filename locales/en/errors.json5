@@ -1,6 +1,6 @@
 {
   error: "An error occured",
-  error_unknown: "$(error)",
+  error_unknown: "$t(error)",
   error_database: "Internal server error occured",
   error_validation: "Data provided is invalid",
   error_application: "$t(error_validation)",
