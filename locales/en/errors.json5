@@ -1,9 +1,9 @@
 {
   error: "An error occured",
-  error_unknown: "An error occured",
+  error_unknown: "$(error)",
   error_database: "Internal server error occured",
   error_validation: "Data provided is invalid",
-  error_application: "Data provided is invalid",
+  error_application: "$t(error_validation)",
   error_denied: "Access denied",
   error_notFound: "Resource not found",
 }
