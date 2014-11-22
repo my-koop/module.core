@@ -40,8 +40,7 @@ var NavBar = React.createClass({
     };
   },
 
-  onFakeLogin: function(nowLoggedIn) {
-    //FIXME: Temporaily switch current language here...
+  onLanguageToggle: function() {
     var currentLanguage = language.getLanguage();
     language.setLanguage(currentLanguage === "en" ? "fr" : "en");
   },
@@ -78,6 +77,11 @@ var NavBar = React.createClass({
     this.refs.loginmodal.show();
   },
 
+  redirectToHomepage: function() {
+    //FIXME: Get utility.
+    Router.transitionTo(routeData.public.name);
+  },
+
   render : function() {
     //FIXME: var isLoggedIn = this.state.isLoggedIn;
     var isLoggedIn = false;
@@ -105,8 +109,9 @@ var NavBar = React.createClass({
             title="Coop Bécik"
             alt="Coop Bécik logo"
 
-            //FIXME: Remove after prototype.
-            onClick={this.onFakeLogin}
+            //FIXME: Stylesheet pl0x...
+            style={{cursor: "pointer"}}
+            onClick={this.redirectToHomepage}
           />}
           fixedTop
           fluid={this.props.dashboard}
@@ -217,9 +222,14 @@ var NavBar = React.createClass({
               </MKNavItemLink>
             : null}
             {!isInDashboard ? [
-              <MKNavItemLink to={routeData.public.name}>
-                <MKIcon glyph="globe" /> French
-              </MKNavItemLink>,
+              <BSNavItem onSelect={this.onLanguageToggle}>
+                <MKIcon glyph="globe" />{" "}
+                {/*FIXME: Get language from target language file*/}
+                {language.getLanguage() === "en" ?
+                  "Français" :
+                  "English"
+                }
+              </BSNavItem>,
               <MKNavItemLink to={routeData.public.name}>
                 <MKIcon glyph="question-circle" /> Help
               </MKNavItemLink>
