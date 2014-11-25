@@ -1,8 +1,5 @@
-// Done manually for now, but technically modules can populate this however
-// they want...
-
 module.exports = {
-  // To be merged with the "general" (default) namespace, not mandatory.
+  language: require("./language"),
   errors: require("./errors"),
   general: require("./general"),
 }

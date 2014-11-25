@@ -24,6 +24,7 @@ var website = require("website");
 //var MKDevMenu = require("components/DevMenu");
 
 var language = require("language");
+var __ = language.__;
 
 var PropTypes = React.PropTypes;
 
@@ -192,9 +193,14 @@ var NavBar = React.createClass({
           </BSNav>
           {/*FIXME: Hide on small viewports for now since it doesn't wrap.*/}
           <BSNav key={2} className="navbar-right hidden-xs">
+            <BSNavItem onSelect={this.onLanguageToggle} key="language">
+              <MKIcon glyph="globe" />{" "}
+              {/*FIXME: Get language from target language file*/}
+              {__("language::name", {lng: language.getLanguage() === "en" ? "fr": "en"})}
+            </BSNavItem>
             {isLoggedIn ?
               <BSDropdownButton
-                //FIXME: Hardcoded, temporary "username".
+                key="usermenu"
                 title={<span><MKIcon glyph="user" /> {userEmail}</span>}
               >
                 <BSMenuItem
@@ -211,29 +217,17 @@ var NavBar = React.createClass({
                   <MKIcon glyph="sign-out" fixedWidth /> Logout
                 </BSMenuItem>
               </BSDropdownButton>
-            :
-              <BSNavItem onSelect={this.onMenuLogin}>
+            : [
+              <MKNavItemLink
+                to={routeData.simple.children.register.name}
+                key={1}
+              >
+                <MKIcon glyph="check" /> Register
+              </MKNavItemLink>,
+              <BSNavItem onSelect={this.onMenuLogin} key={2}>
                 <MKIcon library="glyphicon" glyph="log-in" /> Login
               </BSNavItem>
-            }
-            {!isLoggedIn ?
-              <MKNavItemLink to={routeData.simple.children.register.name}>
-                <MKIcon glyph="check" /> Register
-              </MKNavItemLink>
-            : null}
-            {!isInDashboard ? [
-              <BSNavItem onSelect={this.onLanguageToggle}>
-                <MKIcon glyph="globe" />{" "}
-                {/*FIXME: Get language from target language file*/}
-                {language.getLanguage() === "en" ?
-                  "Français" :
-                  "English"
-                }
-              </BSNavItem>,
-              <MKNavItemLink to={routeData.public.name}>
-                <MKIcon glyph="question-circle" /> Help
-              </MKNavItemLink>
-            ] : null}
+            ]}
           </BSNav>
 
           {/* To be removed after development. */}
