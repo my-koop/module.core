@@ -17,6 +17,7 @@ var MKLoginModal = require("mykoop-user/components/LoginModal");
 var MKNavItemLink = require("../NavItemLink");
 
 var actions = require("actions");
+var getRouteName = require("mykoop-utils/frontend/getRouteName");
 var localSession = require("session").local;
 var website = require("website");
 
@@ -79,12 +80,10 @@ var NavBar = React.createClass({
   },
 
   redirectToHomepage: function() {
-    //FIXME: Get utility.
-    Router.transitionTo(routeData.public.name);
+    Router.transitionTo(getRouteName(["public"]));
   },
 
   render : function() {
-    //FIXME: var isLoggedIn = this.state.isLoggedIn;
     var isLoggedIn = false;
     var userEmail = "";
 
@@ -101,17 +100,11 @@ var NavBar = React.createClass({
         <BSModalTrigger ref="loginmodal" modal={<MKLoginModal />}><span /></BSModalTrigger>
         <BSNavbar
           toggleNavKey={1}
-
-          //FIXME: Tried to wrap this with a Router Link and had weird rendering
-          // errors, will try again later. The point is to click on the logo and
-          // get to the homepage as well.
           brand={<img
             src={configs.assetsUrl + "/coopbeciklogo.png"}
+            className="pointer"
             title="Coop Bécik"
             alt="Coop Bécik logo"
-
-            //FIXME: Stylesheet pl0x...
-            style={{cursor: "pointer"}}
             onClick={this.redirectToHomepage}
           />}
           fixedTop
@@ -175,6 +168,7 @@ var NavBar = React.createClass({
                 <MKIcon glyph="question" /> About Us
               </MKNavItemLink>,
               <form
+                key="searchform"
                 className="navbar-form navbar-left"
                 onSubmit={this.onSearch}
               >
