@@ -44,7 +44,7 @@ var NavBar = React.createClass({
 
   onLanguageToggle: function() {
     var currentLanguage = language.getLanguage();
-    language.setLanguage(currentLanguage === "en" ? "fr" : "en");
+    language.setLanguage(language.getAlternateLanguages()[0]);
   },
 
   //FIXME: Once it's possible, the user module alone should take care of this
@@ -189,8 +189,8 @@ var NavBar = React.createClass({
           <BSNav key={2} className="navbar-right hidden-xs">
             <BSNavItem onSelect={this.onLanguageToggle} key="language">
               <MKIcon glyph="globe" />{" "}
-              {/*FIXME: Get language from target language file*/}
-              {__("language::name", {lng: language.getLanguage() === "en" ? "fr": "en"})}
+              {/*FIXME: Support more than one language.*/}
+              {__("language::name", {lng: language.getAlternateLanguages()[0]})}
             </BSNavItem>
             {isLoggedIn ?
               <BSDropdownButton
