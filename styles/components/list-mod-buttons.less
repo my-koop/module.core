@@ -12,71 +12,18 @@
   min-width: @width + @padding*2px + 2px;
 }
 
-.table {
-  &.table-condensed {
-    .list-mod-min-width-1 {
-      .list-mod-min-width(1, @table-condensed-cell-padding);
-    }
-    .list-mod-min-width-2 {
-      .list-mod-min-width(2, @table-condensed-cell-padding);
-    }
-    .list-mod-min-width-3 {
-      .list-mod-min-width(3, @table-condensed-cell-padding);
-    }
-    .list-mod-min-width-4 {
-      .list-mod-min-width(4, @table-condensed-cell-padding);
-    }
-    .list-mod-min-width-5 {
-      .list-mod-min-width(5, @table-condensed-cell-padding);
-    }
-    .list-mod-min-width-6 {
-      .list-mod-min-width(6, @table-condensed-cell-padding);
-    }
-    .list-mod-min-width-7 {
-      .list-mod-min-width(7, @table-condensed-cell-padding);
-    }
+@nRules: 7;
+.generate-min-width-rules(@padding, @i:1) when (@i =< @nRules) {
+  .list-mod-min-width-@{i} {
+    .list-mod-min-width(@i, @padding);
   }
-  .list-mod-min-width-1 {
-    .list-mod-min-width(1, @table-cell-padding);
-  }
-  .list-mod-min-width-2 {
-    .list-mod-min-width(2, @table-cell-padding);
-  }
-  .list-mod-min-width-3 {
-    .list-mod-min-width(3, @table-cell-padding);
-  }
-  .list-mod-min-width-4 {
-    .list-mod-min-width(4, @table-cell-padding);
-  }
-  .list-mod-min-width-5 {
-    .list-mod-min-width(5, @table-cell-padding);
-  }
-  .list-mod-min-width-6 {
-    .list-mod-min-width(6, @table-cell-padding);
-  }
-  .list-mod-min-width-7 {
-    .list-mod-min-width(7, @table-cell-padding);
-  }
+  .generate-min-width-rules(@padding, @i + 1)
 }
 
-.list-mod-min-width-1 {
-  .list-mod-min-width(1, 0px);
+.table {
+  &.table-condensed {
+    .generate-min-width-rules(@table-condensed-cell-padding);
+  }
+  .generate-min-width-rules(@table-cell-padding);
 }
-.list-mod-min-width-2 {
-  .list-mod-min-width(2, 0px);
-}
-.list-mod-min-width-3 {
-  .list-mod-min-width(3, 0px);
-}
-.list-mod-min-width-4 {
-  .list-mod-min-width(4, 0px);
-}
-.list-mod-min-width-5 {
-  .list-mod-min-width(5, 0px);
-}
-.list-mod-min-width-6 {
-  .list-mod-min-width(6, 0px);
-}
-.list-mod-min-width-7 {
-  .list-mod-min-width(7, 0px);
-}
+.generate-min-width-rules(0px);
