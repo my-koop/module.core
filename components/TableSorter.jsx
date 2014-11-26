@@ -73,7 +73,12 @@ var TableSorter = React.createClass({
     if(
       !_.isEqual(
         _.omit(this.props, "items"),
-        _.omit(nextProps, "items")
+        _.omit(nextProps, "items"),
+        function(a, b) {
+          if(_.isFunction(a) && _.isFunction(b)) {
+            return a.toString() === b.toString();
+          }
+        }
       )
     ) {
       this.props = nextProps;
