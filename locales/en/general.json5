@@ -17,4 +17,6 @@
   quantity: "Quantity",
   user: "User",
   code: "Code",
+  id: "ID",
+  update: "Update"
 }
