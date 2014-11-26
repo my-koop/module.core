@@ -1,63 +1,82 @@
 @import "~bootstrap-styles/variables";
 
+// Right now this works with buttons containing only icons
 .list-mod-width(@nButtons) {
-  @width: (@nButtons*30) + 2;
+  // add 2 for first and last button
+  @width: (@nButtons*30) + 2px;
 }
 
-.list-mod-min-width(@nButtons) {
+.list-mod-min-width(@nButtons, @padding) {
   .list-mod-width(@nButtons);
-  min-width: @width;
+  // add 2 for borders
+  min-width: @width + @padding*2px + 2px;
 }
 
-.list-mod-min-width-table(@nButtons) {
-  .list-mod-width(@nButtons);
-  // button group width + padding + border
-  min-width: @width + @table-cell-padding*2 + 2;
+.table {
+  &.table-condensed {
+    .list-mod-min-width-1 {
+      .list-mod-min-width(1, @table-condensed-cell-padding);
+    }
+    .list-mod-min-width-2 {
+      .list-mod-min-width(2, @table-condensed-cell-padding);
+    }
+    .list-mod-min-width-3 {
+      .list-mod-min-width(3, @table-condensed-cell-padding);
+    }
+    .list-mod-min-width-4 {
+      .list-mod-min-width(4, @table-condensed-cell-padding);
+    }
+    .list-mod-min-width-5 {
+      .list-mod-min-width(5, @table-condensed-cell-padding);
+    }
+    .list-mod-min-width-6 {
+      .list-mod-min-width(6, @table-condensed-cell-padding);
+    }
+    .list-mod-min-width-7 {
+      .list-mod-min-width(7, @table-condensed-cell-padding);
+    }
+  }
+  .list-mod-min-width-1 {
+    .list-mod-min-width(1, @table-cell-padding);
+  }
+  .list-mod-min-width-2 {
+    .list-mod-min-width(2, @table-cell-padding);
+  }
+  .list-mod-min-width-3 {
+    .list-mod-min-width(3, @table-cell-padding);
+  }
+  .list-mod-min-width-4 {
+    .list-mod-min-width(4, @table-cell-padding);
+  }
+  .list-mod-min-width-5 {
+    .list-mod-min-width(5, @table-cell-padding);
+  }
+  .list-mod-min-width-6 {
+    .list-mod-min-width(6, @table-cell-padding);
+  }
+  .list-mod-min-width-7 {
+    .list-mod-min-width(7, @table-cell-padding);
+  }
 }
 
-
-
-.list-mod-min-width-table-1{
-  .list-mod-min-width-table(1);
+.list-mod-min-width-1 {
+  .list-mod-min-width(1, 0px);
 }
-.list-mod-min-width-table-2{
-  .list-mod-min-width-table(2);
+.list-mod-min-width-2 {
+  .list-mod-min-width(2, 0px);
 }
-.list-mod-min-width-table-3{
-  .list-mod-min-width-table(3);
+.list-mod-min-width-3 {
+  .list-mod-min-width(3, 0px);
 }
-.list-mod-min-width-table-4{
-  .list-mod-min-width-table(4);
+.list-mod-min-width-4 {
+  .list-mod-min-width(4, 0px);
 }
-.list-mod-min-width-table-5{
-  .list-mod-min-width-table(5);
+.list-mod-min-width-5 {
+  .list-mod-min-width(5, 0px);
 }
-.list-mod-min-width-table-6{
-  .list-mod-min-width-table(6);
+.list-mod-min-width-6 {
+  .list-mod-min-width(6, 0px);
 }
-.list-mod-min-width-table-7{
-  .list-mod-min-width-table(7);
-}
-
-
-.list-mod-min-width-1{
-  .list-mod-min-width(1);
-}
-.list-mod-min-width-2{
-  .list-mod-min-width(2);
-}
-.list-mod-min-width-3{
-  .list-mod-min-width(3);
-}
-.list-mod-min-width-4{
-  .list-mod-min-width(4);
-}
-.list-mod-min-width-5{
-  .list-mod-min-width(5);
-}
-.list-mod-min-width-6{
-  .list-mod-min-width(6);
-}
-.list-mod-min-width-7{
-  .list-mod-min-width(7);
+.list-mod-min-width-7 {
+  .list-mod-min-width(7, 0px);
 }
