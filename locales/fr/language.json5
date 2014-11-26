@@ -1,0 +1,15 @@
+{
+  code: "fr",
+  name: "Français",
+  accounting: {
+    currency: {
+      format: "%v %s",
+      decimal : ",",
+      thousand: " ",
+    },
+    number: {
+      thousand: " ",
+      decimal : ","
+    }
+  }
+}

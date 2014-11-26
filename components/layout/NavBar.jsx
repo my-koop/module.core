@@ -17,6 +17,7 @@ var MKLoginModal = require("mykoop-user/components/LoginModal");
 var MKNavItemLink = require("../NavItemLink");
 
 var actions = require("actions");
+var getRouteName = require("mykoop-utils/frontend/getRouteName");
 var localSession = require("session").local;
 var website = require("website");
 
@@ -24,6 +25,7 @@ var website = require("website");
 //var MKDevMenu = require("components/DevMenu");
 
 var language = require("language");
+var __ = language.__;
 
 var PropTypes = React.PropTypes;
 
@@ -40,10 +42,9 @@ var NavBar = React.createClass({
     };
   },
 
-  onFakeLogin: function(nowLoggedIn) {
-    //FIXME: Temporaily switch current language here...
+  onLanguageToggle: function() {
     var currentLanguage = language.getLanguage();
-    language.setLanguage(currentLanguage === "en" ? "fr" : "en");
+    language.setLanguage(language.getAlternateLanguages()[0]);
   },
 
   //FIXME: Once it's possible, the user module alone should take care of this
@@ -78,8 +79,11 @@ var NavBar = React.createClass({
     this.refs.loginmodal.show();
   },
 
+  redirectToHomepage: function() {
+    Router.transitionTo(getRouteName(["public"]));
+  },
+
   render : function() {
-    //FIXME: var isLoggedIn = this.state.isLoggedIn;
     var isLoggedIn = false;
     var userEmail = "";
 
@@ -96,17 +100,12 @@ var NavBar = React.createClass({
         <BSModalTrigger ref="loginmodal" modal={<MKLoginModal />}><span /></BSModalTrigger>
         <BSNavbar
           toggleNavKey={1}
-
-          //FIXME: Tried to wrap this with a Router Link and had weird rendering
-          // errors, will try again later. The point is to click on the logo and
-          // get to the homepage as well.
           brand={<img
             src={configs.assetsUrl + "/coopbeciklogo.png"}
+            className="pointer"
             title="Coop Bécik"
             alt="Coop Bécik logo"
-
-            //FIXME: Remove after prototype.
-            onClick={this.onFakeLogin}
+            onClick={this.redirectToHomepage}
           />}
           fixedTop
           fluid={this.props.dashboard}
@@ -169,6 +168,7 @@ var NavBar = React.createClass({
                 <MKIcon glyph="question" /> About Us
               </MKNavItemLink>,
               <form
+                key="searchform"
                 className="navbar-form navbar-left"
                 onSubmit={this.onSearch}
               >
@@ -187,9 +187,14 @@ var NavBar = React.createClass({
           </BSNav>
           {/*FIXME: Hide on small viewports for now since it doesn't wrap.*/}
           <BSNav key={2} className="navbar-right hidden-xs">
+            <BSNavItem onSelect={this.onLanguageToggle} key="language">
+              <MKIcon glyph="globe" />{" "}
+              {/*FIXME: Support more than one language.*/}
+              {__("language::name", {lng: language.getAlternateLanguages()[0]})}
+            </BSNavItem>
             {isLoggedIn ?
               <BSDropdownButton
-                //FIXME: Hardcoded, temporary "username".
+                key="usermenu"
                 title={<span><MKIcon glyph="user" /> {userEmail}</span>}
               >
                 <BSMenuItem
@@ -206,24 +211,17 @@ var NavBar = React.createClass({
                   <MKIcon glyph="sign-out" fixedWidth /> Logout
                 </BSMenuItem>
               </BSDropdownButton>
-            :
-              <BSNavItem onSelect={this.onMenuLogin}>
+            : [
+              <MKNavItemLink
+                to={routeData.simple.children.register.name}
+                key={1}
+              >
+                <MKIcon glyph="check" /> Register
+              </MKNavItemLink>,
+              <BSNavItem onSelect={this.onMenuLogin} key={2}>
                 <MKIcon library="glyphicon" glyph="log-in" /> Login
               </BSNavItem>
-            }
-            {!isLoggedIn ?
-              <MKNavItemLink to={routeData.simple.children.register.name}>
-                <MKIcon glyph="check" /> Register
-              </MKNavItemLink>
-            : null}
-            {!isInDashboard ? [
-              <MKNavItemLink to={routeData.public.name}>
-                <MKIcon glyph="globe" /> French
-              </MKNavItemLink>,
-              <MKNavItemLink to={routeData.public.name}>
-                <MKIcon glyph="question-circle" /> Help
-              </MKNavItemLink>
-            ] : null}
+            ]}
           </BSNav>
 
           {/* To be removed after development. */}
