@@ -71,19 +71,8 @@ var TableSorter = React.createClass({
   componentWillReceiveProps: function (nextProps) {
     if(
       !_.isEqual(
-        _.omit(this.props, "item"),
-        _.omit(nextProps, "item"),
-        function(a, b) {
-          // Check only the leafs
-          if(_.isPlainObject(a) && _.isPlainObject(b)) {
-            return true;
-          }
-          // functions will pretty much always be different
-          // check their code instead
-          if(_.isFunction(a) && _.isFunction(b)) {
-            return a.toString() === b.toString();
-          }
-        }
+        _.omit(this.props, "items"),
+        _.omit(nextProps, "items")
       )
     ) {
       this.props = nextProps;
