@@ -30,6 +30,7 @@ var TableSorter = React.createClass({
       columns: PropTypes.objectOf(PropTypes.shape({
         name: PropTypes.string.isRequired,
         defaultSortOrder: PropTypes.oneOf(["asc","desc",""]),
+        headerProps: PropTypes.object,
         // default filter text
         filterText: PropTypes.string,
         // callback to create a custom cell content
@@ -311,6 +312,7 @@ var TableSorter = React.createClass({
         <th
           key={i}
           {...dragProps}
+          {...columnConfig.headerProps}
         >
           {headerRender(extraIcon)}
         </th>
