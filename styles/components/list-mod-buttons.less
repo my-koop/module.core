@@ -1,0 +1,63 @@
+@import "~bootstrap-styles/variables";
+
+.list-mod-width(@nButtons) {
+  @width: (@nButtons*30) + 2;
+}
+
+.list-mod-min-width(@nButtons) {
+  .list-mod-width(@nButtons);
+  min-width: @width;
+}
+
+.list-mod-min-width-table(@nButtons) {
+  .list-mod-width(@nButtons);
+  // button group width + padding + border
+  min-width: @width + @table-cell-padding*2 + 2;
+}
+
+
+
+.list-mod-min-width-table-1{
+  .list-mod-min-width-table(1);
+}
+.list-mod-min-width-table-2{
+  .list-mod-min-width-table(2);
+}
+.list-mod-min-width-table-3{
+  .list-mod-min-width-table(3);
+}
+.list-mod-min-width-table-4{
+  .list-mod-min-width-table(4);
+}
+.list-mod-min-width-table-5{
+  .list-mod-min-width-table(5);
+}
+.list-mod-min-width-table-6{
+  .list-mod-min-width-table(6);
+}
+.list-mod-min-width-table-7{
+  .list-mod-min-width-table(7);
+}
+
+
+.list-mod-min-width-1{
+  .list-mod-min-width(1);
+}
+.list-mod-min-width-2{
+  .list-mod-min-width(2);
+}
+.list-mod-min-width-3{
+  .list-mod-min-width(3);
+}
+.list-mod-min-width-4{
+  .list-mod-min-width(4);
+}
+.list-mod-min-width-5{
+  .list-mod-min-width(5);
+}
+.list-mod-min-width-6{
+  .list-mod-min-width(6);
+}
+.list-mod-min-width-7{
+  .list-mod-min-width(7);
+}
