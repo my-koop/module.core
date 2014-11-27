@@ -15,7 +15,7 @@ var operators = {
     ">=": function(x, y) { return x >= y; },
     "=": function(x, y) { return x == y; }
 };
-var operandRegex = /^((?:(?:[<>]=?)|==))\s?([-]?\d+(?:\.\d+)?)$/;
+var operandRegex = /^((?:(?:[<>]=?)|=))\s?([-]?\d+(?:\.\d+)?)$/;
 
 // TableSorter React Component
 var TableSorter = React.createClass({
