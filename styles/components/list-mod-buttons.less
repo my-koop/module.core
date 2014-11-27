@@ -2,13 +2,13 @@
 // Right now this works with buttons containing only icons
 .list-mod-width(@number-buttons) {
   // add 2 for first and last button
-  @width: (@number-buttons*30) + 2px;
+  @width: (@number-buttons * 30) + 2px;
 }
 
 .list-mod-min-width(@number-buttons, @padding) {
   .list-mod-width(@number-buttons);
   // add 2 for borders
-  min-width: @width + @padding*2px + 2px;
+  min-width: @width + @padding * 2px + 2px;
 }
 
 @number-rules: 7;
