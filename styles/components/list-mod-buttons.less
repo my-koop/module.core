@@ -1,0 +1,28 @@
+
+// Right now this works with buttons containing only icons
+.list-mod-width(@number-buttons) {
+  // add 2 for first and last button
+  @width: (@number-buttons * 30) + 2px;
+}
+
+.list-mod-min-width(@number-buttons, @padding) {
+  .list-mod-width(@number-buttons);
+  // add 2 for borders
+  min-width: @width + @padding * 2px + 2px;
+}
+
+@number-rules: 7;
+.generate-min-width-rules(@padding, @i:1) when (@i =< @number-rules) {
+  .list-mod-min-width-@{i} {
+    .list-mod-min-width(@i, @padding);
+  }
+  .generate-min-width-rules(@padding, @i + 1)
+}
+
+.table {
+  &.table-condensed {
+    .generate-min-width-rules(@table-condensed-cell-padding);
+  }
+  .generate-min-width-rules(@table-cell-padding);
+}
+.generate-min-width-rules(0px);
