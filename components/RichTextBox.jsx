@@ -12,7 +12,7 @@ var PageWrapper = React.createClass({
   getDefaultProps: function() {
     return {
       textAreaId: "nicEditorArea",
-      initialContent: "test <b>content</b>"
+      initialContent: ""
     }
   },
 
@@ -21,24 +21,18 @@ var PageWrapper = React.createClass({
   componentDidMount: function () {
     var self = this;
     require.ensure([], function(require) {
-      var nicEditor = require("exports?nicEditor!./nicEdit");
-      self.editor = new nicEditor({fullPanel: false})
-      console.log(self.editor);
-      self.editor.addEvent("add", function() {
-          self.instance = self.editor.instanceById(self.props.textAreaId);
-          console.log( self.instance.getContent() );
-        });
+      // remove .min to debug, but icons won't show
+      var nicEditor = require("exports?nicEditor!./nicEdit/nicEdit.min");
+      self.editor = new nicEditor({fullPanel: true})
+      self.editor.addEvent("add", function(instance) {
+        self.instance = instance;
+      });
       self.editor.panelInstance(self.props.textAreaId);
-
-      /*self.editor;
-      self.instance = self.editor.instanceById(self.props.textAreaId);
-      console.log( self.instance.getContent() );
-*/
     });
   },
 
-  onChange: function(value) {
-    console.log(value);
+  getText: function() {
+    return this.instance ? this.instance.getContent() : "";
   },
 
   render: function() {
@@ -48,7 +42,6 @@ var PageWrapper = React.createClass({
         {...props}
         id={this.props.textAreaId}
         onChange={this.onChange}
-        style={{width: "100%"}}
         defaultValue={this.props.initialContent}
       />
     );
