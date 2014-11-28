@@ -1,7 +1,11 @@
 ﻿var React = require("react");
 var Router = require("react-router");
-var routeData = require("dynamic-metadata").routes;
+var dynamicMetaData = require("dynamic-metadata");
+var routeData = dynamicMetaData.routes;
+var uiHookData = dynamicMetaData.uihooks;
 var configs = require("mykoop-config.json5");
+
+var _ = require("lodash");
 
 var BSButton = require("react-bootstrap/Button");
 var BSDropdownButton = require("react-bootstrap/DropdownButton");
@@ -16,6 +20,9 @@ var MKIcon = require("../Icon");
 var MKLoginModal = require("mykoop-user/components/LoginModal");
 var MKNavItemLink = require("../NavItemLink");
 
+//FIXME: Core shouldn't have to know about this.
+var MKPermissionWrapper = require("mykoop-user/components/PermissionWrapper");
+
 var actions = require("actions");
 var getRouteName = require("mykoop-utils/frontend/getRouteName");
 var localSession = require("session").local;
@@ -28,6 +35,147 @@ var language = require("language");
 var __ = language.__;
 
 var PropTypes = React.PropTypes;
+
+var navBarHookPointsCache = {};
+
+function makeMenuElement(icon, i18n) {
+  return [
+    <MKIcon
+      key="icon"
+      glyph={icon}
+      fixedWidth
+    />,
+    " " + __(i18n)
+  ];
+}
+
+function navBarFromHookPoint(hookpoint) {
+  if (!uiHookData) {
+    return [];
+  }
+
+  if (navBarHookPointsCache[hookpoint]) {
+    return navBarHookPointsCache[hookpoint];
+  }
+
+  var navBar = uiHookData.navbar_main || {};
+
+  // Generate nav bar.
+  return navBarHookPointsCache[hookpoint] = _(navBar)
+  .merge(uiHookData[hookpoint])
+  .sortBy("priority").map(
+    function (navItem, itemIndex) {
+      if (!navItem.type || !navItem.content) {
+        console.warn("Invalid navigation item:", navItem);
+        return null;
+      }
+
+      var content;
+      switch(navItem.type) {
+        case "item":
+          if (navItem.content.children) {
+            var childrenContent = _(navItem.content.children)
+            .sortBy("priority")
+            .map(function (navSubItem, subItemIndex) {
+              if (!navSubItem.type || !navSubItem.content) {
+                console.warn("Invalid sub-navigation item:", navSubItem);
+                return null;
+              }
+
+              var subContent;
+              switch(navSubItem.type) {
+                case "item":
+                  if (navSubItem.content.children) {
+                    console.warn(
+                      "Nesting beyond two levels is not supported yet."
+                    );
+                    subContent = null;
+                  } else {
+                    subContent = (
+                      <BSMenuItem
+                        key={subItemIndex}
+                        onSelect={Router.transitionTo.bind(
+                          null,
+                          navSubItem.content.link.name || 
+                          navSubItem.content.link,
+                          navSubItem.content.link.params,
+                          navSubItem.content.link.query
+                        )}
+                      >
+                        {makeMenuElement(
+                          navSubItem.content.icon,
+                          navSubItem.content.i18n
+                        )}
+                      </BSMenuItem>
+                    );
+                  }
+                  break;
+
+                case "custom":
+                  // We expect a component getter built from a resolve descriptor.
+                  subContent = navSubItem.content();
+                  break;
+
+                default:
+                  console.warn(
+                    "Invalid sub-navigation item type:",
+                    navSubItem.type
+                  );
+                  subContent = null;
+              }
+
+              return subContent && navSubItem.permissions ? (
+                <MKPermissionWrapper permissions={navSubItem.permissions}>
+                  {subContent}
+                </MKPermissionWrapper>
+              ) : subContent;
+            })
+            .value();
+
+            content = (
+              <BSDropdownButton
+                key={itemIndex}
+                title={makeMenuElement(
+                  navItem.content.icon,
+                  navItem.content.i18n
+                )}
+              >
+                {childrenContent}
+              </BSDropdownButton>
+            );
+          } else {
+            content = (
+              <MKNavItemLink
+                key={itemIndex}
+                to={navItem.content.link.name || navItem.content.link}
+                params={navItem.content.link.params}
+                query={navItem.content.link.query}
+              >
+                {makeMenuElement(navItem.content.icon, navItem.content.i18n)}
+              </MKNavItemLink>
+            );
+          }
+          break;
+
+        case "custom":
+          // We expect a component getter built from a resolve descriptor.
+          content = navItem.content();
+          break;
+
+        default:
+          console.warn("Invalid navigation item type:", navItem.type);
+          content = null;
+      }
+
+      return content && navItem.permissions ? (
+        <MKPermissionWrapper permissions={navItem.permissions}>
+          {content}
+        </MKPermissionWrapper>
+      ) : content;
+    }
+  )
+  .value();
+}
 
 
 // NavigationBar
@@ -111,7 +259,10 @@ var NavBar = React.createClass({
           fluid={this.props.dashboard}
         >
           <BSNav key={1} className="navbar-left">
-            {isInDashboard ? [
+            {isInDashboard ?
+              navBarFromHookPoint("navbar_main_dashboard")
+              /*
+              [
               <MKNavItemLink key={10} to={routeData.public.name}>
                 <MKIcon glyph="users" fixedWidth /> Members
               </MKNavItemLink>,
@@ -157,7 +308,10 @@ var NavBar = React.createClass({
                   <MKIcon glyph="envelope" fixedWidth /> Send Mass Message
                 </BSMenuItem>
               </BSDropdownButton>
-            ] : [
+              ]
+              */
+             : [
+              // navBarFromHookPoint("navbar_main_public")
               <MKNavItemLink key={10} to={routeData.public.name}>
                 <MKIcon glyph="home" /> Homepage
               </MKNavItemLink>,

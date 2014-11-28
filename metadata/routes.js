@@ -26,20 +26,18 @@ function addRoutes(metaDataBuilder) {
         name: "shoppingCart",
         path: "cart"
     });
-
     /* Simple wrapper. */
     metaDataBuilder.addFrontendRoute({
         idPath: ["simple"],
         component: "wrappers/SimplePageWrapper",
         path: "/"
     });
-
     /*FIXME: Cannot use it as long as it is in website.
     metaDataBuilder.addFrontendRoute({
-    idPath: ["simple"],
-    component: "PasswordRecoveryPage",
-    name: "passwordRecovery",
-    path: "/lostpassword"
+      idPath: ["simple"],
+      component: "PasswordRecoveryPage",
+      name: "passwordRecovery",
+      path: "/lostpassword"
     });
     */
     /* Dashboard wrapper. */
@@ -49,42 +47,36 @@ function addRoutes(metaDataBuilder) {
         path: "/dashboard",
         default: "layout/Homepage"
     });
-
     metaDataBuilder.addFrontendRoute({
         idPath: ["dashboard", "stats"],
         component: "PlaceHolder",
         name: "stats",
         path: "stats"
     });
-
     metaDataBuilder.addFrontendRoute({
         idPath: ["dashboard", "inventory", "supplier"],
         component: "PlaceHolder",
         name: "supplier",
         path: "supplier"
     });
-
     metaDataBuilder.addFrontendRoute({
         idPath: ["dashboard", "mailing"],
         component: "wrappers/PlaceHolderWrapper",
         path: "mailing",
         default: "PlaceHolder"
     });
-
     metaDataBuilder.addFrontendRoute({
         idPath: ["dashboard", "mailing", "send"],
         component: "PlaceHolder",
         name: "send",
         path: "send"
     });
-
     metaDataBuilder.addFrontendRoute({
         idPath: ["dashboard", "mailing", "subscribe"],
         component: "PlaceHolder",
         name: "subscribe",
         path: "subscribe"
     });
-
     metaDataBuilder.addFrontendRoute({
         idPath: ["dashboard", "members"],
         component: "wrappers/PlaceHolderWrapper",
@@ -92,7 +84,6 @@ function addRoutes(metaDataBuilder) {
         path: "members",
         default: "PlaceHolder"
     });
-
     metaDataBuilder.addFrontendRoute({
         idPath: ["dashboard", "members", "schedule"],
         component: "PlaceHolder",
