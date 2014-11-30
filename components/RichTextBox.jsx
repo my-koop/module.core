@@ -2,45 +2,42 @@ var React = require("react");
 
 var _ = require("lodash");
 
-var PageWrapper = React.createClass({
+var RichTextBox = React.createClass({
 
   propTypes: {
     initialContent: React.PropTypes.string,
-    textAreaId: React.PropTypes.string
   },
 
   getDefaultProps: function() {
     return {
-      textAreaId: "nicEditorArea",
-      initialContent: ""
+      id: "nicEditorArea",
+      rows: 8
     }
   },
 
-  editor: null,
-  instance: null,
+  nicEditorInstance: null,
   componentDidMount: function () {
     var self = this;
     require.ensure([], function(require) {
       // remove .min to debug, but icons won't show
-      var nicEditor = require("exports?nicEditor!./nicEdit/nicEdit.min");
-      self.editor = new nicEditor({fullPanel: true})
-      self.editor.addEvent("add", function(instance) {
-        self.instance = instance;
+      var nicEditor = require("exports?nicEditor!./vendor/nicEdit.min");
+      var editor = new nicEditor({fullPanel: true});
+      editor.addEvent("add", function(nicEditorInstance) {
+        self.nicEditorInstance = nicEditorInstance;
       });
-      self.editor.panelInstance(self.props.textAreaId);
+      editor.panelInstance(self.props.id);
     });
   },
 
   getText: function() {
-    return this.instance ? this.instance.getContent() : "";
+    return this.nicEditorInstance ? this.nicEditorInstance.getContent() : "";
   },
 
   render: function() {
-    var props = _.omit(this.props, "textAreaId", "initialContent");
+    var props = _.omit(this.props, "initialContent");
     return (
       <textarea
         {...props}
-        id={this.props.textAreaId}
         onChange={this.onChange}
         defaultValue={this.props.initialContent}
       />
@@ -48,4 +45,4 @@ var PageWrapper = React.createClass({
   }
 });
 
-module.exports = PageWrapper;
+module.exports = RichTextBox;
