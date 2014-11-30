@@ -11,20 +11,18 @@ var BSButton = require("react-bootstrap/Button");
 var BSDropdownButton = require("react-bootstrap/DropdownButton");
 var BSInput = require("react-bootstrap/Input");
 var BSMenuItem = require("react-bootstrap/MenuItem");
-var BSModalTrigger = require("react-bootstrap/ModalTrigger");
 var BSNavbar = require("react-bootstrap/Navbar");
 var BSNav = require("react-bootstrap/Nav");
 var BSNavItem = require("react-bootstrap/NavItem");
 
 var MKIcon = require("../Icon");
-var MKLoginModal = require("mykoop-user/components/LoginModal");
+var MKMenuItemLink = require("../MenuItemLink");
 var MKNavItemLink = require("../NavItemLink");
 
 //FIXME: Core shouldn't have to know about this.
 var MKPermissionWrapper = require("mykoop-user/components/PermissionWrapper");
 
 var actions = require("actions");
-var getRouteName = require("mykoop-utils/frontend/getRouteName");
 var localSession = require("session").local;
 var website = require("website");
 
@@ -36,33 +34,64 @@ var __ = language.__;
 
 var PropTypes = React.PropTypes;
 
-var navBarHookPointsCache = {};
+function makeMenuElement(icon, text) {
+  var showText = _.isFunction(text) ? text()() : __(text);
 
-function makeMenuElement(icon, i18n) {
   return [
     <MKIcon
       key="icon"
       glyph={icon}
       fixedWidth
     />,
-    " " + __(i18n)
+    " " + showText
   ];
 }
 
-function navBarFromHookPoint(hookpoint) {
+function makeMenuLink(key, content, isSubMenu) {
+  var component = isSubMenu ? MKMenuItemLink : MKNavItemLink;
+  var link = content.link;
+  var computedLink = {};
+
+  if (_.isString(link)) {
+    computedLink.to = link;
+  } else if(_.isFunction(link)) {
+    computedLink.to = link();
+  } else if (_.isPlainObject(link)) {
+    ["to", "params", "query"].forEach(function(prop) {
+      computedLink[prop] = _.isFunction(link[prop]) ? link[prop]() : link[prop];
+    });
+  }
+
+  return (
+    <component
+      key={key}
+      to={computedLink.to}
+      params={computedLink.params}
+      query={computedLink.query}
+    >
+      {makeMenuElement(content.icon, content.text)}
+    </component>
+  );
+}
+
+function navBarFromHookPoint(hookpoint, baseBarName) {
   if (!uiHookData) {
     return [];
   }
 
-  if (navBarHookPointsCache[hookpoint]) {
-    return navBarHookPointsCache[hookpoint];
+  baseBarName = baseBarName || "navbar_main";
+  var baseNavBar = uiHookData[baseBarName];
+  var navBar = uiHookData[hookpoint];
+
+  if (!baseNavBar && !navBar) {
+    return [];
   }
 
-  var navBar = uiHookData.navbar_main || {};
+  baseNavBar = baseNavBar || {};
 
   // Generate nav bar.
-  return navBarHookPointsCache[hookpoint] = _(navBar)
-  .merge(uiHookData[hookpoint])
+  return _(baseNavBar)
+  .merge(navBar)
   .sortBy("priority").map(
     function (navItem, itemIndex) {
       if (!navItem.type || !navItem.content) {
@@ -77,7 +106,7 @@ function navBarFromHookPoint(hookpoint) {
             var childrenContent = _(navItem.content.children)
             .sortBy("priority")
             .map(function (navSubItem, subItemIndex) {
-              if (!navSubItem.type || !navSubItem.content) {
+              if (!navSubItem.type) {
                 console.warn("Invalid sub-navigation item:", navSubItem);
                 return null;
               }
@@ -85,35 +114,28 @@ function navBarFromHookPoint(hookpoint) {
               var subContent;
               switch(navSubItem.type) {
                 case "item":
-                  if (navSubItem.content.children) {
-                    console.warn(
-                      "Nesting beyond two levels is not supported yet."
-                    );
-                    subContent = null;
+                  if (navSubItem.content) {
+                    if(navSubItem.content.children) {
+                      console.warn(
+                        "Nesting beyond two levels is not supported yet."
+                      );
+                      subContent = null;
+                    } else {
+                      subContent = makeMenuLink(
+                        subItemIndex,
+                        navSubItem.content,
+                        true
+                      );
+                    }
                   } else {
-                    subContent = (
-                      <BSMenuItem
-                        key={subItemIndex}
-                        onSelect={Router.transitionTo.bind(
-                          null,
-                          navSubItem.content.link.name || 
-                          navSubItem.content.link,
-                          navSubItem.content.link.params,
-                          navSubItem.content.link.query
-                        )}
-                      >
-                        {makeMenuElement(
-                          navSubItem.content.icon,
-                          navSubItem.content.i18n
-                        )}
-                      </BSMenuItem>
-                    );
+                    subContent = <BSMenuItem key={subItemIndex} divider />;
                   }
                   break;
 
                 case "custom":
-                  // We expect a component getter built from a resolve descriptor.
-                  subContent = navSubItem.content();
+                  // We expect a component getter built from a resolve
+                  // descriptor.
+                  subContent = navSubItem.content()();
                   break;
 
                 default:
@@ -137,29 +159,20 @@ function navBarFromHookPoint(hookpoint) {
                 key={itemIndex}
                 title={makeMenuElement(
                   navItem.content.icon,
-                  navItem.content.i18n
+                  navItem.content.text
                 )}
               >
                 {childrenContent}
               </BSDropdownButton>
             );
           } else {
-            content = (
-              <MKNavItemLink
-                key={itemIndex}
-                to={navItem.content.link.name || navItem.content.link}
-                params={navItem.content.link.params}
-                query={navItem.content.link.query}
-              >
-                {makeMenuElement(navItem.content.icon, navItem.content.i18n)}
-              </MKNavItemLink>
-            );
+            content = makeMenuLink(itemIndex, navItem.content);
           }
           break;
 
         case "custom":
           // We expect a component getter built from a resolve descriptor.
-          content = navItem.content();
+          content = navItem.content()();
           break;
 
         default:
@@ -176,7 +189,6 @@ function navBarFromHookPoint(hookpoint) {
   )
   .value();
 }
-
 
 // NavigationBar
 var NavBar = React.createClass({
@@ -195,57 +207,15 @@ var NavBar = React.createClass({
     language.setLanguage(language.getAlternateLanguages()[0]);
   },
 
-  //FIXME: Once it's possible, the user module alone should take care of this
-  // logic. See https://github.com/my-koop/service.website/issues/185
-  onLogout: function() {
-    delete localSession.user;
-    website.render();
-
-    if (!actions.user) {
-      return;
-    }
-
-    // This is a fire and forget call to try to keep the backend in sync. No
-    // error management is going to help us in production.
-    actions.user.current.logout(function (err) {
-      if (err) {
-        console.error(err);
-      }
-    });
-  },
-
-  onSearch: function(e) {
-    e.preventDefault();
-    Router.transitionTo(
-      routeData.public.children.shop.name,
-      {},
-      {filter: this.refs.searchtext.getInputDOMNode().value}
-    );
-  },
-
-  onMenuLogin: function() {
-    this.refs.loginmodal.show();
-  },
-
   redirectToHomepage: function() {
-    Router.transitionTo(getRouteName(["public"]));
+    Router.transitionTo("home");
   },
 
   render : function() {
-    var isLoggedIn = false;
-    var userEmail = "";
-
-    if (localSession.user) {
-      isLoggedIn = true;
-      userEmail = localSession.user.email;
-    }
-
     var isInDashboard = this.props.dashboard;
 
     return (
       <div>
-        {/*FIXME: Dummy span so we can use the modal trigger... :( */}
-        <BSModalTrigger ref="loginmodal" modal={<MKLoginModal />}><span /></BSModalTrigger>
         <BSNavbar
           toggleNavKey={1}
           brand={<img
@@ -260,84 +230,9 @@ var NavBar = React.createClass({
         >
           <BSNav key={1} className="navbar-left">
             {isInDashboard ?
-              navBarFromHookPoint("navbar_main_dashboard")
-              /*
-              [
-              <MKNavItemLink key={10} to={routeData.public.name}>
-                <MKIcon glyph="users" fixedWidth /> Members
-              </MKNavItemLink>,
-              <MKNavItemLink
-                key={20}
-                to={routeData.dashboard.children.inventory.children.items.name}
-              >
-                <MKIcon glyph="bicycle" fixedWidth /> Items
-              </MKNavItemLink>,
-              <MKNavItemLink key={30} to={routeData.public.name}>
-                <MKIcon glyph="book" fixedWidth /> Invoices
-              </MKNavItemLink>,
-              <MKNavItemLink key={40} to={routeData.dashboard.children.events.name}>
-                <MKIcon glyph="calendar" fixedWidth /> Events
-              </MKNavItemLink>,
-              <MKNavItemLink key={50} to={routeData.dashboard.children.stats.name}>
-                <MKIcon glyph="files-o" fixedWidth /> Reports
-              </MKNavItemLink>,
-              <BSDropdownButton
-                key={60}
-                title={
-                  <span>
-                    <MKIcon glyph="bolt" fixedWidth /> Quick Actions
-                  </span>
-                }
-              >
-                <BSMenuItem
-                  key={10}
-                  onSelect={Router.transitionTo.bind(
-                    null,
-                    routeData.public.name
-                  )}
-                >
-                  <MKIcon glyph="plus" fixedWidth /> Add Member
-                </BSMenuItem>
-                <BSMenuItem
-                  key={20}
-                  onSelect={Router.transitionTo.bind(
-                    null,
-                    routeData.dashboard.children.mailing.children.send.name
-                  )}
-                >
-                  <MKIcon glyph="envelope" fixedWidth /> Send Mass Message
-                </BSMenuItem>
-              </BSDropdownButton>
-              ]
-              */
-             : [
-              // navBarFromHookPoint("navbar_main_public")
-              <MKNavItemLink key={10} to={routeData.public.name}>
-                <MKIcon glyph="home" /> Homepage
-              </MKNavItemLink>,
-              <MKNavItemLink key={20} to={routeData.public.children.shop.name}>
-                <MKIcon glyph="shopping-cart" /> Shop
-              </MKNavItemLink>,
-              <MKNavItemLink key={30} to={routeData.public.children.aboutus.name}>
-                <MKIcon glyph="question" /> About Us
-              </MKNavItemLink>,
-              <form
-                key="searchform"
-                className="navbar-form navbar-left"
-                onSubmit={this.onSearch}
-              >
-                <BSInput
-                  ref="searchtext"
-                  type="text"
-                  placeholder="Search..."
-
-                  //FIXME: Placeholder until
-                  // https://github.com/react-bootstrap/react-bootstrap/issues/201
-                  // or a workaround.
-                  addonAfter={<MKIcon glyph="search"/>}
-                />
-              </form>
-            ]}
+              navBarFromHookPoint("navbar_main_dashboard") :
+              navBarFromHookPoint("navbar_main_public")
+            }
           </BSNav>
           {/*FIXME: Hide on small viewports for now since it doesn't wrap.*/}
           <BSNav key={2} className="navbar-right hidden-xs">
@@ -346,36 +241,16 @@ var NavBar = React.createClass({
               {/*FIXME: Support more than one language.*/}
               {__("language::name", {lng: language.getAlternateLanguages()[0]})}
             </BSNavItem>
-            {isLoggedIn ?
-              <BSDropdownButton
-                key="usermenu"
-                title={<span><MKIcon glyph="user" /> {userEmail}</span>}
-              >
-                <BSMenuItem
-                  key={10}
-                  onSelect={Router.transitionTo.bind(
-                    null,
-                    routeData.public.children.myaccount.name
-                  )}
-                >
-                  <MKIcon glyph="cog" fixedWidth /> My account
-                </BSMenuItem>
-                <BSMenuItem key={20} divider />
-                <BSMenuItem key={30} onSelect={this.onLogout}>
-                  <MKIcon glyph="sign-out" fixedWidth /> Logout
-                </BSMenuItem>
-              </BSDropdownButton>
-            : [
-              <MKNavItemLink
-                to={routeData.simple.children.register.name}
-                key={1}
-              >
-                <MKIcon glyph="check" /> Register
-              </MKNavItemLink>,
-              <BSNavItem onSelect={this.onMenuLogin} key={2}>
-                <MKIcon library="glyphicon" glyph="log-in" /> Login
-              </BSNavItem>
-            ]}
+            {isInDashboard ?
+              navBarFromHookPoint(
+                "navbar_secondary_dashboard",
+                "navbar_secondary"
+              ) :
+              navBarFromHookPoint(
+                "navbar_secondary_public",
+                "navbar_secondary"
+              )
+            }
           </BSNav>
 
           {/* To be removed after development. */}

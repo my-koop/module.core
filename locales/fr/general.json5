@@ -18,5 +18,9 @@
   user: "Utilisateur",
   code: "Code",
   id: "ID",
-  update: "Mettre à jour"
+  update: "Mettre à jour",
+  navbar: {
+    "homepage": "Accueil",
+    "aboutus": "À propos"
+  },
 }
