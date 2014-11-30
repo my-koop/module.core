@@ -23,4 +23,7 @@
     "homepage": "Accueil",
     "aboutus": "À propos"
   },
+  sidebar: {
+    settings: "Paramètres du site"
+  },
 }

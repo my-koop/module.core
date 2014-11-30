@@ -34,6 +34,10 @@ var MenuItemLink = React.createClass({
   },
 
   handleClick: function() {
+    if (this.props.onClick) {
+      return this.props.onClick();
+    }
+
     Router.transitionTo(this.props.to, this.props.params, this.props.query);
   }
 });

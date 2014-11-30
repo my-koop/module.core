@@ -18,6 +18,17 @@ var uiHooks = {
             },
             priority: 200
         }
+    },
+    sidebar: {
+        settings: {
+            type: "item",
+            content: {
+                icon: "cogs",
+                text: "sidebar.settings",
+                link: "home"
+            },
+            priority: 1000
+        }
     }
 };
 module.exports = uiHooks;
