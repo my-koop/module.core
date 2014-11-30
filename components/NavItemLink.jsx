@@ -34,6 +34,10 @@ var NavItemLink = React.createClass({
   handleClick: function(e) {
     e.preventDefault();
 
+    if (this.props.onClick) {
+      return this.props.onClick();
+    }
+
     Router.transitionTo(this.props.to, this.props.params, this.props.query);
   }
 });

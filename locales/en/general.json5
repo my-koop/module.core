@@ -18,5 +18,12 @@
   user: "User",
   code: "Code",
   id: "ID",
-  update: "Update"
+  update: "Update",
+  navbar: {
+    homepage: "Homepage",
+    aboutus: "About Us"
+  },
+  sidebar: {
+    settings: "Site Settings"
+  },
 }
