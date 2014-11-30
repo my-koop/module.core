@@ -34,7 +34,7 @@ var SideBar = React.createClass({
     .reduce(function(result, sideBarItem) {
       if (!sideBarItem.type || !sideBarItem.content) {
         console.warn("Invalid side bar item:", sideBarItem);
-        return [];
+        return result;
       }
 
       var content = [];
@@ -52,7 +52,7 @@ var SideBar = React.createClass({
                 return self.renderListGroupItem(
                   result.length + itemIndex + 2,
                   _.merge(
-                    {permissions: _.cloneDeep(sideBarItem.content.permissions)},
+                    {permissions: sideBarItem.content.permissions},
                     sideBarSubItem
                   ),
                   true
