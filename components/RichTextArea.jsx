@@ -2,7 +2,7 @@ var React = require("react");
 
 var _ = require("lodash");
 
-var RichTextBox = React.createClass({
+var RichTextArea = React.createClass({
 
   propTypes: {
     initialContent: React.PropTypes.string,
@@ -19,9 +19,9 @@ var RichTextBox = React.createClass({
   componentDidMount: function () {
     var self = this;
     require.ensure([], function(require) {
-      // remove .min to debug, but icons won't show
-      var nicEditor = require("exports?nicEditor!./vendor/nicEdit.min");
-      var editor = new nicEditor({fullPanel: true});
+      var nicEdit = require("../vendor/nicEdit");
+
+      var editor = new nicEdit.nicEditor({fullPanel: true});
       editor.addEvent("add", function(nicEditorInstance) {
         self.nicEditorInstance = nicEditorInstance;
       });
@@ -45,4 +45,4 @@ var RichTextBox = React.createClass({
   }
 });
 
-module.exports = RichTextBox;
+module.exports = RichTextArea;
