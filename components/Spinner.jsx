@@ -59,6 +59,7 @@ var Spinner = React.createClass({
 
 Spinner.globalInstance = null;
 Spinner.isGlobalVisible = false;
+Spinner.showCounter = 0;
 Spinner.registerGlobalInstance = function(spinnerInstance) {
   Spinner.globalInstance = spinnerInstance;
   if(Spinner.isGlobalVisible) {
@@ -68,19 +69,18 @@ Spinner.registerGlobalInstance = function(spinnerInstance) {
 Spinner.showGlobalSpinner = function() {
   Spinner.isGlobalVisible = true;
   if(Spinner.globalInstance) {
+    Spinner.showCounter++;
     Spinner.globalInstance.show();
   }
 }
 Spinner.hideGlobalSpinner = function() {
   Spinner.isGlobalVisible = true;
   if(Spinner.globalInstance) {
-    Spinner.globalInstance.hide();
-  }
-}
-Spinner.toggleGlobalSpinner = function() {
-  Spinner.isGlobalVisible = !Spinner.isGlobalVisible;
-  if(Spinner.globalInstance) {
-    Spinner.globalInstance.toggle();
+    Spinner.showCounter--;
+    if(Spinner.showCounter <= 0) {
+      Spinner.showCounter = 0;
+      Spinner.globalInstance.hide();
+    }
   }
 }
 module.exports = Spinner;
