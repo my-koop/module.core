@@ -1,17 +1,7 @@
 var React = require('react');
 
 var _ = require("lodash");
-
-function assignStateDeep(self, callback, stateList, target, parseFunc, newValue) {
-  // Find source
-  var source = _.reduce(stateList, function(source, id) {
-    return source[id];
-  }, self.state);
-  // Assign new value
-  source[target] = parseFunc(newValue);
-  //setState
-  self.setState(self.state, callback);
-}
+var assignStateDeep = require("../lib/frontend/assignStateDeep");
 
 module.exports = {
   // private debouncer map
@@ -53,13 +43,13 @@ module.exports = {
       delay = 500;
     }
     var self = this;
-
-    var debouncerKey = stateList.join("") + target;
+    stateList = stateList.concat(target);
+    var debouncerKey = stateList.join("");
     // Find the debouncer for the target
     if(!this.___debouncers___[debouncerKey]) {
       // create a new one if doesn't exists
       this.___debouncers___[debouncerKey] = _.debounce(
-        _.bind(assignStateDeep, null, self, _.noop),
+        _.partial(assignStateDeep, self, _.noop),
         delay
       );
     }
@@ -69,9 +59,9 @@ module.exports = {
     assignStateDeep(
       self,
       // Call to debouncer
-      _.bind(debouncer, self, stateList, target, parseFunc, newValue),
+      _.bind(debouncer, self, stateList, parseFunc, newValue),
       // parameter to set value now
-      stateList, target, _.identity, newValue
+      stateList, _.identity, newValue
     );
   }
 
