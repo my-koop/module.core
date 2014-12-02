@@ -1,8 +1,11 @@
 var React = require("react");
 
+var BSButton = require("react-bootstrap/Button");
+
 var MKCollapsablePanel = require("../CollapsablePanel");
 var MKFeedbacki18nMixin = require("../Feedbacki18nMixin");
 
+var __ = require("language").__;
 var _ = require("lodash");
 var actions = require("actions");
 var traverse = require("traverse");
@@ -28,6 +31,10 @@ var SettingsPage = React.createClass({
   },
 
   componentWillMount: function() {
+    this.retrieveSettings();
+  },
+
+  retrieveSettings: function() {
     var self = this;
     actions.settings.get({
       i18nErrors: {},
@@ -44,15 +51,19 @@ var SettingsPage = React.createClass({
 
   onSave: function() {
     var self = this;
-    self.clearFeedback();
-    var data = _.merge.apply(
-      [{}].concat(_.map(this.settingsGetters, function(getter) {
+    var newSettings = _.merge.apply(_,
+      _.map(this.settingsGetters, function(getter) {
         return getter();
-      }))
+      })
     );
-    actions.settings.save({
+    data = _.merge(newSettings, {keys: _.keys(newSettings).join(";")});
+    self.setState({
+      settings: newSettings
+    });
+    self.clearFeedback();
+    actions.settings.set({
       i18nErrors: {},
-      data: this.state.settings,
+      data: data,
     }, function(err) {
       if(err) {
         return self.setFeedback(err.i18n, "danger");
@@ -78,7 +89,7 @@ var SettingsPage = React.createClass({
           <MKCollapsablePanel header={__(contribution.titleKey)} key={i}>
             <Component
               settingsRaw={self.state.settings}
-              addSettingsGetter={addSettingsGetter}
+              addSettingsGetter={self.addSettingsGetter}
             />
           </MKCollapsablePanel>
         );
@@ -92,7 +103,7 @@ var SettingsPage = React.createClass({
         </h1>
         {this.state.settingsRetrieved ?
           <div>
-            <BSButton onClick={this.onSave}>
+            <BSButton onClick={this.onSave} bsStyle="primary">
               {__("update")}
             </BSButton>
             {panels()}

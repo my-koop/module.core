@@ -10,16 +10,24 @@ export function attachControllers(
 
   binder.attach(
     {endPoint: endpoints.settings.get},
-    binder.makeSimpleController(core.getSettings)
+    binder.makeSimpleController(core.getSettings, function(req) {
+      var keys = req.param("keys", "");
+      var params: any = {};
+      if(!_.isEmpty(keys)) {
+        console.log(keys);
+        params.keys = keys.split(";");
+      }
+      return params;
+    })
   );
 
   binder.attach(
     {endPoint: endpoints.settings.set},
     binder.makeSimpleController(core.setSettings, function(req) {
-      var keys = req.param("keys", "").split(";");
+      var keys = req.param("keys", "");
       var params: any = {};
       if(!_.isEmpty(keys)) {
-        _.each(keys, function(key) {
+        _.each(keys.split(";"), function(key) {
           params[key] = req.param(key);
         });
       }
