@@ -25,7 +25,7 @@ var uiHooks = {
       content: {
         icon: "cogs",
         text: "sidebar.settings",
-        link: "home"
+        link: "settings"
       },
       priority: 1000
     }
