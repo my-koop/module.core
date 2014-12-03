@@ -84,10 +84,10 @@ var SettingsPage = React.createClass({
     var self = this;
     var panels = function() {
       return _.map(settingsContributions, function(contribution, i) {
-        var Component = contribution.component;
+        var component = contribution.component;
         return (
           <MKCollapsablePanel header={__(contribution.titleKey)} key={i}>
-            <Component
+            <component
               settingsRaw={self.state.settings}
               addSettingsGetter={self.addSettingsGetter}
             />

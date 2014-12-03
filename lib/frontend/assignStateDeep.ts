@@ -5,4 +5,4 @@ function assignStateDeep(self, callback, stateList, parseFunc, newValue) {
   //setState
   self.setState(self.state, callback);
 }
-module.exports = assignStateDeep;
+export = assignStateDeep;
