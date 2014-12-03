@@ -13,4 +13,6 @@
   month_plural: "Months",
   year: "Year",
   year_plural: "Years",
+
+  "count": "__count__ $t(time::__key__, {\"count\": __count__})"
 }
