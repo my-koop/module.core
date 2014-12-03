@@ -1,3 +1,4 @@
+/// <reference path="../../typings/tsd.d.ts" />
 var traverse = require("traverse");
 
 function assignStateDeep(self, callback, stateList, parseFunc, newValue) {
