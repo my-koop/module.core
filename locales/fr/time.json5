@@ -1,0 +1,18 @@
+{
+  second: "Seconde",
+  second_plural: "Secondes",
+  minute: "Minute",
+  minute_plural: "Minutes",
+  hour: "Heure",
+  hour_plural: "Heures",
+  day: "Jour",
+  day_plural: "Jours",
+  week: "Semaine",
+  week_plural: "Semaines",
+  month: "Mois",
+  month_plural: "Mois",
+  year: "Année",
+  year_plural: "Years",
+
+  "count": "__count__ $t(time::__key__, {\"count\": __count__})"
+}
