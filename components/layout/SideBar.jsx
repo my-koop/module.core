@@ -87,6 +87,11 @@ var SideBar = React.createClass({
           link[prop]()() :
           link[prop];
       });
+      computedLink = Router.makeHref(
+        computedLink.to,
+        computedLink.params,
+        computedLink.query
+      );
     } else {
       computedLink = "";
     }
@@ -95,7 +100,6 @@ var SideBar = React.createClass({
       <BSListGroupItem
         key={key}
         className={isSubItem && "sub-list-group-item"}
-        //FIXME: This will show [Object object] in the status bar when hovering.
         href={computedLink}
       >
         <MKIcon glyph={content.icon} fixedWidth />
