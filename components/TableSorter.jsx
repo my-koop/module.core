@@ -392,7 +392,7 @@ var TableSorter = React.createClass({
       }
 
       allRows.push(
-        <tr key={i}>
+        <tr key={i} {...item.__rowProps}>
           {rowGenerator(item, i)}
         </tr>
       );
