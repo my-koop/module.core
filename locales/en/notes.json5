@@ -1,0 +1,7 @@
+{
+  Author : "Écrit par",
+  TimePrefix : "Le",
+  InputLabel : "Message de la note",
+  Submit : "Ajouter une note",
+  ShowMore : "Montrer plus de notes",
+}

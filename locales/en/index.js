@@ -3,4 +3,5 @@ module.exports = {
   errors: require("./errors"),
   general: require("./general"),
   time: require("./time"),
+  notes: require("./notes"),
 }
