@@ -20,6 +20,8 @@
   code: "Code",
   id: "ID",
   update: "Update",
+  end: "End",
+  start: "Start",
   navbar: {
     homepage: "Homepage",
     aboutus: "About Us"

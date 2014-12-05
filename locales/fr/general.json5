@@ -20,6 +20,8 @@
   code: "Code",
   id: "ID",
   update: "Mettre à jour",
+  end: "Terminer",
+  start: "Commencer",
   navbar: {
     "homepage": "Accueil",
     "aboutus": "À propos"
