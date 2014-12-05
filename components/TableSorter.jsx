@@ -279,7 +279,7 @@ var TableSorter = React.createClass({
           var icon = (<MKIcon glyph={sortIcon} />);
           return (
             <BSButton onClick={self.sortColumn(col)} bsStyle="link" block>
-              {extraIcon} {headerName} {icon}
+              {extraIcon} {headerName} {icon}{" "}
             </BSButton>
           );
         }
@@ -305,7 +305,7 @@ var TableSorter = React.createClass({
           glyph="bars"
           onDragStart={self.dragStart.bind(null,i)}
           draggable
-          className="draggable pull-left"
+          className="draggable pull-left hidden-xs"
         />;
         dragProps = {
           onDrop: self.onDrop.bind(null,i),
