@@ -77,10 +77,12 @@ var SideBar = React.createClass({
     var text = content.text;
     var computedLink = {};
 
+    if(_.isFunction(link)) {
+      link = link()();
+    }
+
     if (_.isString(link)) {
       computedLink = link;
-    } else if(_.isFunction(link)) {
-      computedLink = link()();
     } else if (_.isPlainObject(link)) {
       ["to", "params", "query"].forEach(function(prop) {
         computedLink[prop] = _.isFunction(link[prop]) ?
