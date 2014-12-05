@@ -15,7 +15,13 @@ var DashboardWrapper = React.createClass({
         </BSCol>
 
         {/* Main dashboard content. */}
-        <BSCol mdOffset={2} md={10} smOffset={3} sm={9}>
+        <BSCol
+          mdOffset={2}
+          md={10}
+          smOffset={3}
+          sm={9}
+          className="dashboard-content"
+        >
           {this.props.activeRouteHandler()}
         </BSCol>
       </MKPageWrapper>

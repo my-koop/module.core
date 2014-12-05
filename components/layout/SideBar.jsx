@@ -103,8 +103,10 @@ var SideBar = React.createClass({
         href={computedLink}
       >
         <MKIcon glyph={content.icon} fixedWidth />
-        {" "}
-        {_.isFunction(text) ? text()() : __(text)}
+        <span className="hidden-xs">
+          {" "}
+          {_.isFunction(text) ? text()() : __(text)}
+        </span>
       </BSListGroupItem>
     );
 
