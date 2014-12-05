@@ -10,12 +10,12 @@ var DashboardWrapper = React.createClass({
     return (
       <MKPageWrapper dashboard>
         {/* Side bar. */}
-        <BSCol md={2} sm={3} style={{padding: 0}}>
+        <BSCol>
           <MKSideBar />
         </BSCol>
 
         {/* Main dashboard content. */}
-        <BSCol md={10} sm={9}>
+        <BSCol mdOffset={2} md={10} smOffset={3} sm={9}>
           {this.props.activeRouteHandler()}
         </BSCol>
       </MKPageWrapper>
