@@ -99,7 +99,7 @@ var NavBar = React.createClass({
     );
   },
 
-  renderNavBarFromHookPoint: function (hookpoint, baseBarName) {
+  renderNavBarFromHookPoint: function (hookpoint, baseBarName, extraClass) {
     var self = this;
 
     if (!uiHookData) {
@@ -154,7 +154,11 @@ var NavBar = React.createClass({
                         );
                       }
                     } else {
-                      subContent = <BSMenuItem key={subItemIndex} divider />;
+                      subContent = <BSMenuItem
+                        className={extraClass}
+                        key={this.navItemKey++}
+                        divider
+                      />;
                     }
                     break;
 
@@ -181,7 +185,8 @@ var NavBar = React.createClass({
 
               content = (
                 <BSDropdownButton
-                  key={itemIndex}
+                  className={extraClass}
+                  key={this.navItemKey++}
                   title={self.renderMenuElement(
                     navItem.content.icon,
                     navItem.content.text
@@ -214,9 +219,36 @@ var NavBar = React.createClass({
     .value();
   },
 
+  renderSecondaryBar: function(extraClass) {
+    var isInDashboard = this.props.dashboard;
+    return [
+      <BSNavItem
+        className={extraClass}
+        onSelect={this.onLanguageToggle}
+        key="language"
+      >
+        <MKIcon glyph="globe" />{" "}
+        {/*FIXME: Support more than one language.*/}
+        {__("language::name", {lng: language.getAlternateLanguages()[0]})}
+      </BSNavItem>,
+      isInDashboard ?
+        this.renderNavBarFromHookPoint(
+          "navbar_secondary_dashboard",
+          "navbar_secondary",
+          extraClass
+        ) :
+        this.renderNavBarFromHookPoint(
+          "navbar_secondary_public",
+          "navbar_secondary",
+          extraClass
+        )
+    ];
+  },
+
+  navItemKey: 0,
   render : function() {
     var isInDashboard = this.props.dashboard;
-
+    this.navItemKey = 0;
     return (
       <div>
         <BSNavbar
@@ -236,24 +268,12 @@ var NavBar = React.createClass({
               this.renderNavBarFromHookPoint("navbar_main_dashboard") :
               this.renderNavBarFromHookPoint("navbar_main_public")
             }
+            {/*FIXME::Remove once toggleNavKey*/}
+            {this.renderSecondaryBar("visible-xs")}
           </BSNav>
           {/*FIXME: Hide on small viewports for now since it doesn't wrap.*/}
           <BSNav key={2} className="navbar-right hidden-xs">
-            <BSNavItem onSelect={this.onLanguageToggle} key="language">
-              <MKIcon glyph="globe" />{" "}
-              {/*FIXME: Support more than one language.*/}
-              {__("language::name", {lng: language.getAlternateLanguages()[0]})}
-            </BSNavItem>
-            {isInDashboard ?
-              this.renderNavBarFromHookPoint(
-                "navbar_secondary_dashboard",
-                "navbar_secondary"
-              ) :
-              this.renderNavBarFromHookPoint(
-                "navbar_secondary_public",
-                "navbar_secondary"
-              )
-            }
+            {this.renderSecondaryBar()}
           </BSNav>
 
           {/* To be removed after development. */}
