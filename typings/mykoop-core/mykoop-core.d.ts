@@ -27,5 +27,37 @@ declare module mkcore {
       params: SetSettings.Params,
       callback: SetSettings.Callback
     );
+
+
+    getNotesController(
+      table: string,
+      req: Express.Request,
+      res: Express.Response
+    );
+    newNoteController(
+      table: string,
+      req: Express.Request,
+      res: Express.Response
+    );
+
+    getNotes(
+      params: mkcore.GetNotes.Params,
+      callback: mkcore.GetNotes.Callback
+    );
+    __getNotes(
+      connection: mysql.IConnection,
+      params: mkcore.GetNotes.Params,
+      callback: mkcore.GetNotes.Callback
+    );
+
+    newNote(
+      params: mkcore.NewNote.Params,
+      callback: mkcore.NewNote.Callback
+    );
+    __newNote(
+      connection: mysql.IConnection,
+      params: mkcore.NewNote.Params,
+      callback: mkcore.NewNote.Callback
+    );
   }
 }

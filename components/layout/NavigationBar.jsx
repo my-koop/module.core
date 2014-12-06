@@ -44,12 +44,18 @@ var NavigationBar = React.createClass({
   },
   render : function() {
     var links = this.state.links.map(function(link, index) {
+      try {
+        var href = Router.makeHref(link.url, link.params, link.query);
+      } catch (e) {
+        return;
+      }
       return (
         <MKNavItemLink
           key={index}
           to={link.url}
           params={link.params}
           query={link.query}
+          href={href}
         >
           {link.name}
         </MKNavItemLink>

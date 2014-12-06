@@ -27,7 +27,7 @@ export function attachControllers(
       var keys = req.param("keys", "");
       var params: any = {};
       if(!_.isEmpty(keys)) {
-        _.each(keys.split(";"), function(key) {
+        _.each(keys.split(";"), function(key: any) {
           params[key] = req.param(key);
         });
       }
