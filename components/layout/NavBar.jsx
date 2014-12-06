@@ -66,7 +66,7 @@ var NavBar = React.createClass({
     ];
   },
 
-  renderMenuLink: function(key, content, isSubMenu) {
+  renderMenuLink: function(key, content, isSubMenu, extraClass) {
     var component = isSubMenu ? MKMenuItemLink : MKNavItemLink;
     var link = content.link;
     var computedLink = {};
@@ -93,6 +93,7 @@ var NavBar = React.createClass({
         to={computedLink.to}
         params={computedLink.params}
         query={computedLink.query}
+        className={extraClass}
       >
         {this.renderMenuElement(content.icon, content.text)}
       </component>
@@ -150,7 +151,8 @@ var NavBar = React.createClass({
                         subContent = self.renderMenuLink(
                           subItemIndex,
                           navSubItem.content,
-                          true
+                          true,
+                          extraClass
                         );
                       }
                     } else {
@@ -196,13 +198,13 @@ var NavBar = React.createClass({
                 </BSDropdownButton>
               );
             } else {
-              content = self.renderMenuLink(itemIndex, navItem.content);
+              content = self.renderMenuLink(itemIndex, navItem.content, false, extraClass);
             }
             break;
 
           case "custom":
             // We expect a component getter built from a resolve descriptor.
-            content = navItem.content()();
+            content = navItem.content()({className: extraClass});
             break;
 
           default:
