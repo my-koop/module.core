@@ -1,7 +1,8 @@
 {
-  Author : "Écrit par",
-  TimePrefix : "Le",
-  InputLabel : "Message de la note",
-  Submit : "Ajouter une note",
-  ShowMore : "Montrer plus de notes",
+  Author : "Left by",
+  TimePrefix : "On",
+  InputLabel : "Note message",
+  Submit : "Add a note",
+  ShowMore : "Show more notes",
+  NoNotes: "There are no notes entered",
 }

@@ -1,9 +1,10 @@
-var React      = require("react");
-var BSCol      = require("react-bootstrap/Col");
-var BSButton   = require("react-bootstrap/Button");
-var BSPanel    = require("react-bootstrap/Panel");
-var BSInput    = require("react-bootstrap/Input");
-var MKAlertTrigger = require("mykoop-core/components/AlertTrigger");
+var React = require("react");
+
+var BSButton = require("react-bootstrap/Button");
+var BSPanel  = require("react-bootstrap/Panel");
+var BSInput  = require("react-bootstrap/Input");
+
+var MKAlert = require("./Alert");
 
 var language   = require("language");
 var __         = language.__;
@@ -83,6 +84,11 @@ var Notes = React.createClass({
   },
 
   render: function() {
+    if(this.state.notes === null) {
+      return null;
+    }
+
+
     var notePanels = _(this.state.notes)
       .first(this.state.sliceCount)
       .map(function(note, i) {
@@ -97,6 +103,10 @@ var Notes = React.createClass({
         );
       })
       .value();
+
+    if(_.isEmpty(notePanels)) {
+      notePanels = <MKAlert bsStyle="warning">{__("notes::NoNotes")}</MKAlert>;
+    }
 
     return (
       <div>
