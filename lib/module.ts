@@ -87,7 +87,6 @@ class Module extends utils.BaseModule implements mkcore.Module {
   }
 
   newNoteController(table, req, res) {
-
     var authorId = req.session.user.id;
     var targetId = parseInt(req.param("id", NaN));
     var message = req.param("message", "");
@@ -119,7 +118,7 @@ class Module extends utils.BaseModule implements mkcore.Module {
     params: mkcore.GetNotes.Params,
     callback: mkcore.GetNotes.Callback
   ) {
-    // Trustworthy data comming from modules
+    // Trustworthy data coming from modules
     var table = params.table;
     connection.query(
       "SELECT \
@@ -151,7 +150,7 @@ class Module extends utils.BaseModule implements mkcore.Module {
     params: mkcore.NewNote.Params,
     callback: mkcore.NewNote.Callback
   ) {
-    // Trustworthy data comming from modules
+    // Trustworthy data coming from modules
     var table = params.table;
     var data = {
       targetId: params.targetId,
