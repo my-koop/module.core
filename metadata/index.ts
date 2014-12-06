@@ -1,6 +1,6 @@
 import utils = require("mykoop-utils");
 import routes = require("./routes");
-import translations = require("../locales/index");
+var translations = require("../locales");
 import uiHooks = require("./uiHooks");
 import endpoints = require("./endpoints");
 

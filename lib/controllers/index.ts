@@ -9,7 +9,12 @@ export function attachControllers(
   var core = binder.moduleInstance;
 
   binder.attach(
-    {endPoint: endpoints.settings.get},
+    {
+      endPoint: endpoints.settings.get,
+      permissions: {
+        //isRoot: true
+      }
+    },
     binder.makeSimpleController(core.getSettings, function(req) {
       var keys = req.param("keys", "");
       var params: any = {};
@@ -22,7 +27,12 @@ export function attachControllers(
   );
 
   binder.attach(
-    {endPoint: endpoints.settings.set},
+    {
+      endPoint: endpoints.settings.set,
+      permissions: {
+        //isRoot: true
+      }
+    },
     binder.makeSimpleController(core.setSettings, function(req) {
       var keys = req.param("keys", "");
       var params: any = {};
