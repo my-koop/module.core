@@ -1,11 +1,13 @@
-var React     = require("react");
+var React = require("react");
 var PropTypes = React.PropTypes;
-var BSInput   = require("react-bootstrap/Input");
-var BSTable   = require("react-bootstrap/Table");
-var BSButton  = require("react-bootstrap/Button");
-var MKIcon    = require("./Icon");
 
-var _         = require("lodash");
+var BSInput = require("react-bootstrap/Input");
+var BSTable = require("react-bootstrap/Table");
+var BSButton = require("react-bootstrap/Button");
+var MKIcon = require("./Icon");
+
+var _ = require("lodash");
+var __ = require("language").__;
 
 // Inequality function map for the filtering
 var operators = {
@@ -340,7 +342,7 @@ var TableSorter = React.createClass({
               <BSInput
                 type="text"
                 valueLink={filterLink(c)}
-                placeholder={"Filter by " + self.state.columns[c].name}
+                placeholder={__("filterBy") + self.state.columns[c].name}
               />
             </td>
           );

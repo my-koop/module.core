@@ -22,6 +22,8 @@
   update: "Update",
   end: "End",
   start: "Start",
+  filterBy: "Filter by ",
+
   navbar: {
     homepage: "Homepage",
     aboutus: "About Us"

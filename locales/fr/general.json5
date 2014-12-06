@@ -22,6 +22,8 @@
   update: "Mettre à jour",
   end: "Terminer",
   start: "Commencer",
+  filterBy: "Filtrer par ",
+
   navbar: {
     "homepage": "Accueil",
     "aboutus": "À propos"
