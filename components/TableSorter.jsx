@@ -7,6 +7,7 @@ var BSInput = require("react-bootstrap/Input");
 var BSTable = require("react-bootstrap/Table");
 var BSButton = require("react-bootstrap/Button");
 var MKIcon = require("./Icon");
+var MKDebouncerMixin = require("./DebouncerMixin");
 
 var _ = require("lodash");
 var __ = require("language").__;
@@ -24,6 +25,7 @@ var availableSlices = [5, 10, 20, 50, 100];
 var defaultSliceChoice = 2;
 // TableSorter React Component
 var TableSorter = React.createClass({
+  mixins: [MKDebouncerMixin],
 
   propTypes: {
     config: PropTypes.shape({
@@ -36,6 +38,14 @@ var TableSorter = React.createClass({
         name: PropTypes.string.isRequired,
         defaultSortOrder: PropTypes.oneOf(["asc","desc",""]),
         headerProps: PropTypes.object,
+        // Allows to customize the data used to filter this column
+        // function(item, i): any
+        customFilterData: React.PropTypes.func,
+        // Overwrites the filter method
+        // returns a function to filter this column. True means keep this data
+        // Called only if filter text is present
+        // function(filterText: string): (columnData: any) => boolean;
+        customFilter: React.PropTypes.func,
         // default filter text
         filterText: PropTypes.string,
         // callback to create a custom cell content
@@ -88,6 +98,15 @@ var TableSorter = React.createClass({
     ) {
       this.props = nextProps;
       this.setState(this.getInitialState());
+    } else {
+      // Make sure to at least update the filtering
+      this.setState({
+        filteredItems: this.getFilteredItems(
+          this.getColumnNames(),
+          this.state.columns,
+          nextProps.items
+        )
+      });
     }
   },
 
@@ -120,7 +139,12 @@ var TableSorter = React.createClass({
       }, {}),
       currentPage: 1,
       currentSlice: availableSlices[defaultSliceChoice],
-      sliceChoice: defaultSliceChoice
+      sliceChoice: defaultSliceChoice,
+      filteredItems: this.getFilteredItems(
+        columnsOrder,
+        columns,
+        this.props.items
+      )
     };
   },
 
@@ -139,10 +163,81 @@ var TableSorter = React.createClass({
   handleFilterTextChange: function(column) {
     var self = this;
     return function(newValue) {
-      var obj = self.state.columns;
-      obj[column].filterText = newValue;
-      self.setState({columns:obj});
+      self.debounce(["columns", column], "filterText", function(newValue) {
+        var columns = self.state.columns;
+        columns[column].filterText = newValue;
+        self.setState({
+          columns: columns,
+          filteredItems: self.getFilteredItems(
+            self.getColumnNames(),
+            columns,
+            self.props.items
+          ),
+          currentPage: 1,
+          currentSlice: availableSlices[self.state.sliceChoice]
+        });
+      }, 250, newValue);
     };
+  },
+
+  getFilteredItems: function(columnNames, columns, items) {
+    var self = this;
+    var filters = {};
+
+    var items = _.map(items, function(item, i) {
+      return _.merge(item, {__indexFromOriginalArray: i});
+    });
+
+    var filteredItems = items;
+    if(!self.props.disableFiltering) {
+      var hasFilterText = false;
+      columnNames.forEach(function(column) {
+        var config = columns[column] ;
+        var filterText = config.filterText;
+        filters[column] = null;
+
+        if (filterText && filterText.length > 0) {
+          hasFilterText = true;
+          if(config.customFilter) {
+            filters[column] = _.partial(config.customFilter, filterText);
+          } else {
+            var operandMatch = operandRegex.exec(filterText);
+            if (operandMatch && (operandMatch.length === 3) ) {
+              filters[column] = function(match) {
+                return function(x) {
+                  return operators[match[1]](x, match[2]);
+                };
+              }(operandMatch);
+            } else {
+              filters[column] = function(x) {
+                return ~(_(x).toString().toLowerCase().indexOf(filterText.toLowerCase()));
+              };
+            }
+          }
+        }
+      });
+      if(hasFilterText) {
+        filteredItems = _.reduce(columnNames, function(filteredItems, c) {
+          if(!filters[c]) {
+            return filteredItems;
+          }
+          var filter = filters[c];
+          var customFilterData = columns[c].customFilterData;
+          var getter;
+          if(customFilterData) {
+            getter = _.isFunction(customFilterData) ?
+              customFilterData : columns[c].cellGenerator;
+          }
+          getter = getter || function(item) {
+            return item[c];
+          };
+          return _.filter(filteredItems, function(item) {
+            return filter(getter(item, item.__indexFromOriginalArray));
+          })
+        }, items);
+      }
+    }
+    return filteredItems;
   },
 
   getColumnNames: function() {
@@ -246,45 +341,8 @@ var TableSorter = React.createClass({
     var allRows = [];
 
     var columnNames = self.getColumnNames();
-    var filters = {};
-
-    var items = _.map(this.props.items, function(item, i) {
-      return _.merge(item, {__indexFromOriginalArray: i});
-    });
-    var totalItems = items.length;
-
-    /////////////////////////////////////////////////////////////////////////
-    // Apply filters
-    if(!self.props.disableFiltering) {
-      columnNames.forEach(function(column) {
-        var filterText = self.state.columns[column].filterText;
-        filters[column] = null;
-
-        if (filterText && filterText.length > 0) {
-          operandMatch = operandRegex.exec(filterText);
-          if (operandMatch && (operandMatch.length === 3) ) {
-            filters[column] = function(match) {
-              return function(x) {
-                return operators[match[1]](x, match[2]);
-              };
-            }(operandMatch);
-          } else {
-            filters[column] = function(x) {
-              return ~(_(x).toString().toLowerCase().indexOf(filterText.toLowerCase()));
-            };
-          }
-        }
-      });
-
-      var filteredItems = _.filter(items, function(item) {
-        return _.every(columnNames, function(c) {
-          return (!filters[c] || filters[c](item[c]));
-        });
-      });
-    } else {
-      var filteredItems = items;
-    }
-    /////////////////////////////////////////////////////////////////////////
+    var filteredItems = self.state.filteredItems;
+    var totalItems = filteredItems.length;
 
     /////////////////////////////////////////////////////////////////////////
     // Sort data
