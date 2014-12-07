@@ -1,6 +1,8 @@
 var React = require("react");
 var PropTypes = React.PropTypes;
 
+var BSRow = require("react-bootstrap/Row");
+var BSCol = require("react-bootstrap/Col");
 var BSInput = require("react-bootstrap/Input");
 var BSTable = require("react-bootstrap/Table");
 var BSButton = require("react-bootstrap/Button");
@@ -18,14 +20,15 @@ var operators = {
     "=": function(x, y) { return x == y; }
 };
 var operandRegex = /^((?:(?:[<>]=?)|=))\s?([-]?\d+(?:\.\d+)?)$/;
-
+var availableSlices = [5, 10, 20, 50, 100];
+var defaultSliceChoice = 2;
 // TableSorter React Component
 var TableSorter = React.createClass({
 
   propTypes: {
     config: PropTypes.shape({
       sort: PropTypes.shape({
-        colomn: PropTypes.string.isRequired,
+        column: PropTypes.string.isRequired,
         order: PropTypes.oneOf(["asc","desc"]).isRequired,
       }),
 
@@ -114,7 +117,10 @@ var TableSorter = React.createClass({
           fixedPositionColumns[colName] = i;
         }
         return fixedPositionColumns;
-      }, {})
+      }, {}),
+      currentPage: 1,
+      currentSlice: availableSlices[defaultSliceChoice],
+      sliceChoice: defaultSliceChoice
     };
   },
 
@@ -209,6 +215,32 @@ var TableSorter = React.createClass({
     }
   },
 
+  onPageChange: function(page) {
+    var currentSlice = availableSlices[this.state.sliceChoice] * page;
+    this.setState({
+      currentPage: page,
+      currentSlice: currentSlice
+    });
+  },
+
+  nextPage: function() {
+    var page = this.state.currentPage + 1;
+    this.onPageChange(page);
+  },
+
+  previousPage: function() {
+    var page = this.state.currentPage - 1;
+    this.onPageChange(page);
+  },
+
+  chooseSlice: function(sliceChoice) {
+    this.setState({
+      currentPage: 1,
+      currentSlice: availableSlices[sliceChoice],
+      sliceChoice: sliceChoice
+    });
+  },
+
   render: function() {
     var self = this;
     var allRows = [];
@@ -218,7 +250,8 @@ var TableSorter = React.createClass({
 
     var items = _.map(this.props.items, function(item, i) {
       return _.merge(item, {__indexFromOriginalArray: i});
-    })
+    });
+    var totalItems = items.length;
 
     /////////////////////////////////////////////////////////////////////////
     // Apply filters
@@ -262,6 +295,14 @@ var TableSorter = React.createClass({
     } else {
       var sortedItems = filteredItems;
     }
+    /////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////////////
+    // Pagination
+    var endSlice = this.state.currentSlice;
+    var startSlice = endSlice - availableSlices[this.state.sliceChoice];
+    endSlice = Math.min(endSlice, totalItems);
+    sortedItems = sortedItems.slice(startSlice, endSlice);
     /////////////////////////////////////////////////////////////////////////
 
     // Create headers
@@ -400,6 +441,71 @@ var TableSorter = React.createClass({
       );
     });
 
+    var currentPage = this.state.currentPage;
+    var totalPages = Math.ceil(
+      totalItems / availableSlices[this.state.sliceChoice]
+    );
+    function makeArrow(onClick, disabled, icon, srText) {
+      return (
+        <li className={disabled ? "disabled": ""}>
+          <span onClick={!disabled && onClick}>
+            <MKIcon glyph={icon} fixedWidth />
+            <span className="sr-only">{srText}</span>
+          </span>
+        </li>
+      );
+    }
+    var goToPreviousPage = makeArrow(
+      _.partial(this.previousPage, 1),
+      currentPage === 1,
+      "angle-left",
+      "Previous"
+    );
+    var goToNextPage = makeArrow(
+      _.partial(this.nextPage, 1),
+      currentPage === totalPages,
+      "angle-right",
+      "Next"
+    );
+    var goToFirstPage = makeArrow(
+      _.partial(this.onPageChange, 1),
+      currentPage === 1,
+      "angle-double-left",
+      "First"
+    );
+    var goToLastPage = makeArrow(
+      _.partial(this.onPageChange, totalPages),
+      currentPage === totalPages,
+      "angle-double-right",
+      "Last"
+    );
+    var firstPageShown = Math.max(currentPage - 2, 1);
+    var lastPageShown = Math.min(firstPageShown + 5, totalPages + 1);
+
+    var pages = _.map(_.range(firstPageShown, lastPageShown), function(pageNumber) {
+      var isCurrentPage = pageNumber === currentPage;
+      var activeClass = isCurrentPage && "active" || undefined;
+      var onClick = !isCurrentPage && _.partial(self.onPageChange, pageNumber);
+      return (
+        <li className={activeClass}>
+          <span onClick={onClick}>
+            {pageNumber}
+          </span>
+        </li>
+      );
+    });
+    var pager = (
+      <nav>
+        <ul className="pagination">
+          {goToFirstPage}
+          {goToPreviousPage}
+          {pages}
+          {goToNextPage}
+          {goToLastPage}
+        </ul>
+      </nav>
+    );
+
 
     var others = _.omit(this.props,
       "config",
@@ -412,25 +518,71 @@ var TableSorter = React.createClass({
     );
     var className = _(this.props.className).toString() + " table-sorter";
     return (
-      <BSTable
-        className={className}
-        cellSpacing="0"
-        {...others}
-      >
-        <thead>
-          <tr>
-            {header}
-          </tr>
-          {!self.props.disableFiltering ? (
-            <tr className="table-sorter-filter-row">
-              {filterInputs}
-            </tr>
-          ) : null }
-        </thead>
-        <tbody>
-          {allRows}
-        </tbody>
-      </BSTable>
+      <div>
+        <BSRow>
+          <BSCol xs={12}>
+            <BSTable
+              className={className}
+              cellSpacing="0"
+              {...others}
+            >
+              <thead>
+                <tr>
+                  {header}
+                </tr>
+                {!self.props.disableFiltering ? (
+                  <tr className="table-sorter-filter-row">
+                    {filterInputs}
+                  </tr>
+                ) : null }
+              </thead>
+              <tbody>
+                {allRows}
+              </tbody>
+            </BSTable>
+          </BSCol>
+        </BSRow>
+        <BSRow>
+          <BSCol xs={12}>
+            <span>
+              {__("showingResults", {
+                start: startSlice,
+                end: endSlice,
+                total: totalItems
+              })}
+            </span>
+            <span className="pull-right">
+              {__("resultPerPage")}
+              {_.map(availableSlices, function(slice, i) {
+                var separator = i === availableSlices.length - 1 ? "" : ", ";
+                if(i === self.state.sliceChoice) {
+                  var link = <span>{slice}</span>;
+                } else {
+                  var link = (
+                    <span
+                      className="btn-link clickable-span"
+                      onClick={_.partial(self.chooseSlice, i)}
+                    >
+                      {slice}
+                    </span>
+                  );
+                }
+                return (
+                  <span>
+                    {link}
+                    {separator}
+                  </span>
+                );
+              })}
+            </span>
+          </BSCol>
+        </BSRow>
+        <BSRow>
+          <BSCol xs={12} className="text-center">
+            {pager}
+          </BSCol>
+        </BSRow>
+      </div>
     );
   }
 });

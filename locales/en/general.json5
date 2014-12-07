@@ -23,6 +23,8 @@
   end: "End",
   start: "Start",
   filterBy: "Filter by ",
+  resultPerPage: "Results per page: ",
+  showingResults: "Results __start__ - __end__ of __total__",
 
   navbar: {
     homepage: "Homepage",
