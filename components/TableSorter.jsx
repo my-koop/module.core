@@ -517,24 +517,28 @@ var TableSorter = React.createClass({
       _.partial(this.previousPage, 1),
       currentPage === 1,
       "angle-left",
+      // FIXME::Localize
       "Previous"
     );
     var goToNextPage = makeArrow(
       _.partial(this.nextPage, 1),
       currentPage === totalPages,
       "angle-right",
+      // FIXME::Localize
       "Next"
     );
     var goToFirstPage = makeArrow(
       _.partial(this.onPageChange, 1),
       currentPage === 1,
       "angle-double-left",
+      // FIXME::Localize
       "First"
     );
     var goToLastPage = makeArrow(
       _.partial(this.onPageChange, totalPages),
       currentPage === totalPages,
       "angle-double-right",
+      // FIXME::Localize
       "Last"
     );
     var firstPageShown = Math.max(currentPage - 2, 1);
@@ -613,12 +617,13 @@ var TableSorter = React.createClass({
               {__("resultPerPage")}
               {_.map(availableSlices, function(slice, i) {
                 var separator = i === availableSlices.length - 1 ? "" : ", ";
+                var link;
                 if(i === self.state.sliceChoice) {
                   var link = <span>{slice}</span>;
                 } else {
                   var link = (
                     <span
-                      className="btn-link clickable-span"
+                      className="btn-link pointer"
                       onClick={_.partial(self.chooseSlice, i)}
                     >
                       {slice}
