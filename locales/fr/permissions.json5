@@ -1,0 +1,6 @@
+{
+  website: {
+    __description: "Site web",
+    settings: "Mettre à jour les paramètres du site"
+  }
+}

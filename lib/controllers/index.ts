@@ -12,7 +12,9 @@ export function attachControllers(
     {
       endPoint: endpoints.settings.get,
       permissions: {
-        //isRoot: true
+        website: {
+          settings: true
+        }
       }
     },
     binder.makeSimpleController(core.getSettings, function(req) {
@@ -30,7 +32,9 @@ export function attachControllers(
     {
       endPoint: endpoints.settings.set,
       permissions: {
-        //isRoot: true
+        website: {
+          settings: true
+        }
       }
     },
     binder.makeSimpleController(core.setSettings, function(req) {
