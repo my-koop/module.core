@@ -10,7 +10,8 @@ var _ = require("lodash");
 var actions = require("actions");
 var traverse = require("traverse");
 
-var contributions = require("dynamic-metadata").contributions.core;
+var metaData = require("dynamic-metadata");
+var contributions = metaData.contributions && metaData.contributions.core || {};
 var settingsContributions = _(contributions.settings)
 .filter(function(contribution) {
   return contribution.titleKey && _.isFunction(contribution.component);
