@@ -36,7 +36,10 @@ var UserList = React.createClass({
     var readOnly = this.props.readOnly;
     var onAdd = this.props.onAddUser || _.noop;
     var onDelete = this.props.onDeleteUser || _.noop;
-    var users = _.map(this.props.userList, function(user, i) {
+    var users = _.sortBy(this.props.userList, function(user) {
+      return user.name || user.firstName;
+    });
+    var userListItems = _.map(users, function(user, i) {
       var name = user.name || user.firstName + " " + user.lastName;
       return (
         <BSListGroupItem key={i}>
@@ -97,7 +100,7 @@ var UserList = React.createClass({
     return (
       <div>
         <BSListGroup>
-          {users}
+          {userListItems}
           {addUserInput}
         </BSListGroup>
       </div>
