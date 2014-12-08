@@ -43,7 +43,7 @@ var UserList = React.createClass({
       var name = user.name || user.firstName + " " + user.lastName;
       return (
         <BSListGroupItem key={i}>
-          {user.id} &ndash; {user.name}
+          {user.id} &ndash; {name}
           {!readOnly ?
             <span
               className="user-list-remove"
