@@ -1,5 +1,8 @@
 var React = require("react");
 
+var BSCol = require("react-bootstrap/Col");
+var BSRow = require("react-bootstrap/Row");
+
 var BSButton = require("react-bootstrap/Button");
 var BSPanel  = require("react-bootstrap/Panel");
 var BSInput  = require("react-bootstrap/Input");
@@ -19,6 +22,13 @@ var Notes = React.createClass({
     resourceId: React.PropTypes.number.isRequired,
     retrieveNotesAction: React.PropTypes.func.isRequired,
     addNoteAction: React.PropTypes.func.isRequired,
+    readOnly: React.PropTypes.bool
+  },
+
+  getDefaultProps: function() {
+    return {
+      readOnly: false
+    };
   },
 
   getInitialState: function() {
@@ -110,29 +120,42 @@ var Notes = React.createClass({
 
     return (
       <div>
-        <form onSubmit={this.onSubmit}>
-          <BSInput
-            type="textarea"
-            label={__("notes::InputLabel")}
-            valueLink={this.linkState("message")}
-          />
-          <BSInput
-            type="submit"
-            value={__("notes::Submit")}
-            bsStyle="success"
-            disabled={_.isEmpty(this.state.message)}
-          />
-        </form>
-        {notePanels}
-        { this.state.sliceCount < _.size(this.state.notes) ?
-          <BSButton
-            bsSize="small"
-            bsStyle="primary"
-            onClick={this.showMoreNotes}
-          >
-            {__("notes::ShowMore")}
-          </BSButton>
-        : null }
+        <BSRow>
+          <BSCol xs={12}>
+            <form onSubmit={this.onSubmit}>
+              {!this.props.readOnly ? [
+                <BSInput
+                  key="note"
+                  type="textarea"
+                  label={__("notes::InputLabel")}
+                  valueLink={this.linkState("message")}
+                />,
+                <BSInput
+                  key="send"
+                  type="submit"
+                  className="pull-right"
+                  value={__("notes::Submit")}
+                  bsStyle="success"
+                  disabled={_.isEmpty(this.state.message)}
+                />
+              ]: null}
+            </form>
+          </BSCol>
+        </BSRow>
+        <BSRow className={!this.props.readOnly ? "top-margin-15" : ""}>
+          <BSCol xs={12}>
+            {notePanels}
+            { this.state.sliceCount < _.size(this.state.notes) ?
+              <BSButton
+                bsSize="small"
+                bsStyle="primary"
+                onClick={this.showMoreNotes}
+              >
+                {__("notes::ShowMore")}
+              </BSButton>
+            : null}
+            </BSCol>
+        </BSRow>
       </div>
     );
   }
