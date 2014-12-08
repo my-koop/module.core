@@ -10,16 +10,18 @@ var _ = require("lodash");
 var actions = require("actions");
 var traverse = require("traverse");
 
-var coreMeta = require("dynamic-metadata").core;
-var contributions = coreMeta && coreMeta.contributions;
-var settingsContributions = _.toArray(
-  contributions && contributions.settings
-).filter(function(contribution) {
+var metaData = require("dynamic-metadata");
+var contributions = metaData.contributions && metaData.contributions.core || {};
+var settingsContributions = _(contributions.settings)
+.filter(function(contribution) {
   return contribution.titleKey && _.isFunction(contribution.component);
-}).map(function(contribution) {
+})
+.sortBy("priority")
+.map(function(contribution) {
   contribution.component = contribution.component();
   return contribution;
-});
+})
+.value();
 
 var SettingsPage = React.createClass({
   mixins: [MKFeedbacki18nMixin],
