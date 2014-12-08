@@ -20,11 +20,13 @@
   code: "Code",
   id: "ID",
   update: "Update",
+  add: "Add",
   end: "End",
   start: "Start",
   filterBy: "Filter by ",
   resultPerPage: "Results per page: ",
   showingResults: "Results __start__ - __end__ of __total__",
+  addNewUser: "Add a user",
 
   navbar: {
     homepage: "Homepage",
