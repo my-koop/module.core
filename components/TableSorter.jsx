@@ -40,12 +40,12 @@ var TableSorter = React.createClass({
         headerProps: PropTypes.object,
         // Allows to customize the data used to filter this column
         // function(item, i): any
-        customFilterData: React.PropTypes.func,
+        customFilterData: PropTypes.oneOfType([PropTypes.func,PropTypes.bool]),
         // Overwrites the filter method
         // returns a function to filter this column. True means keep this data
         // Called only if filter text is present
         // function(filterText: string): (columnData: any) => boolean;
-        customFilter: React.PropTypes.func,
+        customFilter: PropTypes.func,
         // default filter text
         filterText: PropTypes.string,
         // callback to create a custom cell content
@@ -510,7 +510,7 @@ var TableSorter = React.createClass({
       );
       function makeArrow(onClick, disabled, icon, srText) {
         return (
-          <li className={disabled ? "disabled": ""}>
+          <li key={srText} className={disabled ? "disabled": ""}>
             <span onClick={!disabled && onClick}>
               <MKIcon glyph={icon} fixedWidth />
               <span className="sr-only">{srText}</span>
@@ -554,7 +554,7 @@ var TableSorter = React.createClass({
         var activeClass = isCurrentPage && "active" || undefined;
         var onClick = !isCurrentPage && _.partial(self.onPageChange, pageNumber);
         return (
-          <li className={activeClass}>
+          <li key={pageNumber} className={activeClass}>
             <span onClick={onClick}>
               {pageNumber}
             </span>
@@ -589,7 +589,7 @@ var TableSorter = React.createClass({
     var className = _(this.props.className).toString() + " table-sorter";
     return (
       <div>
-        <BSRow>
+        <BSRow key="table">
           <BSCol xs={12}>
             <BSTable
               className={className}
@@ -613,7 +613,7 @@ var TableSorter = React.createClass({
           </BSCol>
         </BSRow>
         {!this.props.hidePager ? [
-          <BSRow>
+          <BSRow key="pagerOptions">
             <BSCol xs={12}>
               <span>
                 {__("showingResults", {
@@ -649,7 +649,7 @@ var TableSorter = React.createClass({
               </span>
             </BSCol>
           </BSRow>,
-          <BSRow>
+          <BSRow key="pager">
             <BSCol xs={12} className="text-center">
               {pager}
             </BSCol>
