@@ -74,6 +74,7 @@ var TableSorter = React.createClass({
     disableFiltering: PropTypes.bool,
     // Disable Dragging for this table
     disableDragging: PropTypes.bool,
+    hidePager: PropTypes.bool,
   },
 
   getDefaultProps: function() {
@@ -357,10 +358,12 @@ var TableSorter = React.createClass({
 
     /////////////////////////////////////////////////////////////////////////
     // Pagination
-    var endSlice = this.state.currentSlice;
-    var startSlice = endSlice - availableSlices[this.state.sliceChoice];
-    endSlice = Math.min(endSlice, totalItems);
-    sortedItems = sortedItems.slice(startSlice, endSlice);
+    if(!this.props.hidePager) {
+      var endSlice = this.state.currentSlice;
+      var startSlice = endSlice - availableSlices[this.state.sliceChoice];
+      endSlice = Math.min(endSlice, totalItems);
+      sortedItems = sortedItems.slice(startSlice, endSlice);
+    }
     /////////////////////////////////////////////////////////////////////////
 
     // Create headers
@@ -499,74 +502,79 @@ var TableSorter = React.createClass({
       );
     });
 
-    var currentPage = this.state.currentPage;
-    var totalPages = Math.ceil(
-      totalItems / availableSlices[this.state.sliceChoice]
-    );
-    function makeArrow(onClick, disabled, icon, srText) {
-      return (
-        <li className={disabled ? "disabled": ""}>
-          <span onClick={!disabled && onClick}>
-            <MKIcon glyph={icon} fixedWidth />
-            <span className="sr-only">{srText}</span>
-          </span>
-        </li>
+    var pager;
+    if(!this.props.hidePager) {
+      var currentPage = this.state.currentPage;
+      var totalPages = Math.ceil(
+        totalItems / availableSlices[this.state.sliceChoice]
       );
-    }
-    var goToPreviousPage = makeArrow(
-      _.partial(this.previousPage, 1),
-      currentPage === 1,
-      "angle-left",
-      // FIXME::Localize
-      "Previous"
-    );
-    var goToNextPage = makeArrow(
-      _.partial(this.nextPage, 1),
-      currentPage === totalPages,
-      "angle-right",
-      // FIXME::Localize
-      "Next"
-    );
-    var goToFirstPage = makeArrow(
-      _.partial(this.onPageChange, 1),
-      currentPage === 1,
-      "angle-double-left",
-      // FIXME::Localize
-      "First"
-    );
-    var goToLastPage = makeArrow(
-      _.partial(this.onPageChange, totalPages),
-      currentPage === totalPages,
-      "angle-double-right",
-      // FIXME::Localize
-      "Last"
-    );
-    var firstPageShown = Math.max(currentPage - 2, 1);
-    var lastPageShown = Math.min(firstPageShown + 5, totalPages + 1);
+      function makeArrow(onClick, disabled, icon, srText) {
+        return (
+          <li className={disabled ? "disabled": ""}>
+            <span onClick={!disabled && onClick}>
+              <MKIcon glyph={icon} fixedWidth />
+              <span className="sr-only">{srText}</span>
+            </span>
+          </li>
+        );
+      }
+      var goToPreviousPage = makeArrow(
+        _.partial(this.previousPage, 1),
+        currentPage === 1,
+        "angle-left",
+        // FIXME::Localize
+        "Previous"
+      );
+      var goToNextPage = makeArrow(
+        _.partial(this.nextPage, 1),
+        currentPage === totalPages,
+        "angle-right",
+        // FIXME::Localize
+        "Next"
+      );
+      var goToFirstPage = makeArrow(
+        _.partial(this.onPageChange, 1),
+        currentPage === 1,
+        "angle-double-left",
+        // FIXME::Localize
+        "First"
+      );
+      var goToLastPage = makeArrow(
+        _.partial(this.onPageChange, totalPages),
+        currentPage === totalPages,
+        "angle-double-right",
+        // FIXME::Localize
+        "Last"
+      );
+      var firstPageShown = Math.max(currentPage - 2, 1);
+      var lastPageShown = Math.min(firstPageShown + 5, totalPages + 1);
 
-    var pages = _.map(_.range(firstPageShown, lastPageShown), function(pageNumber) {
-      var isCurrentPage = pageNumber === currentPage;
-      var activeClass = isCurrentPage && "active" || undefined;
-      var onClick = !isCurrentPage && _.partial(self.onPageChange, pageNumber);
-      return (
-        <li className={activeClass}>
-          <span onClick={onClick}>
-            {pageNumber}
-          </span>
-        </li>
+      var pages = _.map(_.range(firstPageShown, lastPageShown), function(pageNumber) {
+        var isCurrentPage = pageNumber === currentPage;
+        var activeClass = isCurrentPage && "active" || undefined;
+        var onClick = !isCurrentPage && _.partial(self.onPageChange, pageNumber);
+        return (
+          <li className={activeClass}>
+            <span onClick={onClick}>
+              {pageNumber}
+            </span>
+          </li>
+        );
+      });
+      pager = (
+        <nav>
+          <ul className="pagination">
+            {goToFirstPage}
+            {goToPreviousPage}
+            {pages}
+            {goToNextPage}
+            {goToLastPage}
+          </ul>
+        </nav>
       );
-    });
-    var pager = (
-      <nav>
-        <ul className="pagination">
-          {goToFirstPage}
-          {goToPreviousPage}
-          {pages}
-          {goToNextPage}
-          {goToLastPage}
-        </ul>
-      </nav>
-    );
+    } else {
+      pager = null;
+    }
 
 
     var others = _.omit(this.props,
@@ -604,47 +612,49 @@ var TableSorter = React.createClass({
             </BSTable>
           </BSCol>
         </BSRow>
-        <BSRow>
-          <BSCol xs={12}>
-            <span>
-              {__("showingResults", {
-                start: startSlice,
-                end: endSlice,
-                total: totalItems
-              })}
-            </span>
-            <span className="pull-right">
-              {__("resultPerPage")}
-              {_.map(availableSlices, function(slice, i) {
-                var separator = i === availableSlices.length - 1 ? "" : ", ";
-                var link;
-                if(i === self.state.sliceChoice) {
-                  var link = <span>{slice}</span>;
-                } else {
-                  var link = (
-                    <span
-                      className="btn-link pointer"
-                      onClick={_.partial(self.chooseSlice, i)}
-                    >
-                      {slice}
+        {!this.props.hidePager ? [
+          <BSRow>
+            <BSCol xs={12}>
+              <span>
+                {__("showingResults", {
+                  start: startSlice,
+                  end: endSlice,
+                  total: totalItems
+                })}
+              </span>
+              <span className="pull-right">
+                {__("resultPerPage")}
+                {_.map(availableSlices, function(slice, i) {
+                  var separator = i === availableSlices.length - 1 ? "" : ", ";
+                  var link;
+                  if(i === self.state.sliceChoice) {
+                    var link = <span>{slice}</span>;
+                  } else {
+                    var link = (
+                      <span
+                        className="btn-link pointer"
+                        onClick={_.partial(self.chooseSlice, i)}
+                      >
+                        {slice}
+                      </span>
+                    );
+                  }
+                  return (
+                    <span key={i}>
+                      {link}
+                      {separator}
                     </span>
                   );
-                }
-                return (
-                  <span>
-                    {link}
-                    {separator}
-                  </span>
-                );
-              })}
-            </span>
-          </BSCol>
-        </BSRow>
-        <BSRow>
-          <BSCol xs={12} className="text-center">
-            {pager}
-          </BSCol>
-        </BSRow>
+                })}
+              </span>
+            </BSCol>
+          </BSRow>,
+          <BSRow>
+            <BSCol xs={12} className="text-center">
+              {pager}
+            </BSCol>
+          </BSRow>
+        ] : null}
       </div>
     );
   }
