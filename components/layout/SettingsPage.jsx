@@ -1,5 +1,7 @@
 var React = require("react");
 
+var BSCol = require("react-bootstrap/Col");
+var BSRow = require("react-bootstrap/Row");
 var BSButton = require("react-bootstrap/Button");
 
 var MKCollapsablePanel = require("../CollapsablePanel");
@@ -99,16 +101,24 @@ var SettingsPage = React.createClass({
     }
     return (
       <div>
-        {this.renderFeedback()}
         <h1>
           {__("settingsPage")}
         </h1>
+        {this.renderFeedback()}
         {this.state.settingsRetrieved ?
           <div>
-            <BSButton onClick={this.onSave} bsStyle="primary">
-              {__("update")}
-            </BSButton>
             {panels()}
+            <BSRow>
+              <BSCol xs={12}>
+                <BSButton
+                  className="pull-right"
+                  onClick={this.onSave}
+                  bsStyle="success"
+                >
+                  {__("update")}
+                </BSButton>
+              </BSCol>
+            </BSRow>
           </div>
         : null}
       </div>

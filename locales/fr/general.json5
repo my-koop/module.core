@@ -1,4 +1,6 @@
 {
+  yes: "Oui",
+  no: "Non",
   welcome: "Bienvenue",
   homeMessage: "Bienvenue à CoopBécik, propulsé par MyKoop",
   settingsPage: "Paramètres du site",

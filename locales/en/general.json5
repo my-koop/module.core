@@ -1,4 +1,6 @@
 {
+  yes: "Yes",
+  no: "No",
   welcome: "Welcome",
   homeMessage: "Welcome to CoopBécik, powered by MyKoop",
   settingsPage: "Site Settings",
