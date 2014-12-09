@@ -10,6 +10,7 @@ var BSButton = require("react-bootstrap/Button");
 
 var MKUserEmailInput = require("./UserEmailInput");
 var MKIcon = require("./Icon");
+var MKConfirmationTrigger = require("./ConfirmationTrigger");
 
 var _ = require("lodash");
 var __ = require("language").__;
@@ -22,6 +23,13 @@ var UserList = React.createClass({
     readOnly: React.PropTypes.bool,
     onAddUser: React.PropTypes.func,
     onDeleteUser: React.PropTypes.func,
+    maxLength: React.PropTypes.number
+  },
+
+  getDefaultProps: function() {
+    return {
+      maxLength: 10
+    };
   },
 
   getInitialState: function() {
@@ -45,12 +53,16 @@ var UserList = React.createClass({
         <BSListGroupItem key={i}>
           {user.id} &ndash; {name}
           {!readOnly ?
-            <span
-              className="user-list-remove"
-              onClick={_.partial(onDelete, user)}
+            <MKConfirmationTrigger
+              message={__("areYouSure")}
+              onYes={_.partial(onDelete, user)}
             >
-              <MKIcon glyph="close" fixedWidth />
-            </span>
+              <span
+                className="user-list-remove"
+              >
+                <MKIcon glyph="close" fixedWidth />
+              </span>
+            </MKConfirmationTrigger>
           : null}
         </BSListGroupItem>
       );
@@ -99,10 +111,15 @@ var UserList = React.createClass({
     );
     return (
       <div>
-        <BSListGroup>
-          {userListItems}
-          {addUserInput}
-        </BSListGroup>
+        <div
+          style={{maxHeight: 42*this.props.maxLength}}
+          className="list-group-tight"
+        >
+          <BSListGroup >
+            {userListItems}
+          </BSListGroup>
+        </div>
+        {addUserInput}
       </div>
     );
   }

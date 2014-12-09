@@ -8,6 +8,19 @@
   }
 }
 
+.list-group-tight {
+  overflow-y: auto;
+  .list-group {
+    margin-bottom: 0;
+    .list-group-item {
+      &:last-child {
+        .border-bottom-radius(0);
+        border-bottom: none;
+      }
+    }
+  }
+}
+
 .user-list-remove {
   .pull-right();
   .pointer;
