@@ -19,6 +19,16 @@ var uiHooks = {
       priority: 200
     }
   },
+  navbar_main_dashboard: {
+    quickactions: {
+      type: "item",
+      content: {
+        icon: "bolt",
+        text: "navbar.quickactions",
+      },
+      priority: 500
+    }
+  },
   sidebar: {
     settings: {
       type: "item",
