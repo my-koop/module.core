@@ -613,7 +613,7 @@ var TableSorter = React.createClass({
             <BSCol xs={12}>
               <span>
                 {__("showingResults", {
-                  start: startSlice + 1,
+                  start: !endSlice ? 0 : startSlice + 1,
                   end: endSlice,
                   total: totalItems
                 })}
