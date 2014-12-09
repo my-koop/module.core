@@ -87,8 +87,8 @@ var ConfirmationTrigger = React.createClass({
           {this.props.message}
         </div>
         <div className="modal-footer">
-          <BSButton onClick={this.accept} bsStyle="success">Yes</BSButton>
-          <BSButton onClick={this.refuse} bsStyle="danger">No</BSButton>
+          <BSButton onClick={this.accept} bsStyle="success">{__("yes")}</BSButton>
+          <BSButton onClick={this.refuse} bsStyle="danger">{__("no")}</BSButton>
         </div>
       </BSModal>
     );

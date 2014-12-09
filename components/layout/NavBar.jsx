@@ -109,7 +109,7 @@ var NavBar = React.createClass({
         glyph={icon}
         fixedWidth
       />,
-      <span className={!isSubMenu ? "hidden-xs hidden-sm" : ""}>
+      <span className={!isSubMenu ? "hidden-sm" : ""}>
         {" " + showText}
       </span>
     ];
