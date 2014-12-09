@@ -41,7 +41,7 @@ var AbstractModal = React.createClass({
   render: function () {
     var header = this.props.modalHeader ? <div className="modal-header"> {this.props.modalHeader} </div>: null;
     return this.transferPropsTo(
-      <BSModal title={this.props.title} bsSize="small">
+      <BSModal title={this.props.title}>
         {header}
         <div className="modal-body">
           {this.props.modalBody}
