@@ -16,6 +16,7 @@ var MKFeedbacki18nMixin = require("./Feedbacki18nMixin");
 var _ = require("lodash");
 var __ = require("language").__;
 var actions = require("actions");
+var async = require("async");
 
 var UserList = React.createClass({
   mixins: [MKFeedbacki18nMixin],
@@ -25,6 +26,7 @@ var UserList = React.createClass({
     readOnly: React.PropTypes.bool,
     noAdd: React.PropTypes.bool,
     noDelete: React.PropTypes.bool,
+    checkCanAddUser: React.PropTypes.func,
     onAddUser: React.PropTypes.func,
     onDeleteUser: React.PropTypes.func,
     maxLength: React.PropTypes.number
@@ -51,6 +53,7 @@ var UserList = React.createClass({
     var users = _.sortBy(this.props.userList, function(user) {
       return user.name || user.firstName;
     });
+    var checkCanAddUser = this.props.checkCanAddUser;
     var userListItems = _.map(users, function(user, i) {
       var name = user.name || user.firstName + " " + user.lastName;
       return (
@@ -74,24 +77,35 @@ var UserList = React.createClass({
     var emailLink = {
       value: this.state.newUserEmail,
       requestChange: function(newEmail, newUserInfo) {
-        var userAlreadyPresent = false;
-        if(newUserInfo) {
-          // check if this user is already part of the list
-          if(_.find(users, function(user) {
-              return user.id === newUserInfo.id;
-            })
-          ) {
-            newUserInfo = null;
-            userAlreadyPresent = true;
-            self.setFeedback({key: "userListDuplicate"}, "warning");
+        async.waterfall([
+          function(next) {
+            if(newUserInfo && checkCanAddUser) {
+              return checkCanAddUser(newUserInfo, next);
+            }
+            next();
+          },
+          function(next) {
+            if(newUserInfo) {
+              // check if this user is already part of the list
+              if(_.find(users, function(user) {
+                  return user.id === newUserInfo.id;
+                })
+              ) {
+                return next({key: "userListDuplicate"});
+              }
+            }
+            next();
           }
-        }
-        if(!userAlreadyPresent) {
-          self.clearFeedback();
-        }
-        self.setState({
-          newUserEmail: newEmail,
-          newUserInfo: newUserInfo,
+        ], function(err) {
+          if(!err) {
+            self.clearFeedback();
+          } else {
+            self.setFeedback(err, "warning");
+          }
+          self.setState({
+            newUserEmail: newEmail,
+            newUserInfo: !err ? newUserInfo : null,
+          });
         });
       }
     };
@@ -135,7 +149,7 @@ var UserList = React.createClass({
           style={{maxHeight: 42*this.props.maxLength}}
           className="list-group-tight"
         >
-          <BSListGroup >
+          <BSListGroup>
             {userListItems}
           </BSListGroup>
         </div>

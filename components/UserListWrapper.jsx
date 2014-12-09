@@ -75,6 +75,7 @@ var UserListWrapper = React.createClass({
         userList={this.state.users}
         noAdd={this.props.noAdd || !this.props.onAddUser}
         noDelete={this.props.noDelete || !this.props.onDeleteUser}
+        checkCanAddUser={this.props.checkCanAddUser}
         onAddUser={this.onAdd}
         onDeleteUser={this.onDelete}
       />
