@@ -1,4 +1,4 @@
-﻿var React = require("react");
+﻿var React = require("react/addons");
 var Router = require("react-router");
 var uiHookData = require("dynamic-metadata").uihooks;
 var configs = require("mykoop-config.json5");
@@ -23,6 +23,53 @@ var MKPermissionWrapper = require("mykoop-user/components/PermissionWrapper");
 
 var language = require("language");
 var __ = language.__;
+
+var DropdownButtonWrapper = React.createClass({
+  componentDidMount: function() {
+    this.checkIfNotEmpty();
+  },
+
+  componentDidUpdate: function() {
+    this.checkIfNotEmpty();
+  },
+
+  componentWillReceiveProps: function() {
+    this.setState({
+      hidden: false
+    });
+  },
+
+  getInitialState: function() {
+    return {
+      hidden: false
+    };
+  },
+
+  checkIfNotEmpty: function() {
+    var empty = false;
+
+    if (this.getDOMNode().childNodes[1].childNodes[0].nodeName === "NOSCRIPT") {
+      empty = true;
+    }
+
+    if (this.state.hidden !== empty) {
+      this.setState({
+        hidden: !this.state.hidden
+      });
+    }
+  },
+
+  render: function() {
+    return React.addons.cloneWithProps(
+        <BSDropdownButton
+          className={this.state.hidden ? "hidden" : ""}
+        >
+          {this.props.children}
+        </BSDropdownButton>,
+        _.omit(this.props, ["children"])
+      );
+  }
+});
 
 // NavigationBar
 var NavBar = React.createClass({
@@ -115,7 +162,7 @@ var NavBar = React.createClass({
       return [];
     }
 
-    baseNavBar = baseNavBar || {};
+    baseNavBar = baseNavBar ? _.cloneDeep(baseNavBar) : {};
 
     // Generate nav bar.
     return _(baseNavBar)
@@ -186,7 +233,7 @@ var NavBar = React.createClass({
               .value();
 
               content = (
-                <BSDropdownButton
+                <DropdownButtonWrapper
                   className={extraClass}
                   key={this.navItemKey++}
                   title={self.renderMenuElement(
@@ -195,7 +242,7 @@ var NavBar = React.createClass({
                   )}
                 >
                   {childrenContent}
-                </BSDropdownButton>
+                </DropdownButtonWrapper>
               );
             } else {
               content = self.renderMenuLink(itemIndex, navItem.content, false, extraClass);

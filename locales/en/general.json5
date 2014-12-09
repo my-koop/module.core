@@ -31,7 +31,8 @@
 
   navbar: {
     homepage: "Homepage",
-    aboutus: "About Us"
+    quickactions: "Quick Actions",
+    aboutus: "About Us",
   },
   sidebar: {
     settings: "Site Settings"

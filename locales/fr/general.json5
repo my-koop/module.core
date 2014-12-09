@@ -30,8 +30,9 @@
   userListDuplicate: "Cet utilisateur fait déjà partie de la liste",
 
   navbar: {
-    "homepage": "Accueil",
-    "aboutus": "À propos"
+    homepage: "Accueil",
+    quickactions: "Actions rapides",
+    aboutus: "À propos",
   },
   sidebar: {
     settings: "Paramètres du site"
