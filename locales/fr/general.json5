@@ -32,7 +32,7 @@
   showingResults: "Résultats __start__ - __end__ de __total__",
   addNewUser: "Ajouter un utilisateur",
   userListDuplicate: "Cet utilisateur fait déjà partie de la liste",
-  userList: "Liste d'utilisateur",
+  userList: "Liste d'utilisateurs",
 
   navbar: {
     homepage: "Accueil",
