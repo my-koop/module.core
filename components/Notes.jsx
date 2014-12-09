@@ -8,6 +8,7 @@ var BSPanel  = require("react-bootstrap/Panel");
 var BSInput  = require("react-bootstrap/Input");
 
 var MKAlert = require("./Alert");
+var MKIcon = require("./Icon");
 
 var language   = require("language");
 var __         = language.__;
@@ -145,13 +146,17 @@ var Notes = React.createClass({
         <BSRow className={!this.props.readOnly ? "top-margin-15" : ""}>
           <BSCol xs={12}>
             {notePanels}
-            { this.state.sliceCount < _.size(this.state.notes) ?
+            {this.state.sliceCount < _.size(this.state.notes) ?
               <BSButton
-                bsSize="small"
-                bsStyle="primary"
+                bsStyle="default"
+                block
                 onClick={this.showMoreNotes}
               >
-                {__("notes::ShowMore")}
+                <strong>
+                  <MKIcon glyph="angle-double-down" />
+                  {" " + __("notes::ShowMore") + " "}
+                  <MKIcon glyph="angle-double-down" />
+                </strong>
               </BSButton>
             : null}
             </BSCol>

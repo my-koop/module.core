@@ -146,6 +146,10 @@ var ListModButtons = React.createClass({
         );
       }
 
+      if (self.props.justified) {
+        result = <BSButtonGroup>{result}</BSButtonGroup>;
+      }
+
       if(btn.customWrapper) {
         result = btn.customWrapper(result, i);
       }
