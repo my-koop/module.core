@@ -510,7 +510,7 @@ var TableSorter = React.createClass({
       );
       function makeArrow(onClick, disabled, icon, srText) {
         return (
-          <li key={srText} className={disabled ? "disabled": ""}>
+          <li key={srText} className={disabled ? "disabled": ""} title={srText}>
             <span onClick={!disabled && onClick}>
               <MKIcon glyph={icon} fixedWidth />
               <span className="sr-only">{srText}</span>
@@ -522,29 +522,25 @@ var TableSorter = React.createClass({
         _.partial(this.previousPage, 1),
         currentPage === 1,
         "angle-left",
-        // FIXME::Localize
-        "Previous"
+        __("previous")
       );
       var goToNextPage = makeArrow(
         _.partial(this.nextPage, 1),
         currentPage === totalPages,
         "angle-right",
-        // FIXME::Localize
-        "Next"
+        __("next")
       );
       var goToFirstPage = makeArrow(
         _.partial(this.onPageChange, 1),
         currentPage === 1,
         "angle-double-left",
-        // FIXME::Localize
-        "First"
+        __("first")
       );
       var goToLastPage = makeArrow(
         _.partial(this.onPageChange, totalPages),
         currentPage === totalPages,
         "angle-double-right",
-        // FIXME::Localize
-        "Last"
+        __("last")
       );
       var firstPageShown = Math.max(currentPage - 2, 1);
       var lastPageShown = Math.min(firstPageShown + 5, totalPages + 1);

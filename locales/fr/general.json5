@@ -9,6 +9,10 @@
   actions: "Actions",
   remove: "Supprimer",
   areYouSure: "Êtes-vous certain ?",
+  previous: "Précédent",
+  next: "Suivant",
+  first: "Premier",
+  last: "Dernier",
   moveUp: "Déplacer vers le haut",
   moveDown: "Déplacer vers le bas",
   moveLeft: "Déplacer vers la gauche",
@@ -28,6 +32,7 @@
   showingResults: "Résultats __start__ - __end__ de __total__",
   addNewUser: "Ajouter un utilisateur",
   userListDuplicate: "Cet utilisateur fait déjà partie de la liste",
+  userList: "Liste d'utilisateur",
 
   navbar: {
     homepage: "Accueil",
