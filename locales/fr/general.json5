@@ -34,6 +34,9 @@
   userListDuplicate: "Cet utilisateur fait déjà partie de la liste",
   userList: "Liste d'utilisateurs",
 
+  poweredBy: "Ce site est propulsé par ",
+  aboutUsMessage: "Coop Bécik est une coopérative de consommateurs à but non lucratif. Pour devenir membre, il suffit de souscrire une part sociale de 10$ dès votre première visite.",
+  aboutus: "À propos",
   navbar: {
     homepage: "Accueil",
     quickactions: "Actions rapides",

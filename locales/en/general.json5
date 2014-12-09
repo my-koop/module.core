@@ -34,6 +34,10 @@
   userListDuplicate: "User is already part of the list",
   userList: "User list",
 
+  poweredBy: "This site is powered by ",
+  aboutUsMessage: "Becik Coop is a cooperative nonprofit consumers. To become a member, simply purchase a share of $10 on your first visit.",
+  aboutUsMessage: "Coop Bécik is a non profit cooperative ",
+  aboutus: "About Us",
   navbar: {
     homepage: "Homepage",
     quickactions: "Quick Actions",

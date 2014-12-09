@@ -155,7 +155,7 @@ var ListModButtons = React.createClass({
     var props = _.omit(this.props,
       "buttons",
       "stopPropagation",
-      "defaultTooltipDela"
+      "defaultTooltipDelay"
     );
     return (
       <BSButtonGroup {...props}>

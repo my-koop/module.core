@@ -11,7 +11,7 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
   });
   metaDataBuilder.addFrontendRoute({
     idPath: ["public", "aboutus"],
-    component: "PlaceHolder",
+    component: "layout/AboutUsPage",
     name: "about",
     path: "aboutus",
     i18nKey: "navbar.aboutus"

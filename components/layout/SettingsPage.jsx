@@ -33,6 +33,7 @@ var SettingsPage = React.createClass({
   },
 
   componentWillMount: function() {
+    this.settingsGetters = [];
     this.retrieveSettings();
   },
 
