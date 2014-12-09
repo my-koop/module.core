@@ -17,7 +17,7 @@ var Homepage = React.createClass({
           {__("poweredBy")}
           <a href="https://github.com/my-koop">
             My Koop
-          </a>
+          </a>.
         </p>
       </div>
     );

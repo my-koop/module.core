@@ -28,7 +28,7 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
     idPath: ["dashboard"],
     component: "wrappers/DashboardWrapper",
     path: "/dashboard",
-    default: "layout/Homepage",
+    default: "layout/DashboardHome",
     i18nKey: "user::navbar.dashboard"
   });
 

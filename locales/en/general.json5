@@ -2,7 +2,7 @@
   yes: "Yes",
   no: "No",
   welcome: "Welcome",
-  homeMessage: "Welcome to CoopBécik, powered by MyKoop",
+  homeMessage: "Welcome to the management system of Coop Bécik, powered by My Koop.",
   settingsPage: "Site Settings",
 
   confirm: "Confirm",
@@ -37,7 +37,7 @@
   userList: "User list",
 
   poweredBy: "This site is powered by ",
-  aboutUsMessage: "Becik Coop is a cooperative nonprofit consumers. To become a member, simply purchase a share of $10 on your first visit.",
+  aboutUsMessage: "Coop Bécik is a cooperative nonprofit consumers. To become a member, simply purchase a share of $10 on your first visit.",
   aboutus: "About Us",
   navbar: {
     homepage: "Homepage",
@@ -47,4 +47,8 @@
   sidebar: {
     settings: "Site Settings"
   },
+  dashboard: {
+    welcomeTitle: "Administration dashboard",
+    welcomeMessage: "Welcome to the administration dashboard. You can use the menu on your left to proceed to your administrative duties."
+  }
 }
