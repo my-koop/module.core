@@ -11,16 +11,20 @@ var BSButton = require("react-bootstrap/Button");
 var MKUserEmailInput = require("./UserEmailInput");
 var MKIcon = require("./Icon");
 var MKConfirmationTrigger = require("./ConfirmationTrigger");
+var MKFeedbacki18nMixin = require("./Feedbacki18nMixin");
 
 var _ = require("lodash");
 var __ = require("language").__;
 var actions = require("actions");
 
 var UserList = React.createClass({
+  mixins: [MKFeedbacki18nMixin],
 
   propTypes : {
-    userList: React.PropTypes.array,
+    userList: React.PropTypes.array.isRequired,
     readOnly: React.PropTypes.bool,
+    noAdd: React.PropTypes.bool,
+    noDelete: React.PropTypes.bool,
     onAddUser: React.PropTypes.func,
     onDeleteUser: React.PropTypes.func,
     maxLength: React.PropTypes.number
@@ -52,7 +56,7 @@ var UserList = React.createClass({
       return (
         <BSListGroupItem key={i}>
           {user.id} &ndash; {name}
-          {!readOnly ?
+          {!readOnly && !self.props.noDelete ?
             <MKConfirmationTrigger
               message={__("areYouSure")}
               onYes={_.partial(onDelete, user)}
@@ -70,9 +74,24 @@ var UserList = React.createClass({
     var emailLink = {
       value: this.state.newUserEmail,
       requestChange: function(newEmail, newUserInfo) {
+        var userAlreadyPresent = false;
+        if(newUserInfo) {
+          // check if this user is already part of the list
+          if(_.find(users, function(user) {
+              return user.id === newUserInfo.id;
+            })
+          ) {
+            newUserInfo = null;
+            userAlreadyPresent = true;
+            self.setFeedback({key: "userListDuplicate"}, "warning");
+          }
+        }
+        if(!userAlreadyPresent) {
+          self.clearFeedback();
+        }
         self.setState({
           newUserEmail: newEmail,
-          newUserInfo: newUserInfo
+          newUserInfo: newUserInfo,
         });
       }
     };
@@ -90,7 +109,7 @@ var UserList = React.createClass({
         </BSButton>
       );
     }
-    var addUserInput = !readOnly && (
+    var addUserInput = !readOnly && !this.props.noAdd && (
       <BSListGroupItem key="newUser">
         <BSRow>
           <BSCol xs={12}>
@@ -111,6 +130,7 @@ var UserList = React.createClass({
     );
     return (
       <div>
+        {this.renderFeedback()}
         <div
           style={{maxHeight: 42*this.props.maxLength}}
           className="list-group-tight"
