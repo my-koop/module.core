@@ -5,13 +5,15 @@ function addRoutes(metaDataBuilder) {
         component: "wrappers/PublicWrapper",
         name: "home",
         path: "/",
-        default: "layout/Homepage"
+        default: "layout/Homepage",
+        i18nKey: "navbar.homepage"
     });
     metaDataBuilder.addFrontendRoute({
         idPath: ["public", "aboutus"],
         component: "PlaceHolder",
         name: "about",
-        path: "aboutus"
+        path: "aboutus",
+        i18nKey: "navbar.aboutus"
     });
     /* Simple wrapper. */
     metaDataBuilder.addFrontendRoute({
@@ -24,13 +26,15 @@ function addRoutes(metaDataBuilder) {
         idPath: ["dashboard"],
         component: "wrappers/DashboardWrapper",
         path: "/dashboard",
-        default: "layout/Homepage"
+        default: "layout/Homepage",
+        i18nKey: "user::navbar.dashboard"
     });
     metaDataBuilder.addFrontendRoute({
         idPath: ["dashboard", "settings"],
         name: "settings",
         component: "layout/SettingsPage",
         path: "settings",
+        i18nKey: "sidebar.settings"
     });
 }
 exports.addRoutes = addRoutes;
