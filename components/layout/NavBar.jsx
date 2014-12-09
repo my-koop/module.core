@@ -62,7 +62,7 @@ var DropdownButtonWrapper = React.createClass({
   render: function() {
     return React.addons.cloneWithProps(
         <BSDropdownButton
-          style={this.state.hidden ? {display: "none"} : undefined}
+          className={this.state.hidden ? "hidden" : ""}
         >
           {this.props.children}
         </BSDropdownButton>,
