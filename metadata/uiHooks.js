@@ -37,7 +37,12 @@ var uiHooks = {
                 text: "sidebar.settings",
                 link: "settings"
             },
-            priority: 1000
+            priority: 1000,
+            permissions: {
+                website: {
+                    settings: true
+                }
+            }
         }
     }
 };

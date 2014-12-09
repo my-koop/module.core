@@ -34,7 +34,12 @@ function addRoutes(metaDataBuilder) {
         name: "settings",
         component: "layout/SettingsPage",
         path: "settings",
-        i18nKey: "sidebar.settings"
+        i18nKey: "sidebar.settings",
+        permissions: {
+            website: {
+                settings: true
+            }
+        }
     });
 }
 exports.addRoutes = addRoutes;
