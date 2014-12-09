@@ -100,7 +100,7 @@ var NavBar = React.createClass({
     ) : content;
   },
 
-  renderMenuElement: function(icon, text) {
+  renderMenuElement: function(icon, text, isSubMenu) {
     var showText = _.isFunction(text) ? text()() : __(text);
 
     return [
@@ -109,7 +109,9 @@ var NavBar = React.createClass({
         glyph={icon}
         fixedWidth
       />,
-      " " + showText
+      <span className={!isSubMenu ? "hidden-xs hidden-sm" : ""}>
+        {" " + showText}
+      </span>
     ];
   },
 
@@ -142,7 +144,7 @@ var NavBar = React.createClass({
         query={computedLink.query}
         className={extraClass}
       >
-        {this.renderMenuElement(content.icon, content.text)}
+        {this.renderMenuElement(content.icon, content.text, isSubMenu)}
       </component>
     );
   },

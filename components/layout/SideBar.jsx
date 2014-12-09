@@ -1,4 +1,4 @@
-var React = require("react");
+var React = require("react/addons");
 var Router = require("react-router");
 var uiHookData = require("dynamic-metadata").uihooks;
 
@@ -98,10 +98,15 @@ var SideBar = React.createClass({
       computedLink = "";
     }
 
+    var classes = React.addons.classSet({
+      "list-group-category": computedLink === "",
+      "sub-list-group-item": isSubItem
+    });
+
     var render = (
       <BSListGroupItem
         key={key}
-        className={isSubItem && "sub-list-group-item"}
+        className={classes}
         href={computedLink}
       >
         <MKIcon glyph={content.icon} fixedWidth />

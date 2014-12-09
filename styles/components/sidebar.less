@@ -20,10 +20,8 @@
     margin-bottom: 0;
 
     .list-group-item {
-      //border-top: 2px solid;
       &:first-child {
         .border-top-radius(0);
-        //border-top: inherit;
       }
 
       &:last-child {
@@ -35,11 +33,22 @@
       padding: 0;
     }
 
+    .list-group-category {
+      cursor: default;
+
+      &.list-group-item:hover {
+        background-color: @list-group-bg;
+      }
+    }
+
     .sub-list-group-item, //FIXME: Temporary...
     .list-group-item .list-group .list-group-item {
-      //border-top: inherit;
       @media (min-width: @screen-sm-min) {
         padding-left: 30px;
+      }
+
+      @media (max-width: @screen-sm) {
+        background-color: lighten(@state-info-bg, 5%);
       }
     }
   }
