@@ -61,18 +61,18 @@ var DropdownButtonWrapper = React.createClass({
 
   render: function() {
     return React.addons.cloneWithProps(
-        <BSDropdownButton
-          className={this.state.hidden ? "hidden" : ""}
-        >
-          {this.props.children}
-        </BSDropdownButton>,
-        _.omit(this.props, ["children"])
-      );
+      <BSDropdownButton
+        className={this.state.hidden ? "hidden" : ""}
+      >
+        {this.props.children}
+      </BSDropdownButton>,
+      _.omit(this.props, ["children"])
+    );
   }
 });
 
 // NavigationBar
-var NavBar = React.createClass({
+var MKNavBar = React.createClass({
   propTypes: {
     dashboard: React.PropTypes.bool,
   },
@@ -198,7 +198,7 @@ var NavBar = React.createClass({
                         );
                       } else {
                         subContent = self.renderMenuLink(
-                          subItemIndex,
+                          self.navItemKey++,
                           navSubItem.content,
                           true,
                           extraClass
@@ -207,7 +207,7 @@ var NavBar = React.createClass({
                     } else {
                       subContent = <BSMenuItem
                         className={extraClass}
-                        key={this.navItemKey++}
+                        key={self.navItemKey++}
                         divider
                       />;
                     }
@@ -216,7 +216,7 @@ var NavBar = React.createClass({
                   case "custom":
                     // We expect a component getter built from a resolve
                     // descriptor.
-                    subContent = navSubItem.content()();
+                    subContent = navSubItem.content()({key: self.navItemKey++});
                     break;
 
                   default:
@@ -227,7 +227,7 @@ var NavBar = React.createClass({
                 }
 
                 return self.wrapWithPermissions(
-                  subItemIndex,
+                  self.navItemKey++,
                   subContent,
                   navSubItem.permissions
                 );
@@ -237,7 +237,7 @@ var NavBar = React.createClass({
               content = (
                 <DropdownButtonWrapper
                   className={extraClass}
-                  key={this.navItemKey++}
+                  key={self.navItemKey++}
                   title={self.renderMenuElement(
                     navItem.content.icon,
                     navItem.content.text
@@ -247,13 +247,13 @@ var NavBar = React.createClass({
                 </DropdownButtonWrapper>
               );
             } else {
-              content = self.renderMenuLink(itemIndex, navItem.content, false, extraClass);
+              content = self.renderMenuLink(self.navItemKey++, navItem.content, false, extraClass);
             }
             break;
 
           case "custom":
             // We expect a component getter built from a resolve descriptor.
-            content = navItem.content()({className: extraClass});
+            content = navItem.content()({className: extraClass, key: self.navItemKey++});
             break;
 
           default:
@@ -261,7 +261,7 @@ var NavBar = React.createClass({
         }
 
         return self.wrapWithPermissions(
-          itemIndex,
+          self.navItemKey++,
           content,
           navItem.permissions
         );
@@ -281,7 +281,8 @@ var NavBar = React.createClass({
         <MKIcon glyph="globe" />{" "}
         {/*FIXME: Support more than one language.*/}
         {__("language::name", {lng: language.getAlternateLanguages()[0]})}
-      </BSNavItem>,
+      </BSNavItem>
+    ].concat(
       isInDashboard ?
         this.renderNavBarFromHookPoint(
           "navbar_secondary_dashboard",
@@ -293,7 +294,7 @@ var NavBar = React.createClass({
           "navbar_secondary",
           extraClass
         )
-    ];
+    );
   },
 
   navItemKey: 0,
@@ -301,38 +302,38 @@ var NavBar = React.createClass({
     var isInDashboard = this.props.dashboard;
     this.navItemKey = 0;
     return (
-      <div>
-        <BSNavbar
-          toggleNavKey={1}
-          brand={<img
-            src={configs.assetsUrl + "/coopbeciklogo.png"}
-            className="pointer"
-            title="Coop Bécik"
-            alt="Coop Bécik logo"
-            onClick={this.redirectToHomepage}
-          />}
-          fixedTop
-          fluid={this.props.dashboard}
-        >
-          <BSNav key={1} className="navbar-left">
-            {isInDashboard ?
-              this.renderNavBarFromHookPoint("navbar_main_dashboard") :
-              this.renderNavBarFromHookPoint("navbar_main_public")
-            }
-            {/*FIXME::Remove once toggleNavKey*/}
-            {this.renderSecondaryBar("visible-xs")}
-          </BSNav>
-          {/*FIXME: Hide on small viewports for now since it doesn't wrap.*/}
-          <BSNav key={2} className="navbar-right hidden-xs">
-            {this.renderSecondaryBar()}
-          </BSNav>
+      <BSNavbar
+        toggleNavKey={1}
+        key="mainNavBar"
+        brand={<img
+          src={configs.assetsUrl + "/coopbeciklogo.png"}
+          className="pointer"
+          title="Coop Bécik"
+          alt="Coop Bécik logo"
+          key="logo"
+          onClick={this.redirectToHomepage}
+        />}
+        fixedTop
+        fluid={this.props.dashboard}
+      >
+        <BSNav key={1} className="navbar-left">
+          {isInDashboard ?
+            this.renderNavBarFromHookPoint("navbar_main_dashboard") :
+            this.renderNavBarFromHookPoint("navbar_main_public")
+          }
+          {/*FIXME::Remove once toggleNavKey*/}
+          {this.renderSecondaryBar("visible-xs")}
+        </BSNav>
+        {/*FIXME: Hide on small viewports for now since it doesn't wrap.*/}
+        <BSNav key={2} className="navbar-right hidden-xs">
+          {this.renderSecondaryBar()}
+        </BSNav>
 
-          {/* To be removed after development. */}
-          {/*<MKDevMenu />*/}
-        </BSNavbar>
-      </div>
+        {/* To be removed after development. */}
+        {/*<MKDevMenu />*/}
+      </BSNavbar>
     );
   }
 });
 
-module.exports = NavBar;
+module.exports = MKNavBar;

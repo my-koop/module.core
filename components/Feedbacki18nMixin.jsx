@@ -48,6 +48,7 @@ module.exports = {
 
     return (
       <MKAlert
+        key="i18nFeedback"
         onHide={this.clearFeedback}
         bsStyle={this.state.__feedback.style}
         {...alertProps}

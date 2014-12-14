@@ -75,31 +75,30 @@ var SideBar = React.createClass({
     var content = item.content
     var link = content.link;
     var text = content.text;
-    var computedLink = {};
+    var href = null;
 
     if(_.isFunction(link)) {
       link = link()();
     }
 
     if (_.isString(link)) {
-      computedLink = link;
+      href = Router.makeHref(link);
     } else if (_.isPlainObject(link)) {
+      var computedLink = {};
       ["to", "params", "query"].forEach(function(prop) {
         computedLink[prop] = _.isFunction(link[prop]) ?
           link[prop]()() :
           link[prop];
       });
-      computedLink = Router.makeHref(
+      href = Router.makeHref(
         computedLink.to,
         computedLink.params,
         computedLink.query
       );
-    } else {
-      computedLink = "";
     }
 
     var classes = React.addons.classSet({
-      "list-group-category": computedLink === "",
+      "list-group-category": !href,
       "sub-list-group-item": isSubItem
     });
 
@@ -107,7 +106,7 @@ var SideBar = React.createClass({
       <BSListGroupItem
         key={key}
         className={classes}
-        href={computedLink}
+        href={href}
       >
         <MKIcon glyph={content.icon} fixedWidth />
         <span className="hidden-xs">

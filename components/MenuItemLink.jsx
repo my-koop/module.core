@@ -24,9 +24,14 @@ var MenuItemLink = React.createClass({
   },
 
   render: function() {
+    var href = this.props.to ?
+      Router.makeHref(this.props.to, this.props.params, this.props.query)
+    : undefined;
+
     return this.transferPropsTo(
       <BSMenuItem
         onSelect={this.handleClick}
+        href={href}
       >
         {this.props.children}
       </BSMenuItem>
