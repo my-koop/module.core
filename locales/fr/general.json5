@@ -1,13 +1,20 @@
 {
+  yes: "Oui",
+  no: "Non",
   welcome: "Bienvenue",
-  homeMessage: "Bienvenue à CoopBécik, propulsé par MyKoop",
+  homeMessage: "Bienvenue sur le système de gestion de Coop Bécik, propulsé par My Koop.",
+  settingsPage: "Paramètres du site",
 
   confirm: "Confirmer",
   alert: "Avertissement",
-  ok: "Ok",
+  ok: "OK",
   actions: "Actions",
   remove: "Supprimer",
   areYouSure: "Êtes-vous certain ?",
+  previous: "Précédent",
+  next: "Suivant",
+  first: "Premier",
+  last: "Dernier",
   moveUp: "Déplacer vers le haut",
   moveDown: "Déplacer vers le bas",
   moveLeft: "Déplacer vers la gauche",
@@ -19,11 +26,29 @@
   code: "Code",
   id: "ID",
   update: "Mettre à jour",
+  add: "Ajouter",
+  end: "Terminer",
+  start: "Commencer",
+  filterBy: "Filtrer par ",
+  resultPerPage: "Résultats par page: ",
+  showingResults: "Résultats __start__ - __end__ de __total__",
+  addNewUser: "Ajouter un utilisateur",
+  userListDuplicate: "Cet utilisateur fait déjà partie de la liste",
+  userList: "Liste d'utilisateurs",
+
+  poweredBy: "Ce site est propulsé par ",
+  aboutUsMessage: "Coop Bécik est une coopérative de consommateurs à but non lucratif. Pour devenir membre, il suffit de souscrire une part sociale de 10$ dès votre première visite.",
+  aboutus: "À propos",
   navbar: {
-    "homepage": "Accueil",
-    "aboutus": "À propos"
+    homepage: "Accueil",
+    quickactions: "Actions rapides",
+    aboutus: "À propos",
   },
   sidebar: {
     settings: "Paramètres du site"
   },
+  dashboard: {
+    welcomeTitle: "Panneau administratif",
+    welcomeMessage: "Bienvenue dans le panneau d'administration. Vous pouvez utiliser le menu à votre gauche pour vaquer à vos tâches administratives."
+  }
 }

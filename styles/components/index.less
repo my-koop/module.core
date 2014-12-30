@@ -2,9 +2,45 @@
 @import "typeahead";
 @import "list-mod-buttons";
 
+@media (max-width: @screen-sm) {
+  .dashboard-content {
+    margin-left: 50px;
+  }
+}
+
+.list-group-tight {
+  overflow-y: auto;
+  .list-group {
+    margin-bottom: 0;
+    .list-group-item {
+      &:last-child {
+        .border-bottom-radius(0);
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+.user-list-remove {
+  .pull-right();
+  .pointer;
+  opacity: 0.6;
+  &:hover {
+    opacity: 1;
+    color: @brand-danger;
+  }
+}
+
 // Sortable table component.
-.table-sorter .table-sorter-filter-row {
-  .tr-tight-form-group;
+.table-sorter {
+  margin-bottom: 5px;
+  &.table-sorter-filter-row {
+    .tr-tight-form-group;
+  }
+}
+
+.pagination li span {
+  .pointer;
 }
 
 @import "~react-spinner/react-spinner.css";
@@ -24,4 +60,8 @@
 
 .resize-vertical {
   resize: vertical;
+}
+
+.alert-list {
+  padding-left: 10px;
 }

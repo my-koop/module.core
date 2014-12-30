@@ -43,11 +43,12 @@ module.exports = {
       feedback = _.map(this.state.__feedback.i18n, function(f, i) {
         return <li key={i}>{__(f.key, _.omit(f, "key"))}</li>;
       });
-      feedback = <ul>{feedback}</ul>;
+      feedback = <ul className="alert-list">{feedback}</ul>;
     }
 
     return (
       <MKAlert
+        key="i18nFeedback"
         onHide={this.clearFeedback}
         bsStyle={this.state.__feedback.style}
         {...alertProps}

@@ -2,9 +2,11 @@
   "name": "mykoop-core",
   "role": "core",
   "mykoop": {
-    "dependencies": {}
+    "dependencies": {
+      "database": "^1.0.0"
+    }
   },
-  "version": "1.0.0-rc",
+  "version": "1.0.0",
   "description": "Core module for My Koop",
   "main": "index.js",
   "scripts": {
@@ -21,7 +23,10 @@
   },
   "homepage": "https://github.com/my-koop/module.core",
   "dependencies": {
-    "mykoop-utils": "git://github.com/my-koop/module.utils#v1.0.0-rc",
+    "async": "^0.9.0",
+    "lodash": "^2.4.1",
+    "mykoop-logger": "git://github.com/my-koop/module.logger",
+    "mykoop-utils": "git://github.com/my-koop/module.utils",
     "react-widgets": "~1.5.0"
   }
 }

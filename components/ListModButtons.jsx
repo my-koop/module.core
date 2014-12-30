@@ -146,6 +146,10 @@ var ListModButtons = React.createClass({
         );
       }
 
+      if (self.props.justified) {
+        result = <BSButtonGroup>{result}</BSButtonGroup>;
+      }
+
       if(btn.customWrapper) {
         result = btn.customWrapper(result, i);
       }
@@ -155,7 +159,7 @@ var ListModButtons = React.createClass({
     var props = _.omit(this.props,
       "buttons",
       "stopPropagation",
-      "defaultTooltipDela"
+      "defaultTooltipDelay"
     );
     return (
       <BSButtonGroup {...props}>

@@ -46,3 +46,10 @@
   // just under navbars and modal content, but above everything else.
   z-index: @zindex-navbar - 1;
 }
+
+//FIXME::this should already be fixed in React-bootstrap 0.13
+table {
+  .input-group-addon {
+    width: inherit;
+  }
+}

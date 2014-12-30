@@ -21,17 +21,17 @@ var PageWrapper = React.createClass({
     return (
       <div>
         {/* Navigation bar. */}
-        <BSRow>
+        <BSRow key="topNavBar">
           <MKNavBar dashboard={this.props.dashboard} />
         </BSRow>
         <BSGrid fluid={this.props.dashboard}>
           {/* Main site content. */}
-          <BSRow>
+          <BSRow key="mainContent">
             {this.props.children}
           </BSRow>
 
           {/* Footer. */}
-          <BSRow>
+          <BSRow key="footer">
             <MKFooter />
           </BSRow>
         </BSGrid>

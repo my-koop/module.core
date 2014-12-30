@@ -2,7 +2,14 @@ var React = require("react");
 
 var BSRow = require("react-bootstrap/Row");
 
-var MKDevNavBar = require("../layout/DevNavBar");
+var MKDevNavBar;
+
+if (__DEV__) {
+  MKDevNavBar = require("../layout/DevNavBar");
+} else {
+  MKDevNavBar = React.DOM.noscript;
+}
+
 var MKGlobalSpinner = require("../Spinner");
 var MKGlobalAlert  = require("../AlertTrigger");
 

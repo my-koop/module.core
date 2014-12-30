@@ -2,39 +2,22 @@
  * Sidebar
  * Inspired by http://getbootstrap.com/examples/dashboard/dashboard.css
  */
-
-/* Hide for mobile, show later */
 .sidebar {
-  display: none;
-}
+  position: fixed;
+  top: (@navbar-height + 1);
+  bottom: 0;
+  left: 0;
+  z-index: @zindex-navbar;
+  display: block;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  //FIXME: We might want to do @sidebar-bg since well isn't really related.
+  background-color: @well-bg;
+  border-right: 1px solid #eee;
 
-@media (min-width: @screen-sm-min) {
-  .sidebar {
-    position: fixed;
-    top: (@navbar-height + 1);
-    bottom: 0;
-    left: 0;
-    z-index: @zindex-navbar;
-    display: block;
-    padding: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    //FIXME: We might want to do @sidebar-bg since well isn't really related.
-    background-color: @well-bg;
-    border-right: 1px solid #eee;
-
-    .list-group {
-      margin-bottom: 0;
-
-      .list-group-item .list-group {
-        padding: 0;
-      }
-
-      .sub-list-group-item, //FIXME: Temporary...
-      .list-group-item .list-group .list-group-item {
-        padding-left: 30px;
-      }
-    }
+  .list-group {
+    margin-bottom: 0;
 
     .list-group-item {
       &:first-child {
@@ -45,5 +28,30 @@
         .border-bottom-radius(0);
       }
     }
+
+    .list-group-item .list-group {
+      padding: 0;
+    }
+
+    .list-group-category {
+      cursor: default;
+
+      &.list-group-item:hover {
+        background-color: @list-group-bg;
+      }
+    }
+
+    .sub-list-group-item, //FIXME: Temporary...
+    .list-group-item .list-group .list-group-item {
+      @media (min-width: @screen-sm-min) {
+        padding-left: 30px;
+      }
+
+      @media (max-width: @screen-sm) {
+        background-color: lighten(@state-info-bg, 5%);
+      }
+    }
   }
+
+
 }

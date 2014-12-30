@@ -1,6 +1,7 @@
 var React = require("react");
 
 var _ = require("lodash");
+var nicEdit = require("../vendor/nicEdit");
 
 var RichTextArea = React.createClass({
 
@@ -18,15 +19,11 @@ var RichTextArea = React.createClass({
   nicEditorInstance: null,
   componentDidMount: function () {
     var self = this;
-    require.ensure([], function(require) {
-      var nicEdit = require("../vendor/nicEdit");
-
-      var editor = new nicEdit.nicEditor({fullPanel: true});
-      editor.addEvent("add", function(nicEditorInstance) {
-        self.nicEditorInstance = nicEditorInstance;
-      });
-      editor.panelInstance(self.props.id);
+    var editor = new nicEdit.nicEditor({fullPanel: true});
+    editor.addEvent("add", function(nicEditorInstance) {
+      self.nicEditorInstance = nicEditorInstance;
     });
+    editor.panelInstance(self.props.id);
   },
 
   getText: function() {

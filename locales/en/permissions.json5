@@ -1,0 +1,6 @@
+{
+  website: {
+    __description: "Website",
+    settings: "Update site-wide settings"
+  }
+}

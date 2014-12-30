@@ -182,7 +182,7 @@ AlertTrigger.showAlert = function(props) {
       props = {message: props};
     }
     var newState = AlertTrigger.globalInstance.getStateFromProps(
-      _.assign(globalDefaultProps, props)
+      _.merge(_.clone(globalDefaultProps), props)
     );
     AlertTrigger.globalInstance.replaceState(
       newState,

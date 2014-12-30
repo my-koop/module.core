@@ -1,13 +1,20 @@
 {
+  yes: "Yes",
+  no: "No",
   welcome: "Welcome",
-  homeMessage: "Welcome to CoopBécik, powered by MyKoop",
+  homeMessage: "Welcome to the management system of Coop Bécik, powered by My Koop.",
+  settingsPage: "Site Settings",
 
   confirm: "Confirm",
   alert: "Alert",
-  ok: "Ok",
+  ok: "OK",
   actions: "Actions",
   remove: "Delete",
   areYouSure: "Are you Sure ?",
+  previous: "Previous",
+  next: "Next",
+  first: "First",
+  last: "Last",
   moveUp: "Move Up",
   moveDown: "Move Down",
   moveLeft: "Move Left",
@@ -19,11 +26,29 @@
   code: "Code",
   id: "ID",
   update: "Update",
+  add: "Add",
+  end: "End",
+  start: "Start",
+  filterBy: "Filter by ",
+  resultPerPage: "Results per page: ",
+  showingResults: "Results __start__ - __end__ of __total__",
+  addNewUser: "Add a user",
+  userListDuplicate: "User is already part of the list",
+  userList: "User list",
+
+  poweredBy: "This site is powered by ",
+  aboutUsMessage: "Coop Bécik is a cooperative nonprofit consumers. To become a member, simply purchase a share of $10 on your first visit.",
+  aboutus: "About Us",
   navbar: {
     homepage: "Homepage",
-    aboutus: "About Us"
+    quickactions: "Quick Actions",
+    aboutus: "About Us",
   },
   sidebar: {
     settings: "Site Settings"
   },
+  dashboard: {
+    welcomeTitle: "Administration dashboard",
+    welcomeMessage: "Welcome to the administration dashboard. You can use the menu on your left to proceed to your administrative duties."
+  }
 }

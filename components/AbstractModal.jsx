@@ -3,15 +3,15 @@ var PropTypes = React.PropTypes;
 var BSButton = require("react-bootstrap/Button");
 var BSModal = require("react-bootstrap/Modal");
 
-  var AbstractModal = React.createClass({
-    propTypes: {
-      title      : PropTypes.string,
-      modalHeader: PropTypes.renderable,
-      modalBody  : PropTypes.renderable.isRequired,
-      modalFooter: PropTypes.renderable,
-      onRequestHide: PropTypes.func.isRequired,
-      useCloseButtonFooter: PropTypes.bool
-    },
+var AbstractModal = React.createClass({
+  propTypes: {
+    title      : PropTypes.string,
+    modalHeader: PropTypes.renderable,
+    modalBody  : PropTypes.renderable.isRequired,
+    modalFooter: PropTypes.renderable,
+    onRequestHide: PropTypes.func.isRequired,
+    useCloseButtonFooter: PropTypes.bool
+  },
 
   populateFooter: function(useCloseButton,hideFunction,Footer){
     if(useCloseButton && Footer){
@@ -41,7 +41,7 @@ var BSModal = require("react-bootstrap/Modal");
   render: function () {
     var header = this.props.modalHeader ? <div className="modal-header"> {this.props.modalHeader} </div>: null;
     return this.transferPropsTo(
-      <BSModal title={this.props.title} bsSize="small">
+      <BSModal title={this.props.title}>
         {header}
         <div className="modal-body">
           {this.props.modalBody}

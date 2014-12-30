@@ -1,0 +1,8 @@
+{
+  Author : "Composé par",
+  TimePrefix : "le",
+  InputLabel : "Message de la note",
+  Submit : "Ajouter une note",
+  ShowMore : "Montrer plus de notes",
+  NoNotes: "Il n'y a pas de notes inscrites",
+}

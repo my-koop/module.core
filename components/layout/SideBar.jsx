@@ -1,4 +1,4 @@
-var React = require("react");
+var React = require("react/addons");
 var Router = require("react-router");
 var uiHookData = require("dynamic-metadata").uihooks;
 
@@ -75,32 +75,44 @@ var SideBar = React.createClass({
     var content = item.content
     var link = content.link;
     var text = content.text;
-    var computedLink = {};
+    var href = null;
+
+    if(_.isFunction(link)) {
+      link = link()();
+    }
 
     if (_.isString(link)) {
-      computedLink = link;
-    } else if(_.isFunction(link)) {
-      computedLink = link()();
+      href = Router.makeHref(link);
     } else if (_.isPlainObject(link)) {
+      var computedLink = {};
       ["to", "params", "query"].forEach(function(prop) {
         computedLink[prop] = _.isFunction(link[prop]) ?
           link[prop]()() :
           link[prop];
       });
-    } else {
-      computedLink = "";
+      href = Router.makeHref(
+        computedLink.to,
+        computedLink.params,
+        computedLink.query
+      );
     }
+
+    var classes = React.addons.classSet({
+      "list-group-category": !href,
+      "sub-list-group-item": isSubItem
+    });
 
     var render = (
       <BSListGroupItem
         key={key}
-        className={isSubItem && "sub-list-group-item"}
-        //FIXME: This will show [Object object] in the status bar when hovering.
-        href={computedLink}
+        className={classes}
+        href={href}
       >
         <MKIcon glyph={content.icon} fixedWidth />
-        {" "}
-        {_.isFunction(text) ? text()() : __(text)}
+        <span className="hidden-xs">
+          {" "}
+          {_.isFunction(text) ? text()() : __(text)}
+        </span>
       </BSListGroupItem>
     );
 
